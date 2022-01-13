@@ -49,9 +49,6 @@ img {
 }
 
 .button:hover {
-    border-color: #bd93f9;
-    color: #f8f8f2;
     background-color: #bd93f9;
-    outline: solid;
     outline-color: #bd93f9;
 }
