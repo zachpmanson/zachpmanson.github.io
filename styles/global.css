@@ -43,10 +43,11 @@ img.profile {
     border-radius: 50%;
 }
 
-a.button {
+.button {
     display: inline-block;
+    width: 5em;
     margin: .5em;
-    padding: 10px 20px;
+    padding: .5em;
     text-align: center;
     text-decoration: none;
     color: var(--white);
@@ -55,10 +56,19 @@ a.button {
     transition: all 0.1s ease-in;
 }
 
-a.button:hover {
+.button:hover {
     background-color: var(--purple);
 }
 
-a.button:active {
+.button:active {
     outline-style: none;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 40em;
+    margin: 0 auto;
+    justify-content: center;
 }
