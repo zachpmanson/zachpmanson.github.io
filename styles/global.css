@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: var(--white);
+    background-color: var(--background);
+    text-align: center;
+    line-height: 1.4;
+}
+
+::selection {
+    background-color: var(--grey);
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+header {
+    max-width: 40em;
+    margin: auto;
+}
+
+a {
+    color: var(--purple);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: all 0.1s ease-in;
+}
+
+a:hover {
+    text-decoration-color: var(--purple);
+}
+
+a:active {
+    color: var(--white);
+    text-decoration-color: var(--white);
+    transition: all 0.0s ease-in;
+}
+
+img.profile {
+    border-radius: 50%;
+}
+
+a.button {
+    display: inline-block;
+    margin: .5em;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--white);
+    outline: solid;
+    outline-color: var(--purple);
+    transition: all 0.1s ease-in;
+}
+
+a.button:hover {
+    background-color: var(--purple);
+}
+
+a.button:active {
+    outline-style: none;
+}
