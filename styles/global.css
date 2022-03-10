@@ -72,3 +72,7 @@ img.profile {
     margin: 0 auto;
     justify-content: center;
 }
+
+.discrete-link {
+    white-space: nowrap;
+}
