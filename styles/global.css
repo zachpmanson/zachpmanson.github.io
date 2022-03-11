@@ -1,5 +1,5 @@
 body {
-    margin: 0 1em;
+    margin: 1em;
     font-family: sans-serif;
     color: var(--white);
     background-color: var(--background);
@@ -20,6 +20,11 @@ img {
 header {
     max-width: 40em;
     margin: auto;
+}
+
+p {
+    max-width: 40em;
+    margin: 1em auto;
 }
 
 a {
@@ -75,4 +80,5 @@ img.profile {
 
 .discrete-link {
     white-space: nowrap;
+    margin: 0 .5em;
 }
