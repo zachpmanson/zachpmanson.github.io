@@ -1,5 +1,5 @@
 body {
-    margin: 1em;
+    margin: 1rem;
     font-family: sans-serif;
     color: var(--white);
     background-color: var(--background);
@@ -18,13 +18,13 @@ img {
 }
 
 header {
-    max-width: 40em;
+    max-width: 40rem;
     margin: auto;
 }
 
 p {
-    max-width: 40em;
-    margin: 1em auto;
+    max-width: 40rem;
+    margin: 1rem auto;
 }
 
 a {
@@ -50,9 +50,9 @@ img.profile {
 
 .button {
     display: inline-block;
-    width: 5em;
-    margin: .5em;
-    padding: .5em;
+    width: 5rem;
+    margin: .5rem;
+    padding: .5rem;
     text-align: center;
     text-decoration: none;
     color: var(--white);
@@ -73,12 +73,12 @@ img.profile {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 40em;
+    max-width: 40rem;
     margin: 0 auto;
     justify-content: center;
 }
 
 .discrete-link {
     white-space: nowrap;
-    margin: 0 .5em;
+    margin: 0 .5rem;
 }
