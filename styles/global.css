@@ -1,5 +1,5 @@
 body {
-    margin: 1rem;
+    margin: 0 1rem;
     font-family: sans-serif;
     color: var(--white);
     background-color: var(--background);
@@ -20,6 +20,11 @@ img {
 header {
     max-width: 40rem;
     margin: auto;
+}
+
+footer {
+    font-weight: lighter;
+    margin-top: 5rem;
 }
 
 p {
@@ -43,6 +48,21 @@ a:active {
     text-decoration-color: var(--white);
     transition: all 0.0s ease-in;
 }
+
+.date {
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+/* For homepage */
 
 img.profile {
     border-radius: 50%;
@@ -81,4 +101,53 @@ img.profile {
 .discrete-link {
     white-space: nowrap;
     margin: 0 .5rem;
+}
+
+/* For projects (some taken from blog) */
+
+.postlist {
+    max-width: 40rem;
+    margin: auto;
+}
+
+a.post {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--white);
+    outline-color: var(--purple);
+    transition: all 0.1s ease-in;
+    text-align: left;
+}
+
+a.post:hover {
+    outline-style: solid;
+}
+
+a.post h3 {
+    margin: .5rem 0;
+}
+
+a.post p {
+    margin: .5rem 0;
+}
+
+.inline-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.post-description {
+    flex-basis: 70%;
+    flex-grow: 2;
+}
+
+.post-image {
+    margin: auto;
+}
+
+.post-image img {
+    max-width: 10em;
+    max-height: 8rem;
 }
