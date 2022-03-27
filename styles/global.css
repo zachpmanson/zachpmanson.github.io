@@ -49,11 +49,6 @@ a:active {
     transition: all 0.0s ease-in;
 }
 
-table {
-    max-width: 40rem;
-    margin: 1rem auto;
-}
-
 .date {
     font-style: italic;
     font-weight: lighter;
