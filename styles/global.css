@@ -62,6 +62,14 @@ a:active {
     text-decoration: line-through;
 }
 
+.monospace {
+    font-family: monospace;
+}
+
+.location {
+    text-align: left;
+}
+
 /* For homepage */
 
 img.profile {
