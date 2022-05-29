@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="/styles/colors.css">
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/code.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://zachmanson.com/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://zachmanson.com/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://zachmanson.com/icons/favicon-16x16.png">
+    <link rel="manifest" href="https://zachmanson.com/icons/site.webmanifest">
+    <link rel="mask-icon" href="https://zachmanson.com/icons/safari-pinned-tab.svg" color="#bd93f9">
+    <link rel="shortcut icon" href="https://zachmanson.com/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="msapplication-config" content="https://zachmanson.com/icons/browserconfig.xml">
+    <meta name="theme-color" content="#f8f8f2">
+
+    <title>Web Scraping vs. Government Whimsy</title>
+</head>
+<body>
+    <header>
+        <p class="location"><a href="/">Zach Manson</a> / <a href="/blog/">Assorted Text Dumps</a> /</p>
+        <h1>Web Scraping vs. Government Whimsy</h1>
+        <p>A minor problem that globally only affects me</p>
+        <p><span class="date">2022-04-01</span></p>
+    </header>
+    
+    <article>     
+<p>The West Australian State Government has overall handled COVID-19
+quite well, but in the arena of making my regex elegent they are have
+failed completely. (Almost) every day since March 2020 they have
+published a media release detailing the number in overnight cases
+identified and other updates about the pandemic in the state.</p>
+<p><img src="media_release.png" /></p>
+<p>For the first 2 years, this was sufficient for me, since for the most
+part WA was both physically isolated and had restrictions on who could
+enter the state. This led us to have very little community transmission,
+only having minor and shortlived clusters of cases every few months.</p>
+<p>All good things must come to an end, and COVID-19 v5.0 Omicron
+debuted in WA on Christmas Eve 2021. Since then I’ve (somewhat
+unhealthily) been compulsively checking the listing of <a
+href="https://ww2.health.wa.gov.au/News/Media-releases-listing-page">media
+releases</a> every day to find the number of local cases.</p>
+<h2 id="why-not-automate-this">Why not automate this?</h2>
+<figure>
+<img src="https://imgs.xkcd.com/comics/automation.png"
+title="&#39;Automating&#39; comes from the roots &#39;auto-&#39; meaning &#39;self-&#39;, and &#39;mating&#39;, meaning &#39;screwing&#39;."
+alt="xkcd: Automation" />
+<figcaption aria-hidden="true"><a href="https://xkcd.com/1319/">xkcd:
+Automation</a></figcaption>
+</figure>
+<p>Web scraping can’t be that hard, right? It’s not, but person writing
+the media releases clearly is trying to spite me. The <a
+href="https://github.com/pavo-etc/wa-covid-tracker/blob/main/scraper.py">scraping
+script I wrote</a> first generates a list of every update since a given
+date by traversing the DOM with Beautiful Soup and parsing the article
+titles. This would be fine but on a whim the release titles will change
+format:</p>
+<pre><code>COVID-19 update 18 March 2020
+COVID-19 update – 19 March 2020 (em dash)
+COVID-19 update - 17 October 2020 (hyphen)
+COVID-19 update – 1 October 2020 (em dash &amp; no leading 0)
+COVID-19 update – 01 January 2021 (em dash &amp; leading 0)
+COVID-19 update - 05 January 2021 (hyphen &amp; leading 0)
+COVID 19 update 2 December 2020 (COVID 19)
+COVID19 update – 13 July 2020 (em dash &amp; COVID19)
+COVID-19 update –  4 October 2020 (em dash &amp; 2-space gap)
+COVID-19 update: 6 March 2022 (colon)
+COVID-19 update  7 March 2022 (2-space gap)
+COVID-19 update: 27th March 2022 (colon and ORDINAL)</code></pre>
+<p>Gross. The somewhat warty regex I resigned myself to:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>match_text <span class="op">=</span> <span class="st">&quot;COVID.?19( )+(U|u)pdate.{0,6}[0-9]+(st|nd|rd|th)?( )+[a-zA-Z]+( )+[0-9]</span><span class="sc">{4}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>I part of this I’m least proud of is <code>.{0,6}</code>, to just
+match up to 6 arbitrary characters. It’s hacky but it does allow for the
+media releases to have more inexplicable spacing errors or random
+characters to use as seperators.</p>
+<p>Ordinals only appeared in March 2022 and are what motivated my to
+whine about this on the internet. They are particularly annoying to my
+program since it only scrapes articles since the previous run. This is
+calculated by parsing the date in the media release title which is
+frustrating when they change the format of their dates on a whim. It’s
+not a major change to the codebase, but it’s just another spaghetto in
+my spaghetti.</p>
+<h2 id="spaghetto-2-actual-data">Spaghetto 2: Actual Data</h2>
+<p>The titles are just the first issue. Once a list of COVID-19 updates
+has been assembled, each link is opened by Beautiful Soup, and the
+content of all <code>&lt;p&gt;</code> tags are concatenated. The case
+numbers are written in normal and again inconsistent sentences. The
+concatenated string is searched with more inelegant (and shockingly
+functional) regex to attempt to find the number of total new cases and
+locally transmitted cases.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For local cases</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>match_text <span class="op">=</span> <span class="st">&quot;(total )?(of )?(([0-9]|,)+) new(?! local)( COVID-19)?( case(s?))?&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For all cases</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>match_text <span class="op">=</span> <span class="st">&quot;(([0-9]|,)+)( are)?( new)? local( COVID-19)?( cases)?&quot;</span></span></code></pre></div>
+<p>This took a surmountable and annoying amount of trial and error to
+find, and I’m sure will need updating in the future when the Government
+changes their phrasing on their next whim.</p>
+<h1 id="ongoing-development">Ongoing Development…</h1>
+<p>For now <a href="https://tracker.zachmanson.com">this setup</a> works
+without much any effort from me, barring the occasional regex
+update.</p>
+<p>Unfortunately, this experience hasn’t turned me off web scraping so I
+feel a niggling desire to add more functionality to the site. Daily
+hospitalisations, deaths, and other morbidities are all tempingly
+trivial to add, right? It’s hard to call a project complete, even when
+you’ve already done everything you set out to do. I have a sneaking
+suspicious that the xkcd comic will be more prophetic than I’d like.</p>
+    </article>
+
+    <footer>
+        <p>
+            Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
+        </p>
+    </footer>
+</body>

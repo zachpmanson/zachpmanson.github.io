@@ -1,0 +1,41 @@
+
+/* For pandoc code highlighting.  Why are there <a>'s in there */
+pre { margin: 0;}
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+div.sourceCode { 
+  border: 2px solid var(--purple);
+  border-radius: 5px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+code span. { color: #f8f8f2; } /* Normal */
+code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+code span.an { color: #f1fa8c; font-weight: bold; } /* Annotation */
+code span.at { color: #f1fa8c; } /* Attribute */
+code span.bn { color: #bd93f9; } /* BaseN */
+code span.bu { color: #50fa7b; } /* BuiltIn */
+code span.cf { color: #ff79c6; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #f1fa8c; } /* Char */
+code span.cn { color: #bd93f9; } /* Constant */
+code span.co { color: #6272a4; } /* Comment */
+code span.cv { color: #ff79c6; font-weight: bold; } /* CommentVar */
+code span.do { color: #f8f8f2; } /* Documentation */
+code span.dt { color: #8be9fd; } /* DataType */
+code span.dv { color: #bd93f9; } /* DecVal */
+code span.er { color: #ff5555; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #bd93f9; } /* Float */
+code span.fu { color: #50fa7b; } /* Function */
+code span.im { color: #ff79c6; font-weight: bold; } /* Import */
+code span.in { color: #f8f8f2; font-weight: bold; } /* Information */
+code span.kw { color: #ff79c6; font-weight: bold; } /* Keyword */
+code span.op { color: #f8f8f2; } /* Operator */
+code span.ot { color: #f8f8f2; } /* Other */
+code span.pp { color: #ff79c6; } /* Preprocessor */
+code span.sc { color: #f1fa8c; } /* SpecialChar */
+code span.ss { color: #f1fa8c; } /* SpecialString */
+code span.st { color: #f1fa8c; } /* String */
+code span.va { color: #f8f8f2; } /* Variable */
+code span.vs { color: #f1fa8c; } /* VerbatimString */
+code span.wa { color: #ffb86c; font-weight: bold; } /* Warning */

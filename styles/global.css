@@ -17,6 +17,10 @@ img {
     object-fit: contain;
 }
 
+figcaption {
+    text-align: center;
+}
+
 header {
     max-width: 40rem;
     margin: auto;
@@ -25,6 +29,10 @@ header {
 footer {
     font-weight: lighter;
     margin-top: 5rem;
+}
+
+table {
+    margin: 1rem 0;
 }
 
 p {
@@ -111,7 +119,7 @@ img.profile {
     margin: 0 .5rem;
 }
 
-/* For projects (some taken from blog) */
+/* For blog/projects */
 
 .postlist {
     max-width: 40rem;
@@ -159,3 +167,22 @@ a.post p {
     max-width: 10em;
     max-height: 8rem;
 }
+
+/* For article itself */
+
+article {
+    text-align: left;
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+article h1, article h2, article h3 {
+    text-align: center;
+}
+
+article img {
+    display: block;
+    margin: 0 auto;
+}
+
+
