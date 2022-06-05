@@ -372,4 +372,19 @@ These tags are referring to `.minecraft/versions/1.18.1.jar/data/minecraft/tags/
 
 To deal with these I've currently just put edge cases in to handle these tags manually, though I would like to have a more robust solution in the future that can be determined by `given_ingredients.json`.
 
+Both of these appear to be solving the same problem, and it's strange that coal doesn't use the `tag` field, especially since there is `tag` JSON file that seems made for this:
+
+```json
+> cat coals.json 
+{
+  "replace": false,
+  "values": [
+    "minecraft:coal",
+    "minecraft:charcoal"
+  ]
+}
+```
+
+I theorize that the torch was older method of achieving this goal and just hasn't been updated to use the new system (though I am again too lazy and won't check old versions), unless there is some other difference I am not aware of between the two methods.  Maybe I should send Mojang a pull request.
+
 Recipe validation was the final feature I really felt was necessary for my own sense of completion.  That said, we never added shapeless recipe support... or varying difficulties... or hardcore mode.  Oh well.
