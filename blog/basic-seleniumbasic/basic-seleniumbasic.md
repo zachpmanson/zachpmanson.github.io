@@ -1,7 +1,9 @@
 ---
 title: Basic SeleniumBasic
-date: 2022-02-15
 subtitle: <span class="strikethrough">Unmaintained</span> Looking for love
+tagline: Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.
+date: 2022-02-15
+
 ---
 
 The library most commonly recommended for web automation is Selenium, which supports driving a variety of browsers and officially provides bindings for a number of languages. Unfortunately it doesn't officially support the ultimate programming language, Visual Basic. For VB, this is a single blemish on the otherwise immaculate language, and for Selenium, it's a unforgivable crime.

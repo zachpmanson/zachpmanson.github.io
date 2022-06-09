@@ -1,6 +1,7 @@
 ---
 title: How Minecraft Stores Crafting Recipes
 subtitle: Or things noticed while stealing Mojang's work for marks
+tagline: Some (extremely) mildly interesting quirks in Minecraft.jar
 date: 2022-03-31
 ---
 
