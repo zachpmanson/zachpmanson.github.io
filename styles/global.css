@@ -148,7 +148,7 @@ a.post h3 {
 
 a.post p {
     margin: .5rem 0;
-    font-weight: lighter;
+    font-weight: 300;
 }
 
 .inline-flex {
