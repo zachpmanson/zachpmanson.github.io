@@ -4,7 +4,7 @@ subtitle: Always be closing
 date: 2022-06-09
 ---
 
-In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, [Minecraftle](https://minecraftle.zachmanson.com) was the most fun to put together, but [rake](https://github.com/pavo-etc/rake) was the most *educational*.  I'd never worked with sockets or TCP protocols before so this project out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile)  client and server programs.
+In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, [Minecraftle](https://minecraftle.zachmanson.com) was the most fun to put together, but [rake](https://github.com/pavo-etc/rake) was the most *educational*.  I'd never worked with sockets or TCP protocols before so this project was out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile) client and server programs.
 
 The assignment required the design and implementation of protocol to enable distributed compilation of files and remote command execution across multiple servers (`r(emote) + (m)ake = rake`).  We needed to write a server program, and two client programs (one in C, the other in Python).  Between Beej's guide and the coursework, we fumbled our way to working prototypes, able to pass files, messages, and any other arbitrary data between our clients and servers.  The commands and files needing to be passed to servers were defined in a `Rakefile`, a strictly written parody of makefiles.
 
@@ -58,7 +58,7 @@ As far as I could tell all sockets were being closed properly by the server and 
 
 It was also noteworthy that many file descriptors *were* being reused by the server, so clearly some of them were being handled properly.
 
-After hours of StackOverflow and dubious imitations of it, I resigned myself to hoping the markers never ran the server for long enough to get 1010 connections and notice the leak.  The rest of the assignment was functional and we'd get a good mark regardless of this bug, the only thing at risk was my pride.
+After hours of StackOverflow and dubious imitations of it, I resigned myself to hoping the markers never ran the server for long enough to get 1010 connections and notice the leak.  The rest of the assignment was functional and we'd get a good mark regardless of this bug.  The only thing at risk was my pride.
 
 We fixed up the other remaining bugs, generally cleaned up formatting and completed our write-up, readied for submission the next day.  On the morning it was due, I hoped fresh eyes would help me squash this tantalisingly simple bug.
 
