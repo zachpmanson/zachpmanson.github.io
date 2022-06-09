@@ -95,6 +95,7 @@ img.profile {
     outline: solid;
     outline-color: var(--purple);
     transition: all 0.1s ease-in;
+    border-radius: 8px;
 }
 
 .button:hover {
@@ -134,6 +135,7 @@ a.post {
     outline-color: var(--purple);
     transition: all 0.1s ease-in;
     text-align: left;
+    border-radius: 8px;
 }
 
 a.post:hover {
@@ -146,6 +148,7 @@ a.post h3 {
 
 a.post p {
     margin: .5rem 0;
+    font-weight: lighter;
 }
 
 .inline-flex {

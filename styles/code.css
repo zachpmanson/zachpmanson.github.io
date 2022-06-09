@@ -4,7 +4,7 @@ pre { margin: 0;}
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 div.sourceCode { 
   border: 2px solid var(--purple);
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 1rem;
   overflow-x: auto;
 }
