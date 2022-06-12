@@ -44,15 +44,14 @@
         client and server programs.</p>
         <p>The assignment required the design and implementation of
         protocol to enable distributed compilation of files and remote
-        command execution across multiple servers
-        (<code>r(emote) + (m)ake = rake</code>). We needed to write a
-        server program, and two client programs (one in C, the other in
-        Python). Between Beej’s guide and the coursework, we fumbled our
-        way to working prototypes, able to pass files, messages, and any
-        other arbitrary data between our clients and servers. The
-        commands and files needing to be passed to servers were defined
-        in a <code>Rakefile</code>, a strictly written parody of
-        makefiles.</p>
+        command execution across multiple servers (r(emote) + (m)ake =
+        rake). We needed to write a server program, and two client
+        programs (one in C, the other in Python). Between Beej’s guide
+        and the coursework, we fumbled our way to working prototypes,
+        able to pass files, messages, and any other arbitrary data
+        between our clients and servers. The commands and files needing
+        to be passed to servers were defined in a <code>Rakefile</code>,
+        a strictly written parody of makefiles.</p>
         <p>It was extremely satisfying to see the programs work, with
         files being sent from my partner’s machine to servers at my
         house and back again in perfect-ish synchronicity. Just for our
@@ -71,8 +70,8 @@
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    n_active_procs<span class="op">+=</span><span class="dv">1</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> proc</span></code></pre></div>
         <p>(Obviously this is a security nightmare, we literally open
-        the servers to execute arbitrary without any santising or
-        checks. Please don’t abuse. Or better yet, don’t use.)</p>
+        the servers to execute arbitrary commands without any santising
+        or checks. Please don’t abuse. Or better yet, don’t use.)</p>
         <p>In our satisfaction-based testing, we noticed that the server
         would regularly crash when it received its 1010th to 1020th
         connection from the clients.</p>

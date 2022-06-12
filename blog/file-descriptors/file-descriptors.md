@@ -6,7 +6,7 @@ date: 2022-06-09
 
 In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, [Minecraftle](https://minecraftle.zachmanson.com) was the most fun to put together, but [rake](https://github.com/pavo-etc/rake) was the most *educational*.  I'd never worked with sockets or TCP protocols before so this project was out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile) client and server programs.
 
-The assignment required the design and implementation of protocol to enable distributed compilation of files and remote command execution across multiple servers (`r(emote) + (m)ake = rake`).  We needed to write a server program, and two client programs (one in C, the other in Python).  Between Beej's guide and the coursework, we fumbled our way to working prototypes, able to pass files, messages, and any other arbitrary data between our clients and servers.  The commands and files needing to be passed to servers were defined in a `Rakefile`, a strictly written parody of makefiles.
+The assignment required the design and implementation of protocol to enable distributed compilation of files and remote command execution across multiple servers (r(emote) + (m)ake = rake).  We needed to write a server program, and two client programs (one in C, the other in Python).  Between Beej's guide and the coursework, we fumbled our way to working prototypes, able to pass files, messages, and any other arbitrary data between our clients and servers.  The commands and files needing to be passed to servers were defined in a `Rakefile`, a strictly written parody of makefiles.
 
 It was extremely satisfying to see the programs work, with files being sent from my partner's machine to servers at my house and back again in perfect-ish synchronicity.  Just for our own gratification we tested it by compiling larger and larger C programs, which the servers handled by creating subprocesses to execute in parallel threads.
 
@@ -23,7 +23,7 @@ def run_command(cmd_str, execution_path):
     return proc
 ```
 
-(Obviously this is a security nightmare, we literally open the servers to execute arbitrary without any santising or checks.  Please don't abuse.  Or better yet, don't use.)
+(Obviously this is a security nightmare, we literally open the servers to execute arbitrary commands without any santising or checks.  Please don't abuse.  Or better yet, don't use.)
 
 In our satisfaction-based testing, we noticed that the server would regularly crash when it received its 1010th to 1020th connection from the clients.
 
