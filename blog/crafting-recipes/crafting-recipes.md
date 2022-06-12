@@ -153,7 +153,7 @@ zach@grannysmith recipes % cat *blast* | grep "cookingtime"
   "cookingtime": 100
 ```
 
-It could be to accomodate varying smelting times in the future, but for the moment this seems redundant.
+It could be to accommodate varying smelting times in the future, but for the moment this seems redundant.
 
 All of the special crafting recipes aren't stored at all, which makes sense since these are more complex than what should be written in a single JSON file.
 
