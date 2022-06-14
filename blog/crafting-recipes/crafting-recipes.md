@@ -207,8 +207,8 @@ netherite_sword_smithing.json
 
 Stonecutting unveiled an interesting quirk: 
 
-```json
-chiseled_stone_bricks_stone_from_stonecutting.json
+```sh
+> cat chiseled_stone_bricks_stone_from_stonecutting.json
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
@@ -231,7 +231,7 @@ Minecraftle is [playable](https://minecraftle.zachmanson.com) and nearly fully f
 
 Some recipes have multiple forms, such as torches which use coal or charcoal.  I had assumed this would just result in two seperate recipe files, but:
 
-```json
+```sh
 > cat torch.json 
 {
   "type": "minecraft:crafting_shaped",
@@ -359,7 +359,7 @@ yellow_bed.json:      "tag": "minecraft:planks"
 
 These tags are referring to `.minecraft/versions/1.18.1.jar/data/minecraft/tags/items/`, which holds yet more JSON files with lists of all items that belong to each tag.  For example:
 
-```json
+```sh
 > cat stone_crafting_materials.json
 {
   "replace": false,
@@ -375,7 +375,7 @@ To deal with these I've currently just put edge cases in to handle these tags ma
 
 Both of these appear to be solving the same problem, and it's strange that coal doesn't use the `tag` field, especially since there is `tag` JSON file that seems made for this:
 
-```json
+```sh
 > cat coals.json 
 {
   "replace": false,

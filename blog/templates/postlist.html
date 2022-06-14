@@ -29,42 +29,12 @@
 		<p>Artisanally crafted text dumps</p>
 	</header>
 	<div class="postlist">
-		
-		<a class="post" href="./poor-mans-site/">
-			<h3>The Poor Man's Static Site Generator</h3>
-			<p>Using Pandoc to well below its fullest potential!</p>
+		{% for post in posts_data %}
+		<a class="post" href="./{{post.post_dir}}/">
+			<h3>{{post.title}}</h3>
+			<p>{{post.tagline}}</p>
 		</a>
-		
-		<a class="post" href="./file-descriptors/">
-			<h3>Sneaky File Descriptors in Popen()</h3>
-			<p>Always be closing</p>
-		</a>
-		
-		<a class="post" href="./covid-updates/">
-			<h3>Web Scraping vs. Government Whimsy</h3>
-			<p>"another spaghetto in my spaghetti"</p>
-		</a>
-		
-		<a class="post" href="./crafting-recipes/">
-			<h3>How Minecraft Stores Crafting Recipes</h3>
-			<p>Some (extremely) mildly interesting quirks in Minecraft.jar</p>
-		</a>
-		
-		<a class="post" href="./hep-001/">
-			<h3>hEP 001 – Mathematical 𝐡  in the Standard Implementation</h3>
-			<p>Enhancement Proposal for the h Programming Language</p>
-		</a>
-		
-		<a class="post" href="./usernames/">
-			<h3>Usernames</h3>
-			<p>An experience I have had many times and should be numb to by now.</p>
-		</a>
-		
-		<a class="post" href="./basic-seleniumbasic/">
-			<h3>Basic SeleniumBasic</h3>
-			<p>Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.</p>
-		</a>
-		
+		{% endfor %}
 	</div>    
 
     <footer>

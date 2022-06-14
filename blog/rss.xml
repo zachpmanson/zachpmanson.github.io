@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Memory Leaks</title>
+    <link>https://zachmanson.com/blog/rss.xml</link>
+    <description>Artisanally crafted text dumps</description>
+    <atom:link href="https://zachmanson.com/blog/rss.xml" rel="self"/>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>python-feedgen</generator>
+    <image>
+      <url>https://zachmanson.com/icons/android-chrome-256x256.png</url>
+      <title>Memory Leaks</title>
+      <link>https://zachmanson.com/blog/rss.xml</link>
+    </image>
+    <language>en</language>
+    <lastBuildDate>Tue, 14 Jun 2022 15:51:27 +0000</lastBuildDate>
+    <item>
+      <title>Basic SeleniumBasic</title>
+      <link>https://zachmanson.com/blog/basic-seleniumbasic</link>
+      <description>Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/basic-seleniumbasic</guid>
+      <pubDate>Tue, 15 Feb 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Usernames</title>
+      <link>https://zachmanson.com/blog/usernames</link>
+      <description>An experience I have had many times and should be numb to by now.</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/usernames</guid>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>hEP 001 – Mathematical 𝐡  in the Standard Implementation</title>
+      <link>https://zachmanson.com/blog/hep-001</link>
+      <description>Enhancement Proposal for the h Programming Language</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/hep-001</guid>
+      <pubDate>Fri, 18 Mar 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>How Minecraft Stores Crafting Recipes</title>
+      <link>https://zachmanson.com/blog/crafting-recipes</link>
+      <description>Some (extremely) mildly interesting quirks in Minecraft.jar</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/crafting-recipes</guid>
+      <pubDate>Thu, 31 Mar 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Web Scraping vs. Government Whimsy</title>
+      <link>https://zachmanson.com/blog/covid-updates</link>
+      <description>"another spaghetto in my spaghetti"</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/covid-updates</guid>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Sneaky File Descriptors in Popen()</title>
+      <link>https://zachmanson.com/blog/file-descriptors</link>
+      <description>Always be closing</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/file-descriptors</guid>
+      <pubDate>Thu, 09 Jun 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>The Poor Man's Static Site Generator</title>
+      <link>https://zachmanson.com/blog/poor-mans-site</link>
+      <description>Using Pandoc to well below its fullest potential!</description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/poor-mans-site</guid>
+      <pubDate>Sat, 11 Jun 2022 00:00:00 +0800</pubDate>
+    </item>
+  </channel>
+</rss>

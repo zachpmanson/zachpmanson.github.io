@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    
-    <link rel="stylesheet" href="/styles/colors.css">
-    <link rel="stylesheet" href="/styles/global.css">
-    <link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/colors.css">
+	<link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/global.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="manifest" href="/icons/site.webmanifest">
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
-    <link rel="shortcut icon" href="/icons/favicon.ico">
-    <meta name="msapplication-TileColor" content="#603cba">
-    <meta name="msapplication-config" content="/icons/browserconfig.xml">
-    <meta name="theme-color" content="#f8f8f2">
+	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+	<link rel="manifest" href="/icons/site.webmanifest">
+	<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
+	<link rel="shortcut icon" href="/icons/favicon.ico">
+	<meta name="msapplication-TileColor" content="#603cba">
+	<meta name="msapplication-config" content="/icons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
 
-    <title>How Minecraft Stores Crafting Recipes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<title> How Minecraft Stores Crafting Recipes </title>
 </head>
 
 <body>
@@ -27,446 +27,359 @@
     </nav>
     <header>
         <h1>How Minecraft Stores Crafting Recipes</h1>
-        <p>Or things noticed while stealing Mojang’s work for marks</p>
+        <p>Or things noticed while stealing Mojang's work for marks</p>
         <p><span class="date">2022-03-31</span></p>
     </header>
-
+    
     <article>
-        <p>As of Minecraft version 1.18.1, there are 739 crafting
-        recipes in the game…depending on how you count. This little
-        rabbithole is something I fell into during a meeting for a group
-        project this week. The project tasks us with building a “daily
-        puzzle game” in vein of Wordle, as my web development unit likes
-        the idea of looking anacronistic in a few years.</p>
-        <p>The meeting was very preliminary, essentially just getting to
-        know one another and bounce some ideas off each other. One idea
-        I had been mulling over was “Wordle but with for Minecraft
-        crafting recipes”, which requires no explanation for players of
-        these two games (which among my peers includes everyone). My
-        group immediately latched onto the idea, but acknowledged the
-        scope of including all Minecraft recipes would be challenge,
-        both in terms of game design and actually acquiring them.</p>
-        <p>Transcribing by hand was possible but likely impractical, as
-        was automatically scraping the <a
-        href="https://minecraft.fandom.com/wiki/Minecraft_Wiki">wiki</a>.
-        Luckily, the thousands of modders before us had poured through
-        Minecraft’s source file and through <a
-        href="https://gaming.stackexchange.com/questions/382431/list-of-all-minecraft-crafting-recipes-for-crafting-web">cursory
-        googling</a> we were able to get to
-        <code>.minecraft/versions/1.18.1.jar/data/minecraft/recipes/</code>,
-        where all crafting recipes in the game are stored as lovely
-        little JSON files. Perfect!</p>
-        <p>Upon further inspection there are some mildly interesting
-        quirks within these JSON files. The majority of recipes vaguely
-        follow this format:</p>
-        <div class="sourceCode" id="cb1"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:crafting_shaped&quot;</span><span class="fu">,</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pattern&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;###&quot;</span><span class="ot">,</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#X#&quot;</span><span class="ot">,</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#R#&quot;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;R&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:redstone&quot;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;#&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:cobblestone&quot;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;X&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:bow&quot;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:dispenser&quot;</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>Seems like a straightforward and logical way of laying it all
-        out. Presumably the “type” being “crafting_shaped” is to denote
-        recipes with particular shapes (like a dispenser) as different
-        from recipes where block arrangment doesn’t matter (like
-        mushroom stew).</p>
-        <p>Shapeless crafting recipes follow a simpler format:</p>
-        <div class="sourceCode" id="cb2"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:crafting_shapeless&quot;</span><span class="fu">,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ingredients&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:brown_mushroom&quot;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:red_mushroom&quot;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:bowl&quot;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:mushroom_stew&quot;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>The recipes folder contains a lot more than two types
-        though:</p>
-        <div class="sourceCode" id="cb3"><pre
-        class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zach@grannysmith</span> recipes % awk <span class="st">&#39;FNR == 2&#39;</span> <span class="pp">*</span>.json <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">24</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:blasting&quot;</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">9</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:campfire_cooking&quot;</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">543</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_shaped&quot;</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">183</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_shapeless&quot;</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_armordye&quot;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_bannerduplicate&quot;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_bookcloning&quot;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_firework_rocket&quot;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_firework_star&quot;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_firework_star_fade&quot;</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_mapcloning&quot;</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_mapextending&quot;</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_repairitem&quot;</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_shielddecoration&quot;</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_shulkerboxcoloring&quot;</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_suspiciousstew&quot;</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>   <span class="ex">1</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:crafting_special_tippedarrow&quot;</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">70</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:smelting&quot;</span>,</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>   <span class="ex">9</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:smithing&quot;</span>,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>   <span class="ex">9</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:smoking&quot;</span>,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">198</span>   <span class="st">&quot;type&quot;</span>: <span class="st">&quot;minecraft:stonecutting&quot;</span>,</span></code></pre></div>
-        <p>Hold on, that’s not just crafting recipes! All kinds
-        “recipes” are stored in this directory, from normal smoking to
-        smithing. This explains the repeated entries for items like
-        cooked porkchop.</p>
-        <div class="sourceCode" id="cb4"><pre
-        class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zach@grannysmith</span> recipes % ls cooked<span class="pp">*</span>.json</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_beef.json</span>                           cooked_mutton_from_smoking.json</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_beef_from_campfire_cooking.json</span>     cooked_porkchop.json</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_beef_from_smoking.json</span>              cooked_porkchop_from_campfire_cooking.json</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_chicken.json</span>                        cooked_porkchop_from_smoking.json</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_chicken_from_campfire_cooking.json</span>  cooked_rabbit.json</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_chicken_from_smoking.json</span>           cooked_rabbit_from_campfire_cooking.json</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_cod.json</span>                            cooked_rabbit_from_smoking.json</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_cod_from_campfire_cooking.json</span>      cooked_salmon.json</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_cod_from_smoking.json</span>               cooked_salmon_from_campfire_cooking.json</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_mutton.json</span>                         cooked_salmon_from_smoking.json</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">cooked_mutton_from_campfire_cooking.json</span></span></code></pre></div>
-        <p>Smelted items have an even simpler format:</p>
-        <div class="sourceCode" id="cb5"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:smelting&quot;</span><span class="fu">,</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ingredient&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:porkchop&quot;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:cooked_porkchop&quot;</span><span class="fu">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;experience&quot;</span><span class="fu">:</span> <span class="fl">0.35</span><span class="fu">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;cookingtime&quot;</span><span class="fu">:</span> <span class="dv">200</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>Puzzingly there is a value for cooking time for each item,
-        though smelting time is dependent on the type of furnace used
-        rather than the item being smelted.</p>
-        <p>For example, all items cooked in a blast furnace have the
-        same value for cooking time:</p>
-        <div class="sourceCode" id="cb6"><pre
-        class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zach@grannysmith</span> recipes % cat <span class="pp">*</span>blast<span class="pp">*</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;cookingtime&quot;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cookingtime&quot;</span><span class="ex">:</span> 100</span></code></pre></div>
-        <p>It could be to accommodate varying smelting times in the
-        future, but for the moment this seems redundant.</p>
-        <p>All of the special crafting recipes aren’t stored at all,
-        which makes sense since these are more complex than what should
-        be written in a single JSON file.</p>
-        <div class="sourceCode" id="cb7"><pre
-        class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zach@grannysmith</span> recipes % cat <span class="va">$(</span><span class="fu">grep</span> <span class="at">-lr</span> . <span class="at">-e</span> <span class="st">&quot;special&quot;</span><span class="va">)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_bookcloning&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_firework_star_fade&quot;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_firework_rocket&quot;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_shulkerboxcoloring&quot;</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_mapcloning&quot;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_repairitem&quot;</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_bannerduplicate&quot;</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_armordye&quot;</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_tippedarrow&quot;</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_firework_star&quot;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_mapextending&quot;</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>{</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_shielddecoration&quot;</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="er">}</span><span class="kw">{</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;type&quot;</span><span class="ex">:</span> <span class="st">&quot;minecraft:crafting_special_suspiciousstew&quot;</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
-        <p>Tools smithed with netherite get a different and simple
-        format as well:</p>
-        <div class="sourceCode" id="cb8"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="er">netherite_sword_smithing.json</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:smithing&quot;</span><span class="fu">,</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;base&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:diamond_sword&quot;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;addition&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:netherite_ingot&quot;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:netherite_sword&quot;</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>Stonecutting unveiled an interesting quirk:</p>
-        <div class="sourceCode" id="cb9"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="er">chiseled_stone_bricks_stone_from_stonecutting.json</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stonecutting&quot;</span><span class="fu">,</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ingredient&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stone&quot;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:chiseled_stone_bricks&quot;</span><span class="fu">,</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;count&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>The count value determine how many items are output by the
-        recipe, and appears in over 579 total recipes. For the standard
-        crafting recipes this value only appears for recipes that output
-        more than 1 item, but curiously stonecutter recipes always
-        include this value.</p>
-        <p>All this elicited a nose exhale and an “oh neat” from me as I
-        poked around the files. Most of these details aren’t important
-        to the project, but the parts that are important will be a huge
-        time save. Web scraping in my experience is a pain (though
-        somehow I think the maintainers of the Minecraft wiki would be
-        more consistent than the <a
-        href="https://github.com/pavo-etc/wa-covid-tracker/blob/1e1e8e317084e22aba6c143afbe9a8249e6231dc/scraper.py#L29">WA
-        Government</a>).</p>
-        <p>Now we can focus on the real trouble - every other aspect of
-        puzzle game design and web development. I am particularly not
-        looking forward to dealing with the interaction between
-        Wordle-style position hints and different crafting
-        orientation/positions.</p>
-        <p><strong>Update 2022-06-05:</strong></p>
-        <p>Minecraftle is <a
-        href="https://minecraftle.zachmanson.com">playable</a> and
-        nearly fully finished. We submitted two weeks ago but there are
-        a few things I want to implement for my own interest. The JSON
-        files discussed in this post were used, but their format was
-        inconvenient for querying so needed to be restructured.
-        Yesterday I rewrote the script to restructure the recipe JSON
-        files since the initial version was a mess, and finally
-        implemented the functions to validate recipes on object
-        placement. These changes revealed a few more quirks in the
-        recipe JSON files.</p>
-        <p>Some recipes have multiple forms, such as torches which use
-        coal or charcoal. I had assumed this would just result in two
-        seperate recipe files, but:</p>
-        <div class="sourceCode" id="cb10"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="er">cat</span> <span class="er">torch.json</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:crafting_shaped&quot;</span><span class="fu">,</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pattern&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;X&quot;</span><span class="ot">,</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;#&quot;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;#&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stick&quot;</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;X&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:coal&quot;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:charcoal&quot;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:torch&quot;</span><span class="fu">,</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;count&quot;</span><span class="fu">:</span> <span class="dv">4</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>This actually caused a mild issue in Minecraftle that I
-        currently have a hacky solution for. As far as I can tell this
-        doesn’t appear in many recipes (though I’m too lazy to write the
-        regex to check). When we restructure the JSON files, we simplify
-        the format so the <code>pattern</code> field contains the actual
-        item names rather than character representations. This doesn’t
-        leave much room alternate forms, short of just repeating the
-        whole recipe with the differing items. While totally possible, I
-        just forced it to select the first item whenever there are
-        multiple options. This means that you would be unable to craft a
-        torch with charcoal.</p>
-        <p>As far as I can tell this poses no issues since in
-        Minecraftle’s current form you don’t receive charcoal as a
-        crafting ingredient, and I am yet to find another appearance of
-        this format that uses the items in
-        <code>given_ingredients.json</code>. I’m still uncomfortable
-        with this though, and I hope to come back and fix it after
-        exams.</p>
-        <p>Another oddity reared its head with stone tools:</p>
-        <div class="sourceCode" id="cb11"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="er">cat</span> <span class="er">stone_axe.json</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:crafting_shaped&quot;</span><span class="fu">,</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pattern&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;XX&quot;</span><span class="ot">,</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;X#&quot;</span><span class="ot">,</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot; #&quot;</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;#&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stick&quot;</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;X&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;tag&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;item&quot;</span><span class="fu">:</span> <span class="st">&quot;minecraft:stone_axe&quot;</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>See it? <code>tag</code> replaces <code>item</code> in a
-        number of cases, such as stone tools. Blackstone and cobbled
-        deepslate have been added fairly recently to the game, and can
-        be used for interchangably for cobblestone in a number of
-        recipes. This kind of notation appears in a number of
-        recipes:</p>
-        <div class="sourceCode" id="cb12"><pre
-        class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> grep  <span class="st">&quot;</span><span class="dt">\&quot;</span><span class="st">tag</span><span class="dt">\&quot;</span><span class="st">:&quot;</span> <span class="pp">*</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">acacia_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:acacia_logs&quot;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">barrel.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">barrel.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:wooden_slabs&quot;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">beehive.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">birch_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:birch_logs&quot;</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">black_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">blue_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bookshelf.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">bowl.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">brewing_stand.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_crafting_materials&quot;</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="ex">brown_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">campfire.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:logs&quot;</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ex">campfire.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:coals&quot;</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">cartography_table.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="ex">chest.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ex">composter.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:wooden_slabs&quot;</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="ex">crafting_table.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="ex">crimson_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:crimson_stems&quot;</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="ex">cyan_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="ex">dark_oak_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:dark_oak_logs&quot;</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="ex">daylight_detector.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:wooden_slabs&quot;</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ex">fletching_table.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="ex">furnace.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_crafting_materials&quot;</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="ex">gray_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="ex">green_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="ex">grindstone.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="ex">jukebox.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="ex">jungle_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:jungle_logs&quot;</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="ex">lectern.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:wooden_slabs&quot;</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="ex">light_blue_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="ex">light_gray_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="ex">lime_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="ex">loom.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="ex">magenta_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="ex">note_block.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="ex">oak_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:oak_logs&quot;</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="ex">orange_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="ex">painting.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:wool&quot;</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="ex">pink_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="ex">piston.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="ex">purple_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="ex">red_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="ex">shield.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="ex">smithing_table.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="ex">smoker.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:logs&quot;</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="ex">soul_campfire.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:logs&quot;</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="ex">soul_campfire.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:soul_fire_base_blocks&quot;</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="ex">soul_torch.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:soul_fire_base_blocks&quot;</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="ex">spruce_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:spruce_logs&quot;</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="ex">stick.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="ex">stone_axe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="ex">stone_hoe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="ex">stone_pickaxe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="ex">stone_shovel.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="ex">stone_sword.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:stone_tool_materials&quot;</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="ex">tripwire_hook.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="ex">warped_planks.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:warped_stems&quot;</span></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="ex">white_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="ex">wooden_axe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="ex">wooden_hoe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="ex">wooden_pickaxe.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="ex">wooden_shovel.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="ex">wooden_sword.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="ex">yellow_bed.json:</span>      <span class="st">&quot;tag&quot;</span>: <span class="st">&quot;minecraft:planks&quot;</span></span></code></pre></div>
-        <p>These tags are referring to
-        <code>.minecraft/versions/1.18.1.jar/data/minecraft/tags/items/</code>,
-        which holds yet more JSON files with lists of all items that
-        belong to each tag. For example:</p>
-        <div class="sourceCode" id="cb13"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="er">cat</span> <span class="er">stone_crafting_materials.json</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;replace&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;values&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;minecraft:cobblestone&quot;</span><span class="ot">,</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;minecraft:blackstone&quot;</span><span class="ot">,</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;minecraft:cobbled_deepslate&quot;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>To deal with these I’ve currently just put edge cases in to
-        handle these tags manually, though I would like to have a more
-        robust solution in the future that can be determined by
-        <code>given_ingredients.json</code>.</p>
-        <p>Both of these appear to be solving the same problem, and it’s
-        strange that coal doesn’t use the <code>tag</code> field,
-        especially since there is <code>tag</code> JSON file that seems
-        made for this:</p>
-        <div class="sourceCode" id="cb14"><pre
-        class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="er">cat</span> <span class="er">coals.json</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;replace&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;values&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;minecraft:coal&quot;</span><span class="ot">,</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;minecraft:charcoal&quot;</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-        <p>I theorize that the torch was older method of achieving this
-        goal and just hasn’t been updated to use the new system (though
-        I am again too lazy and won’t check old versions), unless there
-        is some other difference I am not aware of between the two
-        methods. Maybe I should send Mojang a pull request.</p>
-        <p>Recipe validation was the final feature I really felt was
-        necessary for my own sense of completion. That said, we never
-        added shapeless recipe support… or varying difficulties… or
-        hardcore mode. Oh well.</p>
-    </article>
+        <p>As of Minecraft version 1.18.1, there are 739 crafting recipes in the game...depending on how you count.  This little rabbithole is something I fell into during a meeting for a group project this week.  The project tasks us with building a "daily puzzle game" in vein of Wordle, as my web development unit likes the idea of looking anacronistic in a few years.</p>
+<p>The meeting was very preliminary, essentially just getting to know one another and bounce some ideas off each other.  One idea I had been mulling over was "Wordle but with for Minecraft crafting recipes", which requires no explanation for players of these two games (which among my peers includes everyone).  My group immediately latched onto the idea, but acknowledged the scope of including all Minecraft recipes would be challenge, both in terms of game design and actually acquiring them.</p>
+<p>Transcribing by hand was possible but likely impractical, as was automatically scraping the <a href="https://minecraft.fandom.com/wiki/Minecraft_Wiki">wiki</a>.  Luckily, the thousands of modders before us had poured through Minecraft's source file and through <a href="https://gaming.stackexchange.com/questions/382431/list-of-all-minecraft-crafting-recipes-for-crafting-web">cursory googling</a> we were able to get to <code>.minecraft/versions/1.18.1.jar/data/minecraft/recipes/</code>, where all crafting recipes in the game are stored as lovely little JSON files.  Perfect!  </p>
+<p>Upon further inspection there are some mildly interesting quirks within these JSON files.  The majority of recipes vaguely follow this format:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shaped&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;###&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;#X#&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;#R#&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;R&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:redstone&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;#&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:cobblestone&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;X&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:bow&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:dispenser&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Seems like a straightforward and logical way of laying it all out.  Presumably the "type" being "crafting_shaped" is to denote recipes with particular shapes (like a dispenser) as different from recipes where block arrangment doesn't matter (like mushroom stew).</p>
+<p>Shapeless crafting recipes follow a simpler format:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shapeless&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;ingredients&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:brown_mushroom&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:red_mushroom&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:bowl&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:mushroom_stew&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>The recipes folder contains a lot more than two types though:</p>
+<div class="codehilite"><pre><span></span><code>zach@grannysmith recipes % awk <span class="s1">&#39;FNR == 2&#39;</span> *.json <span class="p">|</span> sort <span class="p">|</span> uniq -c
+  <span class="m">24</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:blasting&quot;</span>,
+   <span class="m">9</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:campfire_cooking&quot;</span>,
+ <span class="m">543</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_shaped&quot;</span>,
+ <span class="m">183</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_shapeless&quot;</span>,
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_armordye&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_bannerduplicate&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_bookcloning&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_rocket&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_star&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_star_fade&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_mapcloning&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_mapextending&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_repairitem&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_shielddecoration&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_shulkerboxcoloring&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_suspiciousstew&quot;</span>
+   <span class="m">1</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_tippedarrow&quot;</span>
+  <span class="m">70</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:smelting&quot;</span>,
+   <span class="m">9</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:smithing&quot;</span>,
+   <span class="m">9</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:smoking&quot;</span>,
+ <span class="m">198</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:stonecutting&quot;</span>,
+</code></pre></div>
+
+<p>Hold on, that's not just crafting recipes!  All kinds "recipes" are stored in this directory, from normal smoking to smithing.  This explains the repeated entries for items like cooked porkchop.</p>
+<div class="codehilite"><pre><span></span><code>zach@grannysmith recipes % ls cooked*.json
+cooked_beef.json                           cooked_mutton_from_smoking.json
+cooked_beef_from_campfire_cooking.json     cooked_porkchop.json
+cooked_beef_from_smoking.json              cooked_porkchop_from_campfire_cooking.json
+cooked_chicken.json                        cooked_porkchop_from_smoking.json
+cooked_chicken_from_campfire_cooking.json  cooked_rabbit.json
+cooked_chicken_from_smoking.json           cooked_rabbit_from_campfire_cooking.json
+cooked_cod.json                            cooked_rabbit_from_smoking.json
+cooked_cod_from_campfire_cooking.json      cooked_salmon.json
+cooked_cod_from_smoking.json               cooked_salmon_from_campfire_cooking.json
+cooked_mutton.json                         cooked_salmon_from_smoking.json
+cooked_mutton_from_campfire_cooking.json
+</code></pre></div>
+
+<p>Smelted items have an even simpler format:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:smelting&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;ingredient&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:porkchop&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:cooked_porkchop&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;experience&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.35</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;cookingtime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Puzzingly there is a value for cooking time for each item, though smelting time is dependent on the type of furnace used rather than the item being smelted.</p>
+<p>For example, all items cooked in a blast furnace have the same value for cooking time:</p>
+<div class="codehilite"><pre><span></span><code>zach@grannysmith recipes % cat *blast* <span class="p">|</span> grep <span class="s2">&quot;cookingtime&quot;</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+  <span class="s2">&quot;cookingtime&quot;</span>: <span class="m">100</span>
+</code></pre></div>
+
+<p>It could be to accommodate varying smelting times in the future, but for the moment this seems redundant.</p>
+<p>All of the special crafting recipes aren't stored at all, which makes sense since these are more complex than what should be written in a single JSON file.</p>
+<div class="codehilite"><pre><span></span><code>zach@grannysmith recipes % cat <span class="k">$(</span>grep -lr . -e <span class="s2">&quot;special&quot;</span><span class="k">)</span>
+<span class="o">{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_bookcloning&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_star_fade&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_rocket&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_shulkerboxcoloring&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_mapcloning&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_repairitem&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_bannerduplicate&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_armordye&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_tippedarrow&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_firework_star&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_mapextending&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_shielddecoration&quot;</span>
+<span class="o">}{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_special_suspiciousstew&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>Tools smithed with netherite get a different and simple format as well:</p>
+<div class="codehilite"><pre><span></span><code><span class="kc">net</span><span class="err">heri</span><span class="kc">te</span><span class="err">_sword_smi</span><span class="kc">t</span><span class="err">hi</span><span class="kc">n</span><span class="err">g.jso</span><span class="kc">n</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:smithing&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;base&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:diamond_sword&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;addition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:netherite_ingot&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:netherite_sword&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Stonecutting unveiled an interesting quirk: </p>
+<div class="codehilite"><pre><span></span><code>&gt; cat chiseled_stone_bricks_stone_from_stonecutting.json
+<span class="o">{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:stonecutting&quot;</span>,
+  <span class="s2">&quot;ingredient&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:stone&quot;</span>
+  <span class="o">}</span>,
+  <span class="s2">&quot;result&quot;</span>: <span class="s2">&quot;minecraft:chiseled_stone_bricks&quot;</span>,
+  <span class="s2">&quot;count&quot;</span>: <span class="m">1</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>The count value determine how many items are output by the recipe, and appears in over 579 total recipes.  For the standard crafting recipes this value only appears for recipes that output more than 1 item, but curiously stonecutter recipes always include this value.</p>
+<p>All this elicited a nose exhale and an "oh neat" from me as I poked around the files.  Most of these details aren't important to the project, but the parts that are  important will be a huge time save.  Web scraping in my experience is a pain (though somehow I think the maintainers of the Minecraft wiki would be more consistent than the <a href="https://github.com/pavo-etc/wa-covid-tracker/blob/1e1e8e317084e22aba6c143afbe9a8249e6231dc/scraper.py#L29">WA Government</a>).</p>
+<p>Now we can focus on the real trouble - every other aspect of puzzle game design and web development.  I am particularly not looking forward to dealing with the interaction between Wordle-style position hints and different crafting orientation/positions.</p>
+<p><strong>Update 2022-06-05:</strong></p>
+<p>Minecraftle is <a href="https://minecraftle.zachmanson.com">playable</a> and nearly fully finished.  We submitted two weeks ago but there are a few things I want to implement for my own interest.  The JSON files discussed in this post were used, but their format was inconvenient for querying so needed to be restructured. Yesterday I rewrote the script to restructure the recipe JSON files since the initial version was a mess, and finally implemented the functions to validate recipes on object placement.  These changes revealed a few more quirks in the recipe JSON files.</p>
+<p>Some recipes have multiple forms, such as torches which use coal or charcoal.  I had assumed this would just result in two seperate recipe files, but:</p>
+<div class="codehilite"><pre><span></span><code>&gt; cat torch.json 
+<span class="o">{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_shaped&quot;</span>,
+  <span class="s2">&quot;pattern&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;X&quot;</span>,
+    <span class="s2">&quot;#&quot;</span>
+  <span class="o">]</span>,
+  <span class="s2">&quot;key&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;#&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:stick&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;X&quot;</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:coal&quot;</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:charcoal&quot;</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+  <span class="o">}</span>,
+  <span class="s2">&quot;result&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:torch&quot;</span>,
+    <span class="s2">&quot;count&quot;</span>: <span class="m">4</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>This actually caused a mild issue in Minecraftle that I currently have a hacky solution for.  As far as I can tell this doesn't appear in many recipes (though I'm too lazy to write the regex to check).  When we restructure the JSON files, we simplify the format so the <code>pattern</code> field contains the actual item names rather than character representations.  This doesn't leave much room alternate forms, short of just repeating the whole recipe with the differing items.  While totally possible, I just forced it to select the first item whenever there are multiple options.  This means that you would be unable to craft a torch with charcoal.</p>
+<p>As far as I can tell this poses no issues since in Minecraftle's current form you don't receive charcoal as a crafting ingredient, and I am yet to find another appearance of this format that uses the items in <code>given_ingredients.json</code>. I'm still uncomfortable with this though, and I hope to come back and fix it after exams.</p>
+<p>Another oddity reared its head with stone tools:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">&gt;</span><span class="w"> </span><span class="err">ca</span><span class="kc">t</span><span class="w"> </span><span class="err">s</span><span class="kc">t</span><span class="err">o</span><span class="kc">ne</span><span class="err">_axe.jso</span><span class="kc">n</span><span class="w"> </span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shaped&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;XX&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;X#&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot; #&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;#&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stick&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;X&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stone_tool_materials&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stone_axe&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>See it? <code>tag</code> replaces <code>item</code> in a number of cases, such as stone tools.  Blackstone and cobbled deepslate have been added fairly recently to the game, and can be used for interchangably for cobblestone in a number of recipes.  This kind of notation appears in a number of recipes:</p>
+<div class="codehilite"><pre><span></span><code>&gt; grep  <span class="s2">&quot;\&quot;tag\&quot;:&quot;</span> *
+acacia_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:acacia_logs&quot;</span>
+barrel.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+barrel.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:wooden_slabs&quot;</span>
+beehive.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+birch_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:birch_logs&quot;</span>
+black_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+blue_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+bookshelf.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+bowl.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+brewing_stand.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_crafting_materials&quot;</span>
+brown_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+campfire.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:logs&quot;</span>
+campfire.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:coals&quot;</span>
+cartography_table.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+chest.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+composter.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:wooden_slabs&quot;</span>
+crafting_table.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+crimson_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:crimson_stems&quot;</span>
+cyan_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+dark_oak_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:dark_oak_logs&quot;</span>
+daylight_detector.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:wooden_slabs&quot;</span>
+fletching_table.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+furnace.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_crafting_materials&quot;</span>
+gray_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+green_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+grindstone.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+jukebox.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+jungle_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:jungle_logs&quot;</span>
+lectern.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:wooden_slabs&quot;</span>
+light_blue_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+light_gray_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+lime_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+loom.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+magenta_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+note_block.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+oak_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:oak_logs&quot;</span>
+orange_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+painting.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:wool&quot;</span>
+pink_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+piston.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+purple_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+red_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+shield.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+smithing_table.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+smoker.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:logs&quot;</span>
+soul_campfire.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:logs&quot;</span>
+soul_campfire.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:soul_fire_base_blocks&quot;</span>
+soul_torch.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:soul_fire_base_blocks&quot;</span>
+spruce_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:spruce_logs&quot;</span>
+stick.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+stone_axe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+stone_hoe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+stone_pickaxe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+stone_shovel.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+stone_sword.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+tripwire_hook.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+warped_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:warped_stems&quot;</span>
+white_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+wooden_axe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+wooden_hoe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+wooden_pickaxe.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+wooden_shovel.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+wooden_sword.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+yellow_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
+</code></pre></div>
+
+<p>These tags are referring to <code>.minecraft/versions/1.18.1.jar/data/minecraft/tags/items/</code>, which holds yet more JSON files with lists of all items that belong to each tag.  For example:</p>
+<div class="codehilite"><pre><span></span><code>&gt; cat stone_crafting_materials.json
+<span class="o">{</span>
+  <span class="s2">&quot;replace&quot;</span>: false,
+  <span class="s2">&quot;values&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;minecraft:cobblestone&quot;</span>,
+    <span class="s2">&quot;minecraft:blackstone&quot;</span>,
+    <span class="s2">&quot;minecraft:cobbled_deepslate&quot;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>To deal with these I've currently just put edge cases in to handle these tags manually, though I would like to have a more robust solution in the future that can be determined by <code>given_ingredients.json</code>.</p>
+<p>Both of these appear to be solving the same problem, and it's strange that coal doesn't use the <code>tag</code> field, especially since there is <code>tag</code> JSON file that seems made for this:</p>
+<div class="codehilite"><pre><span></span><code>&gt; cat coals.json 
+<span class="o">{</span>
+  <span class="s2">&quot;replace&quot;</span>: false,
+  <span class="s2">&quot;values&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;minecraft:coal&quot;</span>,
+    <span class="s2">&quot;minecraft:charcoal&quot;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>I theorize that the torch was older method of achieving this goal and just hasn't been updated to use the new system (though I am again too lazy and won't check old versions), unless there is some other difference I am not aware of between the two methods.  Maybe I should send Mojang a pull request.</p>
+<p>Recipe validation was the final feature I really felt was necessary for my own sense of completion.  That said, we never added shapeless recipe support... or varying difficulties... or hardcore mode.  Oh well.</p>
+    </article>    
 
     <footer>
-        <p>
-            Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-        </p>
+		<p>
+            <a href="/blog/rss.xml">RSS</a><br>
+			Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
+		</p>
     </footer>
 </body>

@@ -1,6 +1,7 @@
 ---
 title: Sneaky File Descriptors in Popen()
 subtitle: Always be closing
+tagline: Always be closing
 date: 2022-06-09
 ---
 
