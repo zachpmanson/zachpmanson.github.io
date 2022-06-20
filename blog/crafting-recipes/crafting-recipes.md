@@ -225,6 +225,8 @@ All this elicited a nose exhale and an "oh neat" from me as I poked around the f
 
 Now we can focus on the real trouble - every other aspect of puzzle game design and web development.  I am particularly not looking forward to dealing with the interaction between Wordle-style position hints and different crafting orientation/positions.
 
+---
+
 **Update 2022-06-05:**
 
 Minecraftle is [playable](https://minecraftle.zachmanson.com) and nearly fully finished.  We submitted two weeks ago but there are a few things I want to implement for my own interest.  The JSON files discussed in this post were used, but their format was inconvenient for querying so needed to be restructured. Yesterday I rewrote the script to restructure the recipe JSON files since the initial version was a mess, and finally implemented the functions to validate recipes on object placement.  These changes revealed a few more quirks in the recipe JSON files.

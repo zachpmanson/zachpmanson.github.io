@@ -40,6 +40,11 @@ table {
     margin: 1rem 0;
 }
 
+hr {
+    color: var(--white);
+    margin: 2rem auto;
+}
+
 p {
     margin: 1rem auto;
 }

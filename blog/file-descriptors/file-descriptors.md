@@ -81,3 +81,9 @@ proc.stderr.close()
 ```
 
 Leak plugged!
+
+---
+
+**Update 2022-06-20:**
+
+Just learnt about popen() in C, now I feel really stupid.
