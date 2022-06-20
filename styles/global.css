@@ -62,7 +62,6 @@ a:active {
 }
 
 .date {
-    font-style: italic;
     font-weight: lighter;
 }
 
@@ -153,6 +152,15 @@ a.post h3 {
 a.post p {
     margin: .5rem 0;
     font-weight: 300;
+}
+
+.flex {
+    display: flex;
+}
+
+.right-flex {
+    flex: auto;
+    text-align: right;
 }
 
 .inline-flex {
