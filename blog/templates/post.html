@@ -18,7 +18,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 
-	<title> Usernames </title>
+	<title> {{ title }} </title>
 </head>
 
 <body>
@@ -26,20 +26,13 @@
         <p class="location"><a href="/">Zach Manson</a> / <a href="/blog/">Memory Leaks</a> /</p>
     </nav>
     <header>
-        <h1>Usernames</h1>
-        <p>Why am I still surprised</p>
-        <p><span class="date">2022-03-11</span></p>
+        <h1>{{title}}</h1>
+        <p>{{subtitle}}</p>
+        <p><span class="date">{{date}}</span></p>
     </header>
     
     <article>
-        <p>I spend an inordinate amount of time reading arguments on the internet. Every now and then I'll find one that is actually thoughtful and in-depth. One with more kindness than usual, with genuine attempts to understand the perspectives of each other.</p>
-<p>And after the arguing has concluded, the fighting parties express that they respect the other.</p>
-<p>These are rare. But it isn't rare that upon finding one of these I will glance at the usernames.</p>
-<p>Today I glanced at the usernames of two people having a beautiful argument on a forum:</p>
-<p><code>"euronforpresident"</code></p>
-<p>Fine, nice little Game of Thrones reference.</p>
-<p>And their opponent:</p>
-<p><code>"Hitleresque"</code></p>
+        {{body}}
     </article>    
 
     <footer>

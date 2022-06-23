@@ -1,223 +1,149 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    
-    <link rel="stylesheet" href="/styles/colors.css">
-    <link rel="stylesheet" href="/styles/global.css">
-    <link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/colors.css">
+	<link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/global.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="manifest" href="/icons/site.webmanifest">
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
-    <link rel="shortcut icon" href="/icons/favicon.ico">
-    <meta name="msapplication-TileColor" content="#603cba">
-    <meta name="msapplication-config" content="/icons/browserconfig.xml">
-    <meta name="theme-color" content="#f8f8f2">
+	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+	<link rel="manifest" href="/icons/site.webmanifest">
+	<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
+	<link rel="shortcut icon" href="/icons/favicon.ico">
+	<meta name="msapplication-TileColor" content="#603cba">
+	<meta name="msapplication-config" content="/icons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
 
-    <title>hEP 001 – Mathematical 𝐡 in the Standard
-Implementation</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<title> hEP 001 – Mathematical 𝐡  in the Standard Implementation </title>
 </head>
 
 <body>
-    <header>
+    <nav>
         <p class="location"><a href="/">Zach Manson</a> / <a href="/blog/">Memory Leaks</a> /</p>
-        <h1>hEP 001 – Mathematical 𝐡 in the Standard Implementation</h1>
+    </nav>
+    <header>
+        <h1>hEP 001 – Mathematical 𝐡  in the Standard Implementation</h1>
         <p>Enhancement Proposal for the h Programming Language</p>
         <p><span class="date">2022-03-18</span></p>
     </header>
-
+    
     <article>
         <table>
-        <tr>
-        <td>
-        hEP
-        </td>
-        <td>
-        001
-        </td>
-        </tr>
-        <tr>
-        <td>
-        Title
-        </td>
-        <td>
-        Mathematical 𝐡 in the Standard Implementation
-        </td>
-        </tr>
-        <tr>
-        <td>
-        Author
-        </td>
-        <td>
-        Zach Manson
-        </td>
-        </tr>
-        <tr>
-        <td>
-        Status
-        </td>
-        <td>
-        Proposed
-        </td>
-        </tr>
-        <tr>
-        <td>
-        Type
-        </td>
-        <td>
-        Feature
-        </td>
-        </tr>
-        <tr>
-        <td>
-        hlang-version
-        </td>
-        <td>
-        1.0
-        </td>
-        </tr>
-        </table>
-        <h2 id="abstract">Abstract</h2>
-        <p>This hEP proposes a framework for adding first-class support
-        for additional forms of h used in mathematical contexts, and
-        that “𝐡” be added to the h programming language standard
-        implementation. As of version 1.0, the only supported output
-        characters are “h” and “’”.</p>
-        <h2 id="motivation">Motivation</h2>
-        <p>The h Programming language is borne from <a
-        href="https://christine.website/blog/formal-grammar-of-h-2019-05-19">the
-        conlang h</a> which was formalised in 2019 by Xe Iaso.</p>
-        <p>In their unveiling of the language they exhibited how the
-        conlang’s simple syntax could be used for complex conversation,
-        all within the use of a single written character and phone:</p>
-        <div class="sourceCode" id="cb1"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>Cadey<span class="op">&gt;</span> h</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>DoesntGetIt<span class="op">&gt;</span> h h h h</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">*</span> Cadey facepalms</span></code></pre></div>
-        <p>As stated in h’s formal specification, it can be used to
-        represent all possible communications within the confines of the
-        letter h.</p>
-        <p>She later developed a syntax, compiler and runtime for <a
-        href="https://christine.website/blog/h-language-2019-06-30">the
-        h Programming Language</a> (hlang). This programming language
-        was designed for the output of the h conlang, and expanded the
-        character set in use to include both the Romanic form “h” and
-        its Lojbanic equivalent “’”.</p>
-        <p>A long-standing difficulty for the programming language is
-        expressing mathematical notation in its output. While it is
-        entirely possible to express any and all equations in the
-        language, for this purpose it doesn’t utiltise the “h” character
-        to its maximum capacity and as such is unnecessarily
-        verbose.</p>
-        <h2 id="goals">Goals</h2>
-        <p>The primary goals of this proposal are to provide a
-        specification for implementing additional forms of “h” in hlang
-        to enable more terse output for use in mathematical contexts.
-        The only additional form of “h” proposed in this hEP is “𝐡”
-        (U+1D421).</p>
-        <p>The proposal would enable programs such as this:</p>
-        <div class="sourceCode" id="cb2"><pre
-        class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat new_equation.h</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">𝐡</span> 𝐡 h <span class="st">&#39;</span></span></code></pre></div>
-        <p>AST this would generate during compilation:</p>
-        <div class="sourceCode" id="cb3"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>H<span class="op">(</span><span class="st">&quot;𝐡 𝐡 h &#39;&quot;</span><span class="op">)</span></span></code></pre></div>
-        <p>Program output:</p>
-        <div class="sourceCode" id="cb4"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>𝐡 𝐡 h &#39;</span></code></pre></div>
-        <p>This is an improvement over the existing implementation,
-        which would require the much longer and more cumbersome hlang
-        1.0 source to produce the equivalent equation:</p>
-        <div class="sourceCode" id="cb5"><pre
-        class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat old_equation.h</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">h</span> h h <span class="st">&#39; &#39;</span> h <span class="st">&#39; h h h h h h h h h &#39;</span> h</span></code></pre></div>
-        <p>Translating this from h (conlang) to English:</p>
-        <div class="sourceCode" id="cb6"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">^</span><span class="dv">2</span> <span class="op">+</span> b<span class="op">^</span><span class="dv">2</span> <span class="op">=</span> c<span class="op">^</span><span class="dv">2</span></span></code></pre></div>
-        <h2 id="non-goals">Non-Goals</h2>
-        <p>This hEP is not an attempt to sully hlang with characters
-        outside of the formal grammar of the h conlang. The scope of the
-        specification, while allowing for additional forms of “h” to be
-        supported, is exclusively for forms of “h”. It is not applicable
-        to other characters, such as “g”.</p>
-        <p>This hEP only explicitly proposes the addition of “𝐡”
-        (U+1D421) though is designed to allow other forms of “h” to be
-        supported by hlang in the future, such as “𝒉” (U+1D489), “𝓱”
-        (U+1D4F1), or “𝕙” (U+1D559). While these forms could be
-        implemented in a near identical manner to “𝐡”, that is outside
-        of the scope of this hEP. All of these forms of “h” are UTF-8
-        characters designed for use in mathematical equations.</p>
-        <p>The hEP is also explicitly not intending to enable support
-        for “h” with diacritics, such as “ḧ” (U+1E27). Etymologically
-        related forms of modern “h” are also outside the scope of this
-        hEP.</p>
-        <h2 id="semantics">Semantics</h2>
-        <p>Under this proposal, “𝐡” would receive first class support by
-        hlang. To output it would be the same as the standard “h”
-        character:</p>
-        <div class="sourceCode" id="cb7"><pre
-        class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat math_h.h</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">𝐡</span></span></code></pre></div>
-        <p>Produced AST:</p>
-        <div class="sourceCode" id="cb8"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>H<span class="op">(</span>𝐡<span class="op">)</span></span></code></pre></div>
-        <p>Output:</p>
-        <div class="sourceCode" id="cb9"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>𝐡</span></code></pre></div>
-        <p>Represented with a node tree:</p>
-        <div class="sourceCode" id="cb10"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    Name<span class="op">:</span> <span class="st">&quot;H&quot;</span><span class="op">,</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    Text<span class="op">:</span> <span class="st">&quot;𝐡&quot;</span><span class="op">,</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    Kids<span class="op">:</span> nil<span class="op">,</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-        <p>The node tree for the earlier Pythagorean example would
-        be:</p>
-        <div class="sourceCode" id="cb11"><pre
-        class="sourceCode h"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    Name<span class="op">:</span> <span class="st">&quot;H&quot;</span><span class="op">,</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    Text<span class="op">:</span> <span class="st">&quot;𝐡 𝐡 h &#39;&quot;</span><span class="op">,</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    Kids<span class="op">:</span> <span class="op">{</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            Name<span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            Text<span class="op">:</span> <span class="st">&quot;𝐡&quot;</span><span class="op">,</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            Kids<span class="op">:</span> nil<span class="op">,</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            Name<span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            Text<span class="op">:</span> <span class="st">&quot;𝐡&quot;</span><span class="op">,</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            Kids<span class="op">:</span> nil<span class="op">,</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            Name<span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            Text<span class="op">:</span> <span class="st">&quot;h&quot;</span><span class="op">,</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            Kids<span class="op">:</span> nil<span class="op">,</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span>peg<span class="op">.</span>Node<span class="op">{</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            Name<span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            Text<span class="op">:</span> <span class="st">&quot;&#39;&quot;</span><span class="op">,</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            Kids<span class="op">:</span> nil<span class="op">,</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-        <p>The “𝐡” character should be usable in all contexts where “h”
-        and “’” are currently usable. Grammatically it should follow all
-        the same principles and restrictions as “h” and “’”.</p>
-        <h2 id="dependencies">Dependencies</h2>
-        <p>As with hlang v1.0, this proposal not require any
-        dependencies, other than UTF-8 formatted source files.</p>
-        <h2 id="acknowledgements">Acknowledgements</h2>
-        <p>Thanks to Xe Iaso for creating h and hlang, as well as all
-        their other incredible projects.</p>
-    </article>
+    <tr><td>hEP</td><td>001</td></tr>
+    <tr><td>Title</td><td>Mathematical 𝐡 in the Standard Implementation</td></tr>
+    <tr><td>Author</td><td>Zach Manson</td></tr>
+    <tr><td>Status</td><td>Proposed</td></tr>
+    <tr><td>Type</td><td>Feature</td></tr>
+    <tr><td>hlang-version</td><td>1.0</td></tr>
+</table>
+
+<h2>Abstract</h2>
+<p>This hEP proposes a framework for adding first-class support for additional forms of h used in mathematical contexts, and that "𝐡" be added to the h programming language standard implementation.  As of version 1.0, the only supported output characters are "h" and "'".</p>
+<h2>Motivation</h2>
+<p>The h Programming language is borne from <a href="https://christine.website/blog/formal-grammar-of-h-2019-05-19">the conlang h</a> which was formalised in 2019 by Xe Iaso.</p>
+<p>In their unveiling of the language they exhibited how the conlang's simple syntax could be used for complex conversation, all within the use of a single written character and phone:</p>
+<div class="codehilite"><pre><span></span><code>&lt;Cadey&gt; h
+&lt;DoesntGetIt&gt; h h h h
+* Cadey facepalms
+</code></pre></div>
+
+<p>As stated in h's formal specification, it can be used to represent all possible communications within the confines of the letter h.</p>
+<p>She later developed a syntax, compiler and runtime for <a href="https://christine.website/blog/h-language-2019-06-30">the h Programming Language</a> (hlang).  This programming language was designed for the output of the h conlang, and expanded the character set in use to include both the Romanic form "h" and its Lojbanic equivalent "'".</p>
+<p>A long-standing difficulty for the programming language is expressing mathematical notation in its output.  While it is entirely possible to express any and all equations in the language, for this purpose it doesn't utiltise the "h" character to its maximum capacity and as such is unnecessarily verbose.</p>
+<h2>Goals</h2>
+<p>The primary goals of this proposal are to provide a specification for implementing additional forms of "h" in hlang to enable more terse output for use in mathematical contexts.  The only additional form of "h" proposed in this hEP is "𝐡" (U+1D421).</p>
+<p>The proposal would enable programs such as this:</p>
+<div class="codehilite"><pre><span></span><code>$ cat new_equation.h
+𝐡 𝐡 h <span class="err">&#39;</span>
+</code></pre></div>
+
+<p>AST this would generate during compilation:</p>
+<div class="codehilite"><pre><span></span><code>H(&quot;𝐡 𝐡 h &#39;&quot;)
+</code></pre></div>
+
+<p>Program output:</p>
+<div class="codehilite"><pre><span></span><code>𝐡 𝐡 h &#39;
+</code></pre></div>
+
+<p>This is an improvement over the existing implementation, which would require the much longer and more cumbersome hlang 1.0 source to produce the equivalent equation:</p>
+<div class="codehilite"><pre><span></span><code>$ cat old_equation.h
+h h h <span class="s1">&#39; &#39;</span> h <span class="s1">&#39; h h h h h h h h h &#39;</span> h
+</code></pre></div>
+
+<p>Translating this from h (conlang) to English:</p>
+<div class="codehilite"><pre><span></span><code>a^2 + b^2 = c^2
+</code></pre></div>
+
+<h2>Non-Goals</h2>
+<p>This hEP is not an attempt to sully hlang with characters outside of the formal grammar of the h conlang.  The scope of the specification, while allowing for additional forms of "h" to be supported, is exclusively for forms of "h".  It is not applicable to other characters, such as "g".</p>
+<p>This hEP only explicitly proposes the addition of "𝐡" (U+1D421) though is designed to allow other forms of "h" to be supported by hlang in the future, such as "𝒉" (U+1D489), "𝓱" (U+1D4F1), or "𝕙" (U+1D559).  While these forms could be implemented in a near identical manner to "𝐡", that is outside of the scope of this hEP.  All of these forms of "h" are UTF-8 characters designed for use in mathematical equations.</p>
+<p>The hEP is also explicitly not intending to enable support for "h" with diacritics, such as "ḧ" (U+1E27).  Etymologically related forms of modern "h" are also outside the scope of this hEP.</p>
+<h2>Semantics</h2>
+<p>Under this proposal, "𝐡" would receive first class support by hlang.  To output it would be the same as the standard "h" character:</p>
+<div class="codehilite"><pre><span></span><code>$ cat math_h.h
+𝐡
+</code></pre></div>
+
+<p>Produced AST:</p>
+<div class="codehilite"><pre><span></span><code>H(𝐡)
+</code></pre></div>
+
+<p>Output:</p>
+<div class="codehilite"><pre><span></span><code>𝐡
+</code></pre></div>
+
+<p>Represented with a node tree: </p>
+<div class="codehilite"><pre><span></span><code>&amp;peg.Node{
+    Name: &quot;H&quot;,
+    Text: &quot;𝐡&quot;,
+    Kids: nil,
+}
+</code></pre></div>
+
+<p>The node tree for the earlier Pythagorean example would be:</p>
+<div class="codehilite"><pre><span></span><code>&amp;peg.Node{
+    Name: &quot;H&quot;,
+    Text: &quot;𝐡 𝐡 h &#39;&quot;,
+    Kids: {
+        &amp;peg.Node{
+            Name: &quot;&quot;,
+            Text: &quot;𝐡&quot;,
+            Kids: nil,
+        },
+        &amp;peg.Node{
+            Name: &quot;&quot;,
+            Text: &quot;𝐡&quot;,
+            Kids: nil,
+        },
+        &amp;peg.Node{
+            Name: &quot;&quot;,
+            Text: &quot;h&quot;,
+            Kids: nil,
+        },
+        &amp;peg.Node{
+            Name: &quot;&quot;,
+            Text: &quot;&#39;&quot;,
+            Kids: nil,
+        },
+    },
+}
+</code></pre></div>
+
+<p>The "𝐡" character should be usable in all contexts where "h" and "'" are currently usable.  Grammatically it should follow all the same principles and restrictions as "h" and "'".</p>
+<h2>Dependencies</h2>
+<p>As with hlang v1.0, this proposal not require any dependencies, other than UTF-8 formatted source files.</p>
+<h2>Acknowledgements</h2>
+<p>Thanks to Xe Iaso for creating h and hlang, as well as all their other incredible projects.</p>
+    </article>    
 
     <footer>
-        <p>
-            Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-        </p>
+		<p>
+            <a href="/blog/rss.xml">RSS</a><br>
+			Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
+		</p>
     </footer>
 </body>

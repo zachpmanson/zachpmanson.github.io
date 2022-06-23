@@ -1,147 +1,91 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    
-    <link rel="stylesheet" href="/styles/colors.css">
-    <link rel="stylesheet" href="/styles/global.css">
-    <link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/colors.css">
+	<link rel="stylesheet" href="/styles/code.css">
+	<link rel="stylesheet" href="/styles/global.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="manifest" href="/icons/site.webmanifest">
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
-    <link rel="shortcut icon" href="/icons/favicon.ico">
-    <meta name="msapplication-TileColor" content="#603cba">
-    <meta name="msapplication-config" content="/icons/browserconfig.xml">
-    <meta name="theme-color" content="#f8f8f2">
+	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+	<link rel="manifest" href="/icons/site.webmanifest">
+	<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
+	<link rel="shortcut icon" href="/icons/favicon.ico">
+	<meta name="msapplication-TileColor" content="#603cba">
+	<meta name="msapplication-config" content="/icons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
 
-    <title>Basic SeleniumBasic</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<title> Basic SeleniumBasic </title>
 </head>
 
 <body>
-    <header>
+    <nav>
         <p class="location"><a href="/">Zach Manson</a> / <a href="/blog/">Memory Leaks</a> /</p>
+    </nav>
+    <header>
         <h1>Basic SeleniumBasic</h1>
-        <p><span class="strikethrough">Unmaintained</span> Looking for
-love</p>
+        <p><span class="strikethrough">Unmaintained</span> Looking for love</p>
         <p><span class="date">2022-02-15</span></p>
     </header>
-
+    
     <article>
-        <p>The library most commonly recommended for web automation is
-        Selenium, which supports driving a variety of browsers and
-        officially provides bindings for a number of languages.
-        Unfortunately it doesn’t officially support the ultimate
-        programming language, Visual Basic. For VB, this is a single
-        blemish on the otherwise immaculate language, and for Selenium,
-        it’s a unforgivable crime.</p>
-        <p>Luckily there is a glimmer of hope. SeleniumBasic is a
-        Selenium based framework for the VB family. Now you may look at
-        it and think “this is unmaintained and hasn’t been updated since
-        2016”, but it was actually perfected in 2016 and no update could
-        ever possibly improve it.</p>
-        <p>So it is only natural that these two exquisite pieces of
-        software (that are in no way whatsoever out of date) work
-        together. Unfortunately there’s a few…underdocumented hiccups
-        that arise from integrating these two. This post is written in
-        the hopes of making the hiccups between VBA (in Excel) and
-        SeleniumBasic slightly more documented.</p>
-        <h2 id="installation">Installation</h2>
-        <ul>
-        <li>Excel (duh)</li>
-        <li><a
-        href="https://github.com/florentbr/SeleniumBasic/releases">SeleniumBasic</a></li>
-        <li>A WebDriver</li>
-        <li><a
-        href="https://www.microsoft.com/en-au/download/details.aspx?id=21">.NET
-        Framework 3.5</a></li>
-        </ul>
-        <p>Given that the VBA interface in Excel hasn’t been updated
-        since…1832…I am going to assume Excel version will not have any
-        major impacts, but for reference I used Version 2201.</p>
-        <p>Each of the major web browsers provides a WebDriver, which is
-        a piece of software that allows a browser to be controlled and
-        automated by external programs. The SeleniumBasic installer
-        includes a number of WebDrivers which you can choose to include,
-        but these all appear to be wildly out of date and will cause
-        Excel to crash if you have a recent browser installed.</p>
-        <p><img src="seleniumbasic-installer.png" /></p>
-        <p>To fix this you will need to manually replace the WebDrivers
-        you intend to use. Each of the major browser vendors distribute
-        up to date versions of their own WebDrivers (<a
-        href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">Edge</a>,
-        <a
-        href="https://chromedriver.chromium.org/downloads">Chrome</a>,
-        <a
-        href="https://github.com/mozilla/geckodriver/releases">Firefox</a>).
-        Within each of these zip archive you’ll find an executable,
-        e.g. <code>msedgedriver.exe</code> for everyone’s fifth
-        favourite browser. To replace driver included with
-        SeleniumBasic, you need to place the up to date executable in
-        <code>C:\Users\&lt;username&gt;\AppData\Local\SeleniumBasic</code>.
-        The up to date WebDriver will need to have the same name as the
-        original outdated WebDriver, so <code>msedgedriver.exe</code>
-        needs to be renamed <code>edgedriver.exe</code>. Irritatingly,
-        it’s probable that eventually automatic browser updates will
-        render even these updated WebDrivers outdated, and these
-        executables will need to be replaced again.</p>
-        <p>.NET Framework versions annoyingly don’t show up as installed
-        programs, so if you want to find out what versions you already
-        have installed, you must use one of several annoying ways. The
-        least annoying of these is to look in the
-        <code>C:\Windows\Microsoft.NET\Framework</code> directory.</p>
-        <p><img src="dotnet-frameworks.png" /></p>
-        <h2 id="actual-use">Actual Use</h2>
-        <p>Now you can actually use it as you’d expect. Open the VBA IDE
-        in Excel start using some of the gorgeous syntax and best
-        in-class tools that Microsoft so kindly allows you to
-        purchase.</p>
-        <p>To enable SeleniumBasic in Excel you’ll need to navigate to
-        <code>Tools &gt; References</code> and check
-        <code>Selenium Type Library</code>.</p>
-        <p><img src="adding-reference.png" /></p>
-        <p>From here you can write fairly standard Selenium code in
-        VBA.</p>
-        <div class="sourceCode" id="cb1"><pre
-        class="sourceCode vb"><code class="sourceCode monobasic"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">Sub </span>AutoSearch()</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">Dim</span> driver <span class="kw">As</span> Selenium.EdgeDriver</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">Set </span>driver = <span class="kw">New</span> Selenium.EdgeDriver</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>driver.Start</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>driver.<span class="kw">Get </span>(<span class="st">&quot;https://old.reddit.com/&quot;</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">Dim</span> searchbox <span class="kw">As</span> WebElement</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">Set </span>searchbox = driver.FindElementByName(<span class="st">&quot;q&quot;</span>, -1, <span class="kw">True</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>searchbox.SendKeys (<span class="st">&quot;selenium&quot;</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">Dim</span> submit <span class="kw">As</span> WebElement</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">Set </span>submit = driver.FindElementById(<span class="st">&quot;search&quot;</span>, -1, <span class="kw">True</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>submit.submit</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>driver.Quit</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">End Sub</span></span></code></pre></div>
-        <h2 id="footnotes">Footnotes</h2>
-        <ol type="1">
-        <li>Software versions used: Windows 10 10.0.19043, Excel 2201,
-        SeleniumBasic 2.0.9.0, Edge 98.0.1108.50, EdgeDriver
-        98.0.1108.51</li>
-        <li><a
-        href="https://www.selenium.dev/documentation/overview/">Official
-        Selenium Documentation</a></li>
-        <li>A fantastic resource for VBA+Selenium is <a
-        href="https://youtube.com/playlist?list=PLNIs-AWhQzcl3xKvF8sVL4sWRWICj_clM">WiseOwlTutorials’
-        series</a> on this exact thing.</li>
-        </ol>
-    </article>
+        <p>The library most commonly recommended for web automation is Selenium, which supports driving a variety of browsers and officially provides bindings for a number of languages. Unfortunately it doesn't officially support the ultimate programming language, Visual Basic. For VB, this is a single blemish on the otherwise immaculate language, and for Selenium, it's a unforgivable crime.</p>
+<p>Luckily there is a glimmer of hope. SeleniumBasic is a Selenium based framework for the VB family. Now you may look at it and think "this is unmaintained and hasn't been updated since 2016", but it was actually perfected in 2016 and no update could ever possibly improve it.</p>
+<p>So it is only natural that these two exquisite pieces of software (that are in no way whatsoever out of date) work together. Unfortunately there's a few...underdocumented hiccups that arise from integrating these two. This post is written in the hopes of making the hiccups between VBA (in Excel) and SeleniumBasic slightly more documented.</p>
+<h2>Installation</h2>
+<ul>
+<li>Excel (duh)</li>
+<li><a href="https://github.com/florentbr/SeleniumBasic/releases">SeleniumBasic</a></li>
+<li>A WebDriver</li>
+<li><a href="https://www.microsoft.com/en-au/download/details.aspx?id=21">.NET Framework 3.5</a></li>
+</ul>
+<p>Given that the VBA interface in Excel hasn't been updated since...1832...I am going to assume Excel version will not have any major impacts, but for reference I used Version 2201.</p>
+<p>Each of the major web browsers provides a WebDriver, which is a piece of software that allows a browser to be controlled and automated by external programs. The SeleniumBasic installer includes a number of WebDrivers which you can choose to include, but these all appear to be wildly out of date and will cause Excel to crash if you have a recent browser installed.</p>
+<p><img alt="" src="seleniumbasic-installer.png" /></p>
+<p>To fix this you will need to manually replace the WebDrivers you intend to use. Each of the major browser vendors distribute up to date versions of their own WebDrivers (<a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">Edge</a>, <a href="https://chromedriver.chromium.org/downloads">Chrome</a>, <a href="https://github.com/mozilla/geckodriver/releases">Firefox</a>). Within each of these zip archive you'll find an executable, e.g. <code>msedgedriver.exe</code> for everyone's fifth favourite browser. To replace driver included with SeleniumBasic, you need to place the up to date executable in <code>C:\Users\&lt;username&gt;\AppData\Local\SeleniumBasic</code>. The up to date WebDriver will need to have the same name as the original outdated WebDriver, so <code>msedgedriver.exe</code> needs to be renamed <code>edgedriver.exe</code>. Irritatingly, it's probable that eventually automatic browser updates will render even these updated WebDrivers outdated, and these executables will need to be replaced again.</p>
+<p>.NET Framework versions annoyingly don't show up as installed programs, so if you want to find out what versions you already have installed, you must use one of several annoying ways. The least annoying of these is to look in the <code>C:\Windows\Microsoft.NET\Framework</code> directory.</p>
+<p><img alt="" src="dotnet-frameworks.png" /></p>
+<h2>Actual Use</h2>
+<p>Now you can actually use it as you'd expect.  Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.</p>
+<p>To enable SeleniumBasic in Excel you'll need to navigate to <code>Tools &gt; References</code> and check <code>Selenium Type Library</code>.</p>
+<p><img alt="" src="adding-reference.png" /></p>
+<p>From here you can write fairly standard Selenium code in VBA.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Sub</span> <span class="nv">AutoSearch</span><span class="ss">()</span>
+
+<span class="nv">Dim</span> <span class="nv">driver</span> <span class="nv">As</span> <span class="nv">Selenium</span>.<span class="nv">EdgeDriver</span>
+<span class="nv">Set</span> <span class="nv">driver</span> <span class="o">=</span> <span class="nv">New</span> <span class="nv">Selenium</span>.<span class="nv">EdgeDriver</span>
+
+<span class="nv">driver</span>.<span class="nv">Start</span>
+<span class="nv">driver</span>.<span class="nv">Get</span> <span class="ss">(</span><span class="s2">&quot;</span><span class="s">https://old.reddit.com/</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+<span class="nv">Dim</span> <span class="nv">searchbox</span> <span class="nv">As</span> <span class="nv">WebElement</span>
+<span class="nv">Set</span> <span class="nv">searchbox</span> <span class="o">=</span> <span class="nv">driver</span>.<span class="nv">FindElementByName</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">q</span><span class="s2">&quot;</span>, <span class="o">-</span><span class="mi">1</span>, <span class="nv">True</span><span class="ss">)</span>
+<span class="nv">searchbox</span>.<span class="nv">SendKeys</span> <span class="ss">(</span><span class="s2">&quot;</span><span class="s">selenium</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+<span class="nv">Dim</span> <span class="nv">submit</span> <span class="nv">As</span> <span class="nv">WebElement</span>
+<span class="nv">Set</span> <span class="nv">submit</span> <span class="o">=</span> <span class="nv">driver</span>.<span class="nv">FindElementById</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">search</span><span class="s2">&quot;</span>, <span class="o">-</span><span class="mi">1</span>, <span class="nv">True</span><span class="ss">)</span>
+<span class="nv">submit</span>.<span class="nv">submit</span>
+
+<span class="nv">driver</span>.<span class="nv">Quit</span>
+
+<span class="k">End</span> <span class="nv">Sub</span>
+</code></pre></div>
+
+<h2>Footnotes</h2>
+<ol>
+<li>Software versions used: Windows 10 10.0.19043, Excel 2201, SeleniumBasic 2.0.9.0, Edge 98.0.1108.50, EdgeDriver 98.0.1108.51</li>
+<li><a href="https://www.selenium.dev/documentation/overview/">Official Selenium Documentation</a></li>
+<li>A fantastic resource for VBA+Selenium is <a href="https://youtube.com/playlist?list=PLNIs-AWhQzcl3xKvF8sVL4sWRWICj_clM">WiseOwlTutorials' series</a> on this exact thing.</li>
+</ol>
+    </article>    
 
     <footer>
-        <p>
-            Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-        </p>
+		<p>
+            <a href="/blog/rss.xml">RSS</a><br>
+			Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
+		</p>
     </footer>
 </body>
