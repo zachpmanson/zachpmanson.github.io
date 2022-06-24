@@ -42,8 +42,8 @@ posts_dirs = [d for d in os.listdir(".") if d not in ignore_dirs]
 posts_dirs.sort(key=get_post_date)
 posts_dirs.reverse()
 
-post_template = jinja2.Template(open("templates/post.html", "r").read())
-postlist_template = jinja2.Template(open("templates/postlist.html", "r").read())
+post_template = jinja2.Template(open("generator/post.html", "r").read())
+postlist_template = jinja2.Template(open("generator/postlist.html", "r").read())
 
 fg = FeedGenerator()
 fg.id(blog_meta["blog_link"])

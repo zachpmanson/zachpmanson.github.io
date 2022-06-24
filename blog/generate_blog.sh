@@ -2,5 +2,5 @@
 
 source ./venv/bin/activate
 echo Activated venv
-python3 ./templates/process_posts.py
+python3 ./generator/process_posts.py
 echo Done!
