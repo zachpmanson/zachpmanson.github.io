@@ -5,7 +5,7 @@ import markdown
 import frontmatter
 import jinja2
 from feedgen.feed import FeedGenerator
-
+from pymdownx import pathconverter
 def get_post_date(post_dir):
     with open(os.path.join(post_dir, post_dir+".md"), "r") as post_file:
         post = frontmatter.load(post_file)
@@ -57,6 +57,7 @@ fg.language('en')
 
 posts_data = []
 
+
 for post_dir in posts_dirs:
     link = "https://zachmanson.com/blog/"+post_dir
 
@@ -66,6 +67,16 @@ for post_dir in posts_dirs:
         meta["datetime"] = datetime.datetime.fromisoformat(meta["date"].isoformat())
         meta["datetime"] = tz.localize(meta["datetime"])
         body = markdown.markdown(post.content, extensions=['fenced_code', "codehilite"])
+        
+        # RSS description uses absolute links and no code highlighting
+        rss_body = markdown.markdown(
+            post.content, 
+            extensions=[pathconverter.PathConverterExtension(
+                base_path=f"blog/{post_dir}",
+                absolute=True
+            ),
+            'fenced_code']
+        )
 
 
     data = {**meta, "body":body}
@@ -78,10 +89,10 @@ for post_dir in posts_dirs:
     fe.id(link)
     fe.title(meta["title"])
     fe.description(meta["tagline"])
+    fe.content(rss_body, type='CDATA')
     fe.link(href=link)
     fe.guid(link)
     fe.published(meta["datetime"])
-    #fe.content(body, type="HTML")#removed since images use relative links
 
     meta["post_dir"] = post_dir
     posts_data.append(meta)
