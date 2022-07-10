@@ -1,4 +1,4 @@
-<?xml version='2.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
   <channel>
     <title>Memory Leaks</title>
@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Sun, 10 Jul 2022 01:52:51 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Jul 2022 02:14:08 +0000</lastBuildDate>
     <item>
       <title>Basic SeleniumBasic</title>
       <link>https://zachmanson.com/blog/basic-seleniumbasic</link>
