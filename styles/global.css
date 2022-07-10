@@ -49,6 +49,10 @@ p {
     margin: 1rem auto;
 }
 
+summary {
+    margin: 1rem auto;
+}
+
 a {
     color: var(--purple);
     text-decoration: underline;
