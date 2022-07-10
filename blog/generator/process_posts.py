@@ -17,7 +17,7 @@ ignore_dirs = [
     "index.html",
     "generate_posts.sh",
     ".DS_Store",
-    "rss.xml",
+    "feed.xml",
     "generator",
     "generate_blog.sh",
     "venv"
@@ -101,6 +101,5 @@ with open("index.html", "w") as f:
     f.write(postlist_template.render({"posts_data": posts_data}))
     print("Generated blog index")
 
-with open("rss.xml", "wb") as f:
+with open("feed.xml", "wb") as f:
     f.write((fg.rss_str(pretty=True)))
-        
