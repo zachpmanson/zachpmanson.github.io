@@ -209,4 +209,8 @@ article img {
     margin: 0 auto;
 }
 
-
+.center-col {
+    text-align: left;
+    width: 40rem;
+    margin: auto;
+}
