@@ -1,16 +1,18 @@
-import os, datetime
+import os
+import datetime
 
 import pytz
 import markdown
 import frontmatter
 import jinja2
 from feedgen.feed import FeedGenerator
-from pymdownx import pathconverter
+
 def get_post_date(post_dir):
     with open(os.path.join(post_dir, post_dir+".md"), "r") as post_file:
         post = frontmatter.load(post_file)
         meta = post.metadata
     return meta["date"]
+
 
 ignore_dirs = [
     "templates",
@@ -43,16 +45,17 @@ posts_dirs.sort(key=get_post_date)
 posts_dirs.reverse()
 
 post_template = jinja2.Template(open("generator/post.html", "r").read())
-postlist_template = jinja2.Template(open("generator/postlist.html", "r").read())
+postlist_template = jinja2.Template(
+    open("generator/postlist.html", "r").read())
 
 fg = FeedGenerator()
 fg.id(blog_meta["blog_link"])
 fg.title(blog_meta["title"])
 fg.author(blog_meta["author"])
-fg.link( href=blog_meta["blog_link"], rel='alternate' )
+fg.link(href=blog_meta["blog_link"], rel='alternate')
 fg.logo(blog_meta["logo"])
 fg.subtitle(blog_meta["subtitle"])
-fg.link( href=blog_meta["rss_link"], rel='self' )
+fg.link(href=blog_meta["rss_link"], rel='self')
 fg.language('en')
 
 posts_data = []
@@ -64,23 +67,26 @@ for post_dir in posts_dirs:
     with open(os.path.join(post_dir, post_dir+".md"), "r") as post_file:
         post = frontmatter.load(post_file)
         meta = post.metadata
-        meta["datetime"] = datetime.datetime.fromisoformat(meta["date"].isoformat())
+        meta["datetime"] = datetime.datetime.fromisoformat(
+            meta["date"].isoformat())
         meta["datetime"] = tz.localize(meta["datetime"])
-        body = markdown.markdown(post.content, extensions=['fenced_code', "codehilite"])
-        
+        body = markdown.markdown(post.content, extensions=[
+                                 'fenced_code', "codehilite"])
+
         # RSS description uses absolute links and no code highlighting
         rss_body = markdown.markdown(
-            post.content, 
-            extensions=[pathconverter.PathConverterExtension(
-                base_path=f"blog/{post_dir}",
-                absolute=True
-            ),
-            'fenced_code']
+            post.content,
+            extensions=['pymdownx.pathconverter', 'fenced_code'],
+            extension_configs={'pymdownx.pathconverter':
+                               [
+                                   ('base_path', f"blog/{post_dir}"),
+                                   ('absolute', True)
+                               ]
+                               }
         )
 
+    data = {**meta, "body": body}
 
-    data = {**meta, "body":body}
-    
     with open(os.path.join(post_dir, "index.html"), "w") as f:
         f.write(post_template.render(data))
         print(f"Generated {post_dir}")
