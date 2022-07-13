@@ -221,7 +221,7 @@ article img {
 
 .center-col {
     text-align: left;
-    width: 36rem;
+    max-width: 36rem;
     margin: auto;
 }
 
