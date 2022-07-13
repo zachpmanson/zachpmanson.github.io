@@ -1,5 +1,5 @@
 body {
-    margin: 0 1rem;
+    margin: 1rem;
     font-family: sans-serif;
     color: var(--white);
     background-color: var(--background);
@@ -29,6 +29,16 @@ figcaption {
 header {
     max-width: 40rem;
     margin: auto;
+}
+
+.vert-margin-std   {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.vert-items-tight * {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 footer {
@@ -201,7 +211,7 @@ article {
 }
 
 article h1, article h2, article h3 {
-    text-align: center;
+    text-align: left;
 }
 
 article img {
@@ -211,6 +221,19 @@ article img {
 
 .center-col {
     text-align: left;
-    width: 40rem;
+    width: 36rem;
     margin: auto;
 }
+
+.icon {
+    width: 3rem;
+    height: 3rem;
+    display: inline-block;
+    fill: var(--white);
+    margin: auto;
+}
+
+.icon:hover {
+    fill: var(--purple)
+}
+
