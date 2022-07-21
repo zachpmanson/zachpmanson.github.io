@@ -1,235 +1,261 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
 
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width; initial-scale=1.0;">
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
 
-	<link rel="stylesheet" href="/styles/colors.css">
-	<link rel="stylesheet" href="/styles/global.css">
+    <link rel="canonical" href="https://zachmanson.com/projects" />
 
-	<link rel="canonical" href="https://zachmanson.com/projects" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
 
-	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-	<link rel="manifest" href="/icons/site.webmanifest">
-	<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9">
-	<link rel="shortcut icon" href="/icons/favicon.ico">
-	<meta name="msapplication-TileColor" content="#603cba">
-	<meta name="msapplication-config" content="/icons/browserconfig.xml">
-	<meta name="theme-color" content="#ffffff">
+    <title>Projects</title>
+  </head>
 
-	<title>Projects</title>
-</head>
+  <body>
+    <nav>
+      <div class="flex">
+        <div class="flex-left">
+          <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+          <a href="/projects/" class="activated-link discrete-link">Projects</a>
+          <a href="/blog" class="discrete-link">Blog</a>
+          <a href="/now" class="discrete-link">Now</a>
+        </div>
+      </div>
+    </nav>
 
-<body>
-	<nav>
-		<p class="location"><a href="/">Zach Manson</a> /</p>
-	</nav>
-	<header>
-		<h1>Projects</h1>
-		<p> A list of "usable" things I have developed that are on the internet</p>
-	</header>
+    <header>
+      <h1>Projects</h1>
+      <p>A list of "usable" things I have developed that are on the internet</p>
+    </header>
 
-	<h2>Personal Projects</h2>
+    <h2>Personal Projects</h2>
 
-	<div class="postlist">
-		<a class="post" href="https://github.com/codersforcauses/poops">
-			<h3>POOPS Platform <span class="date">(2022)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						Currently developing a progressive web app with Coders For Causes for the nonprofit Pets of
-						Older Persons. The PWA will help volunteers track their volunteering activities, register vet
-						concerns and log incident reports.
-					</p>
-					<p class="italic">Built with TypeScript, React, Next.js, Tailwind, and Firebase</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/POOPS_black_circle.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://tracker.zachmanson.com/">
-			<h3>WA COVID-19 Tracker <span class="date">(2022)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						A recurringly generated static website that displays the number
-						of local COVID-19 cases overnight in Western Australia. Data is
-						scraped from the WA Department of Health media releases.
-					</p>
-					<p class="italic">Built with Python (matplotlib, BeautifulSoup, jinja), SQLite, and HTML5</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/cases_dark.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/QFinUWA/2022-Mean-Reversion-Team4">
-			<h3>Mean Reversion Trading Algorithm <span class="date">(2022)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						Led a small team to develop quantitative trading
-						algorithms based on mean reversion techniques with QFin
-						UWA. Our final algorithm outperformed all other teams'
-						algorithms, and was presented to IMC Trading.
-					</p>
-					<p class="italic">Built with Python</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/TSLA-cropped.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/joshiemoore/snakeware">
-			<h3>snakeware OS <span class="date">(2020)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						Developed system applications and documentation for snakeware,
-						an open source project creating a Linux-based operating
-						system with a pure Python userspace.
-					</p>
-					<p class="italic">Built with Python</p>
+    <div class="postlist">
+      <a class="post" href="https://github.com/codersforcauses/poops">
+        <h3>POOPS Platform <span class="date">(2022)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              Currently developing a progressive web app with Coders For Causes
+              for the nonprofit Pets of Older Persons. The PWA will help
+              volunteers track their volunteering activities, register vet
+              concerns and log incident reports.
+            </p>
+            <p class="italic">
+              Built with TypeScript, React, Next.js, Tailwind, and Firebase
+            </p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/POOPS_black_circle.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://tracker.zachmanson.com/">
+        <h3>WA COVID-19 Tracker <span class="date">(2022)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              A recurringly generated static website that displays the number of
+              local COVID-19 cases overnight in Western Australia. Data is
+              scraped from the WA Department of Health media releases.
+            </p>
+            <p class="italic">
+              Built with Python (matplotlib, BeautifulSoup, jinja), SQLite, and
+              HTML5
+            </p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/cases_dark.png" />
+          </div>
+        </div>
+      </a>
+      <a
+        class="post"
+        href="https://github.com/QFinUWA/2022-Mean-Reversion-Team4"
+      >
+        <h3>
+          Mean Reversion Trading Algorithm <span class="date">(2022)</span>
+        </h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              Led a small team to develop quantitative trading algorithms based
+              on mean reversion techniques with QFin UWA. Our final algorithm
+              outperformed all other teams' algorithms, and was presented to IMC
+              Trading.
+            </p>
+            <p class="italic">Built with Python</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/TSLA-cropped.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://github.com/joshiemoore/snakeware">
+        <h3>snakeware OS <span class="date">(2020)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              Developed system applications and documentation for snakeware, an
+              open source project creating a Linux-based operating system with a
+              pure Python userspace.
+            </p>
+            <p class="italic">Built with Python</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/snakeware.png" />
+          </div>
+        </div>
+      </a>
+    </div>
 
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/snakeware.png">
-				</div>
-			</div>
-		</a>
-	</div>
+    <h2>University Projects</h2>
 
-	<h2>University Projects</h2>
+    <div class="postlist">
+      <a class="post" href="https://minecraftle.zachmanson.com">
+        <h3>Minecraftle <span class="date">(2022)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              A daily puzzle game fusing Minecraft crafting recipes and Wordle.
+            </p>
+            <p class="italic">Built with Flask</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/minecraftle.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://github.com/pavo-etc/rake">
+        <h3>rake <span class="date">(2022)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              Developed client and server applications for rake, a protocol for
+              distributed compilation and remote command execution.
+            </p>
+            <p class="italic">Built with C and Python</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/rakeserver.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://github.com/pavo-etc/duplicates">
+        <h3>duplicates <span class="date">(2021)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              duplicates is a command line utility for finding duplicate files
+              in directories based on SHA2 hashes.
+            </p>
+            <p class="italic">Built with C</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/duplicates.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://github.com/pavo-etc/runcool-emulator">
+        <h3>runcool <span class="date">(2021)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              runcool is an emulator of a simple 16-bit computer designed to
+              execute programs compiled from the esoteric programming language
+              cool.
+            </p>
+            <p class="italic">Built with C</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/coolbook.png" />
+          </div>
+        </div>
+      </a>
+      <a class="post" href="https://github.com/pavo-etc/aquarium">
+        <h3>Aquarium <span class="date">(2020)</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>A randomly-generated puzzle game in the vein of Picross.</p>
+            <p class="italic">Built with Java</p>
+          </div>
+          <div class="post-image">
+            <img class="thumbnail" src="/images/aquarium.png" />
+          </div>
+        </div>
+      </a>
+    </div>
 
-	<div class="postlist">
-		<a class="post" href="https://minecraftle.zachmanson.com">
-			<h3>Minecraftle <span class="date">(2022)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						A daily puzzle game fusing Minecraft crafting recipes and Wordle.
-					</p>
-					<p class="italic">Built with Flask</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/minecraftle.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/pavo-etc/rake">
-			<h3>rake <span class="date">(2022)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						Developed client and server applications for rake, a
-						protocol for distributed compilation and
-						remote command execution.
-					</p>
-					<p class="italic">Built with C and Python</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/rakeserver.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/pavo-etc/duplicates">
-			<h3>duplicates <span class="date">(2021)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						duplicates is a command line utility for finding duplicate files
-						in directories based on SHA2 hashes.
-					</p>
-					<p class="italic">Built with C</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/duplicates.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/pavo-etc/runcool-emulator">
-			<h3>runcool <span class="date">(2021)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						runcool is an emulator of a simple 16-bit computer designed to
-						execute programs compiled from the esoteric programming language
-						cool.
-					</p>
-					<p class="italic">Built with C</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/coolbook.png">
-				</div>
-			</div>
-		</a>
-		<a class="post" href="https://github.com/pavo-etc/aquarium">
-			<h3>Aquarium <span class="date">(2020)</span></h3>
-			<div class="inline-flex">
-				<div class="post-description">
-					<p>
-						A randomly-generated puzzle game in the vein of Picross.
-					</p>
-					<p class="italic">Built with Java</p>
-				</div>
-				<div class="post-image">
-					<img class="thumbnail" src="/images/aquarium.png">
-				</div>
-			</div>
-		</a>
-	</div>
+    <h2>Microprojects</h2>
+    <details>
+      <summary>
+        Boring things that are only here so I don't lose the links to them
+      </summary>
+      <div class="postlist">
+        <a class="post" href="https://todont.zachmanson.com/">
+          <h3>Todont <span class="date">(2022)</span></h3>
+          <div class="inline-flex">
+            <div class="post-description">
+              <p>A simple persistent todo list application.</p>
+              <p class="italic">Built with React</p>
+            </div>
+            <div class="post-image">
+              <img class="thumbnail" src="/images/todont.png" />
+            </div>
+          </div>
+        </a>
+        <a class="post" href="https://zachmanson.com/person-picker">
+          <h3>Person Picker <span class="date">(2022)</span></h3>
+          <div class="inline-flex">
+            <div class="post-description">
+              <p>A simple randomizer for pulling names from a hat.</p>
+              <p class="italic">Built with a tiny amount of JavaScript</p>
+            </div>
+          </div>
+        </a>
+        <a class="post" href="https://zachmanson.com/wordle">
+          <h3>Wordle Clone <span class="date">(2022)</span></h3>
+          <div class="inline-flex">
+            <div class="post-description">
+              <p>A barebones clone of the game Wordle.</p>
+              <p class="italic">Built with JavaScript</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </details>
 
-	<h2>Microprojects</h2>
-	<details>
-		<summary>Boring things that are only here so I don't lose the links to them</summary>
-		<div class="postlist">
-			<a class="post" href="https://todont.zachmanson.com/">
-				<h3>Todont <span class="date">(2022)</span></h3>
-				<div class="inline-flex">
-					<div class="post-description">
-						<p>
-							A simple persistent todo list application.
-						</p>
-						<p class="italic">Built with React</p>
-					</div>
-					<div class="post-image">
-						<img class="thumbnail" src="/images/todont.png">
-					</div>
-				</div>
-			</a>
-			<a class="post" href="https://zachmanson.com/person-picker">
-				<h3>Person Picker <span class="date">(2022)</span></h3>
-				<div class="inline-flex">
-					<div class="post-description">
-						<p>
-							A simple randomizer for pulling names from a hat.
-						</p>
-						<p class="italic">Built with a tiny amount of JavaScript</p>
-					</div>
-				</div>
-			</a>
-			<a class="post" href="https://zachmanson.com/wordle">
-				<h3>Wordle Clone <span class="date">(2022)</span></h3>
-				<div class="inline-flex">
-					<div class="post-description">
-						<p>
-							A barebones clone of the game Wordle.
-						</p>
-						<p class="italic">Built with JavaScript</p>
-					</div>
-				</div>
-			</a>
-		</div>
-	</details>
-
-
-	<footer>
-		<p>
-			Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-		</p>
-	</footer>
-</body>
+    <footer>
+      <p>
+        Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
+      </p>
+    </footer>
+  </body>
+</html>

@@ -36,8 +36,18 @@
 
   <body>
     <nav>
-      <p class="location"><a href="/">Zach Manson</a> /</p>
+      <div class="flex">
+        <div class="flex-left">
+          <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+          <a href="/projects/" class="discrete-link">Projects</a>
+          <a href="/blog/" class="activated-link discrete-link">Blog</a>
+          <a href="/now" class="discrete-link">Now</a>
+        </div>
+      </div>
     </nav>
+
     <header>
       <h1>Memory Leaks</h1>
       <p>Artisanally crafted text dumps</p>
@@ -47,7 +57,7 @@
       <a class="post" href="./poor-mans-site/">
         <div class="flex">
           <h3>The Poor Man's Static Site Generator</h3>
-          <p class="right-flex date">2022-06-11</p>
+          <p class="flex-right date">2022-06-11</p>
         </div>
         <p>Using Pandoc to well below its fullest potential!</p>
       </a>
@@ -55,7 +65,7 @@
       <a class="post" href="./file-descriptors/">
         <div class="flex">
           <h3>Sneaky File Descriptors in Popen()</h3>
-          <p class="right-flex date">2022-06-09</p>
+          <p class="flex-right date">2022-06-09</p>
         </div>
         <p>Always be closing</p>
       </a>
@@ -63,7 +73,7 @@
       <a class="post" href="./covid-updates/">
         <div class="flex">
           <h3>Web Scraping vs. Government Whimsy</h3>
-          <p class="right-flex date">2022-04-01</p>
+          <p class="flex-right date">2022-04-01</p>
         </div>
         <p>"another spaghetto in my spaghetti"</p>
       </a>
@@ -71,7 +81,7 @@
       <a class="post" href="./crafting-recipes/">
         <div class="flex">
           <h3>How Minecraft Stores Crafting Recipes</h3>
-          <p class="right-flex date">2022-03-31</p>
+          <p class="flex-right date">2022-03-31</p>
         </div>
         <p>Some (extremely) mildly interesting quirks in Minecraft.jar</p>
       </a>
@@ -79,7 +89,7 @@
       <a class="post" href="./hep-001/">
         <div class="flex">
           <h3>hEP 001 – Mathematical 𝐡  in the Standard Implementation</h3>
-          <p class="right-flex date">2022-03-18</p>
+          <p class="flex-right date">2022-03-18</p>
         </div>
         <p>Enhancement Proposal for the h Programming Language</p>
       </a>
@@ -87,7 +97,7 @@
       <a class="post" href="./usernames/">
         <div class="flex">
           <h3>Usernames</h3>
-          <p class="right-flex date">2022-03-11</p>
+          <p class="flex-right date">2022-03-11</p>
         </div>
         <p>An experience I have had many times and should be numb to by now.</p>
       </a>
@@ -95,7 +105,7 @@
       <a class="post" href="./basic-seleniumbasic/">
         <div class="flex">
           <h3>Basic SeleniumBasic</h3>
-          <p class="right-flex date">2022-02-15</p>
+          <p class="flex-right date">2022-02-15</p>
         </div>
         <p>Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.</p>
       </a>

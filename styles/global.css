@@ -142,6 +142,15 @@ img.profile {
     margin: 0 .5rem;
 }
 
+.activated-link {
+    color: var(--white);
+}
+
+.activated-link:hover {
+    color: var(--purple);
+    text-decoration-color: var(--purple);
+}
+
 /* For blog/projects */
 
 .postlist {
@@ -177,7 +186,12 @@ a.post p {
     display: flex;
 }
 
-.right-flex {
+.flex-left {
+    flex: auto;
+    text-align: left;
+}
+
+.flex-right {
     flex: auto;
     text-align: right;
 }
@@ -237,3 +251,6 @@ article img {
     fill: var(--purple)
 }
 
+.center {
+    text-align: center;
+}

@@ -36,8 +36,18 @@
 
   <body>
     <nav>
-      <p class="location"><a href="/">Zach Manson</a> /</p>
+      <div class="flex">
+        <div class="flex-left">
+          <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+          <a href="/projects/" class="discrete-link">Projects</a>
+          <a href="/blog/" class="activated-link discrete-link">Blog</a>
+          <a href="/now" class="discrete-link">Now</a>
+        </div>
+      </div>
     </nav>
+
     <header>
       <h1>Memory Leaks</h1>
       <p>Artisanally crafted text dumps</p>
@@ -47,7 +57,7 @@
       <a class="post" href="./{{post.post_dir}}/">
         <div class="flex">
           <h3>{{post.title}}</h3>
-          <p class="right-flex date">{{post.date}}</p>
+          <p class="flex-right date">{{post.date}}</p>
         </div>
         <p>{{post.tagline}}</p>
       </a>
