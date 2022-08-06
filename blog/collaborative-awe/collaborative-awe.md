@@ -15,7 +15,9 @@ Once you submit a prompt to DALL·E, you are shown more curated images and their
 
 Using Midjourney is completely a different experience. Midjourney currently runs its generative art AI through a bot on their company Discord server. You generate art by typing in a command in certain channels, and all the art produced is visible to everyone on the server simultaneously. Before you can even type something you are assaulted by an array of incredible pieces of art, generated right before your eyes.
 
-![](./firehose.gif)
+<video autoplay loop muted>
+   <source src="./firehose.webm" type="video/webm">
+</video>
 
 While both generators are impressive, using Midjourney was a visceral experience for me in a way that DALL·E was not. If DALL·E is like sipping a glass of water, Midjourney is like a firehose blasting your face. I was immediately in awe.
 
