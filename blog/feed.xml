@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Thu, 28 Jul 2022 12:00:46 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Aug 2022 08:09:02 +0000</lastBuildDate>
     <item>
       <title>Basic SeleniumBasic</title>
       <link>https://zachmanson.com/blog/basic-seleniumbasic</link>
@@ -807,6 +807,53 @@ echo &quot;done&quot;
 <p>The top level <code>index.html</code> is not modified by the script at all.  This page presumably would link to the subdirectories and must be manually modified.  Ugh.</p>]]></content:encoded>
       <guid isPermaLink="false">https://zachmanson.com/blog/poor-mans-site</guid>
       <pubDate>Sat, 11 Jun 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Web Scraping vs. Photographer Download Codes</title>
+      <link>https://zachmanson.com/blog/forceadept</link>
+      <description><![CDATA[<p>I went to a party with a very fancy photobooth last week. It would print out a film strip of the images immediately, and the photos were all uploaded to the photographer's website the next day. The only issue with all this is that the photos required a code to download them which the host of the party was never given. The host was content to just screenshot the images but that goes against my religion, so I had to find a better way.</p>
+<p>The photographers website presented all the images as a gallery that required an email address to access (coincedentally with a full screen image of me and my friends behind). There was no actual registration or comfirmation involving the email address, so I am not sure why they do this. Once your pass the email form, you are presented with a gallery of all the images from the event, though only 16 load initially, with more appearing as you scroll. Upon hovering over a image, a download icon would appear, but clicking it would prompt you for the download code. Right clicking on the images did nothing, but given there were &gt;250 images this wouldn't have been ideal even if it had worked.</p>
+<p>The page source revealed that the images were being presented using standard <code>&lt;img&gt;</code> tags with direct links to the images. The direct image links were in the format <code>https://images.photographername.com/&lt;eventnum&gt;/&lt;photouuid&gt;-&lt;size&gt;.JPG</code>. After some trial and error the size went from <code>medium</code> all the way up to <code>xxlarge</code>. Perfect!</p>
+<p>Should just be a matter of scraping all the <code>src</code> attributes from all the <code>img</code> tags right?</p>
+<h2></h2>]]></description>
+      <guid isPermaLink="false">https://zachmanson.com/blog/forceadept</guid>
+      <pubDate>Tue, 02 Aug 2022 00:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Collaborative Awe</title>
+      <link>https://zachmanson.com/blog/collaborative-awe</link>
+      <description>Minor but impactful differences between DALL·E and Midjourney</description>
+      <content:encoded><![CDATA[<p><a href="https://openai.com/dall-e-2/">DALL·E</a> and <a href="https://www.midjourney.com/">Midjourney</a> offer similar products, but had very different emotional impacts on me as a user.</p>
+<p>I recently received access to DALL·E and played around with it for a while. The interface is simple, just a textbox and a few curated images to give you some inspiration.</p>
+<p><img alt="" src="/blog/collaborative-awe/dall-e.png" /></p>
+<p>Once you submit a prompt to DALL·E, you are shown more curated images and their corresponding prompts while your request is processed.</p>
+<p>Using Midjourney is completely a different experience. Midjourney currently runs its generative art AI through a bot on their company Discord server. You generate art by typing in a command in certain channels, and all the art produced is visible to everyone on the server simultaneously. Before you can even type something you are assaulted by an array of incredible pieces of art, generated right before your eyes.</p>
+<p><img alt="" src="/blog/collaborative-awe/firehose.gif" /></p>
+<p>While both generators are impressive, using Midjourney was a visceral experience for me in a way that DALL·E was not. If DALL·E is like sipping a glass of water, Midjourney is like a firehose blasting your face. I was immediately in awe.</p>
+<p>DALL·E is capable of producing some amazing images. It takes a bit of warming up, but after little practice I was able to create wonderful and bizarre generative art. Despite this, I felt I didn't know how to produce something as interesting or engaging as their curated images the presented to me when using DALL·E. I could logically understand that the tool had potential, but I felt seperated from it.</p>
+<p>The design of Midjourney makes it abundantly clear how big an impact this technology will have on the world. Watching hundreds of strangers generate incredible images in real-time is jaw dropping. Seeing an unfiltered, uncurated stream of regular people using the software is a lot more impressive than the sanitised, slick, and isolated interface of DALL·E. I was mesmerised, and within minutes saw images that moved me, despite being created by an AI without any intention behind them.</p>
+<p>While I am sure both of these are the future, only one made me feel it.</p>
+<p><img alt="" src="/blog/collaborative-awe/soldiers.png" /></p>
+<details>
+<summary>
+<h2>Appendix: Some Generative Art</h2>
+</summary>
+<p>Some images I generated with DALL·E:</p>
+<p><img alt="" src="/blog/collaborative-awe/lemur-pears.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/cyberpunk-toadstool-explodes.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/gemstone-horse.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/toilet-wizard.png" /></p>
+<p>Some images I generated or watched others generate with Midjourney:</p>
+<p><img alt="" src="/blog/collaborative-awe/black-hole.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/canaries.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/frogs.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/helheim.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/human_virus.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/neonrain.png" /></p>
+<p><img alt="" src="/blog/collaborative-awe/vendy.png" /></p>
+</details>]]></content:encoded>
+      <guid isPermaLink="false">https://zachmanson.com/blog/collaborative-awe</guid>
+      <pubDate>Sat, 06 Aug 2022 00:00:00 +0800</pubDate>
     </item>
   </channel>
 </rss>

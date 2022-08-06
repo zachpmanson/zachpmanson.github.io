@@ -31,6 +31,10 @@ header {
     margin: auto;
 }
 
+summary h2 {
+    display: inline;
+}
+
 .vert-margin-std   {
     margin-top: 1rem;
     margin-bottom: 1rem;
