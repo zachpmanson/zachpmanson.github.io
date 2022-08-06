@@ -43,7 +43,7 @@ tz = pytz.timezone("Australia/Perth")
 posts_dirs = [d for d in os.listdir(".") if d not in ignore_dirs]
 
 posts_dirs.sort(key=get_post_date)
-posts_dirs.reverse()
+#posts_dirs.reverse()
 
 post_template = jinja2.Template(open("generator/post.html", "r").read())
 postlist_template = jinja2.Template(
@@ -107,7 +107,7 @@ for post_dir in posts_dirs:
     posts_data.append(meta)
 
 with open("index.html", "w") as f:
-    f.write(postlist_template.render({"posts_data": posts_data}))
+    f.write(postlist_template.render({"posts_data": reversed(posts_data)}))
     print("Generated blog index")
 
 with open("feed.xml", "wb") as f:
