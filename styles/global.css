@@ -16,6 +16,12 @@ nav {
   margin: 1rem auto;
 }
 
+main {
+  text-align: left;
+  max-width: 40rem;
+  margin: auto;
+}
+
 img {
   max-width: 100%;
   max-height: 100%;
@@ -110,6 +116,22 @@ a:active {
   text-align: left;
 }
 
+.icon {
+  width: 3rem;
+  height: 3rem;
+  display: inline-block;
+  fill: var(--white);
+  margin: auto;
+}
+
+.icon:hover {
+  fill: var(--purple);
+}
+
+.center {
+  text-align: center;
+}
+
 /* For homepage */
 
 img.profile {
@@ -163,11 +185,6 @@ img.profile {
 
 /* For blog/projects */
 
-.postlist {
-  max-width: 40rem;
-  margin: auto;
-}
-
 a.post {
   display: block;
   padding: 0.5rem 1rem;
@@ -192,6 +209,8 @@ a.post p {
   font-weight: 300;
 }
 
+/* Flex */
+
 .flex {
   display: flex;
 }
@@ -212,6 +231,13 @@ a.post p {
   flex-wrap: wrap;
 }
 
+/* For article itself */
+
+article img {
+  display: block;
+  margin: 0 auto;
+}
+
 .post-description {
   flex-basis: 70%;
   flex-grow: 2;
@@ -224,49 +250,4 @@ a.post p {
 .post-image img {
   max-width: 10em;
   max-height: 8rem;
-}
-
-/* For article itself */
-
-article {
-  text-align: left;
-  max-width: 40rem;
-  margin: 0 auto;
-}
-
-article h1,
-article h2,
-article h3 {
-  text-align: left;
-}
-
-article img {
-  display: block;
-  margin: 0 auto;
-}
-
-.center-col {
-  text-align: left;
-  max-width: 36rem;
-  margin: auto;
-}
-
-.icon {
-  width: 3rem;
-  height: 3rem;
-  display: inline-block;
-  fill: var(--white);
-  margin: auto;
-}
-
-.icon:hover {
-  fill: var(--purple);
-}
-
-.center {
-  text-align: center;
-}
-
-.middle {
-  margin: auto;
 }

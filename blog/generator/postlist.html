@@ -52,17 +52,19 @@
       <h1>Memory Leaks</h1>
       <p>Artisanally crafted text dumps</p>
     </header>
-    <div class="postlist">
-      {% for post in posts_data %}
-      <a class="post" href="./{{post.post_dir}}/">
-        <div class="flex">
-          <h3>{{post.title}}</h3>
-          <p class="flex-right date">{{post.date}}</p>
-        </div>
-        <p>{{post.tagline}}</p>
-      </a>
-      {% endfor %}
-    </div>
+    <main>
+      <div class="postlist">
+        {% for post in posts_data %}
+        <a class="post" href="./{{post.post_dir}}/">
+          <div class="flex">
+            <h3>{{post.title}}</h3>
+            <p class="flex-right date">{{post.date}}</p>
+          </div>
+          <p>{{post.tagline}}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </main>
 
     <footer>
       <div></div>
