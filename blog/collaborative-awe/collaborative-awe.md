@@ -9,7 +9,7 @@ date: 2022-08-06
 
 I recently received access to DALL·E and played around with it for a while. The interface is simple, just a textbox and a few curated images to give you some inspiration.
 
-![](./dall-e.png)
+![](./dall-e.jpg)
 
 Once you submit a prompt to DALL·E, you are shown more curated images and their corresponding prompts while your request is processed.
 
