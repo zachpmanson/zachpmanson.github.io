@@ -16,4 +16,4 @@ Instagram once supported my ideal relationship with social media, but has increm
 
 In contrast to this, the GitHub feed has been nothing but pure (though compsci slanted) embodiment of my ideal social media. Over the last 3 years of university, I have followed a total of 21 people followed people on GitHub, either friends or people I admire. This is tiny compared to my social graphs on other networks, but I found seeing updates from these 21 people more rewarding than hundreds of people on Facebook, and significantly less rage inducing than using Instagram.
 
-Obviously these platforms extremely different and selection bias plays a massive role in my experience using these feeds, but I seeing the projects that are being worked on by people I am interested in is always a lovely respite from the rest of the social internet.
+Obviously these platforms are extremely different and selection bias plays a massive role in my experience using these feeds, but I seeing the projects that are being worked on by people I am interested in is always a lovely respite from the rest of the social internet.
