@@ -1,62 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/styles/colors.css" />
-    <link rel="stylesheet" href="/styles/code.css" />
-    <link rel="stylesheet" href="/styles/global.css" />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/icons/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/icons/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/icons/site.webmanifest" />
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
-    <link rel="shortcut icon" href="/icons/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#603cba" />
-    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-    <meta name="theme-color" content="#282A36" />
+<head>
+  <link rel="stylesheet" href="/styles/colors.css" />
+  <link rel="stylesheet" href="/styles/code.css" />
+  <link rel="stylesheet" href="/styles/global.css" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="UTF-8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+  <link rel="manifest" href="/icons/site.webmanifest" />
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+  <link rel="shortcut icon" href="/icons/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#603cba" />
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+  <meta name="theme-color" content="#282A36" />
 
-    <title>How Minecraft Stores Crafting Recipes</title>
-  </head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
 
-  <body>
-    <nav>
-      <div class="flex">
-        <div class="flex-left">
-          <a href="/" class="discrete-link">Zach Manson</a>
-        </div>
-        <div class="flex-right">
-          <a href="/projects/" class="discrete-link">Projects</a>
-          <a href="/blog/" class="activated-link discrete-link">Blog</a>
-          <a href="/now" class="discrete-link">Now</a>
-        </div>
+  <title>How Minecraft Stores Crafting Recipes</title>
+</head>
+
+<body>
+  <nav>
+    <div class="flex">
+      <div class="flex-left">
+        <a href="/" class="discrete-link">Zach Manson</a>
       </div>
-    </nav>
+      <div class="flex-right">
+        <a href="/projects/" class="discrete-link">Projects</a>
+        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+      </div>
+    </div>
+  </nav>
 
-    <header>
-      <h1>How Minecraft Stores Crafting Recipes</h1>
-      <p>Or things noticed while stealing Mojang's work for marks</p>
-      <p><span class="date">2022-03-31</span></p>
-    </header>
+  <header>
+    <h1>How Minecraft Stores Crafting Recipes</h1>
+    <p>Or things noticed while stealing Mojang's work for marks</p>
+    <p><span class="date">2022-03-31</span></p>
+  </header>
 
-    <main>
-      <article><p>As of Minecraft version 1.18.1, there are 739 crafting recipes in the game...depending on how you count.  This little rabbithole is something I fell into during a meeting for a group project this week.  The project tasks us with building a "daily puzzle game" in vein of Wordle, as my web development unit likes the idea of looking anacronistic in a few years.</p>
+  <main>
+    <article><p>As of Minecraft version 1.18.1, there are 739 crafting recipes in the game...depending on how you count.  This little rabbithole is something I fell into during a meeting for a group project this week.  The project tasks us with building a "daily puzzle game" in vein of Wordle, as my web development unit likes the idea of looking anacronistic in a few years.</p>
 <p>The meeting was very preliminary, essentially just getting to know one another and bounce some ideas off each other.  One idea I had been mulling over was "Wordle but with for Minecraft crafting recipes", which requires no explanation for players of these two games (which among my peers includes everyone).  My group immediately latched onto the idea, but acknowledged the scope of including all Minecraft recipes would be challenge, both in terms of game design and actually acquiring them.</p>
 <p>Transcribing by hand was possible but likely impractical, as was automatically scraping the <a href="https://minecraft.fandom.com/wiki/Minecraft_Wiki">wiki</a>.  Luckily, the thousands of modders before us had poured through Minecraft's source file and through <a href="https://gaming.stackexchange.com/questions/382431/list-of-all-minecraft-crafting-recipes-for-crafting-web">cursory googling</a> we were able to get to <code>.minecraft/versions/1.18.1.jar/data/minecraft/recipes/</code>, where all crafting recipes in the game are stored as lovely little JSON files.  Perfect!  </p>
 <p>Upon further inspection there are some mildly interesting quirks within these JSON files.  The majority of recipes vaguely follow this format:</p>
@@ -399,13 +385,14 @@ yellow_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">
 
 <p>I theorize that the torch was older method of achieving this goal and just hasn't been updated to use the new system (though I am again too lazy and won't check old versions), unless there is some other difference I am not aware of between the two methods.  Maybe I should send Mojang a pull request.</p>
 <p>Recipe validation was the final feature I really felt was necessary for my own sense of completion.  That said, we never added shapeless recipe support... or varying difficulties... or hardcore mode.  Oh well.</p></article>
-    </main>
+  </main>
 
-    <footer>
-      <p>
-        <a href="/blog/feed.xml">Feed</a><br />
-        Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-      </p>
-    </footer>
-  </body>
+  <footer>
+    <p>
+      <a href="/blog/feed.xml">Feed</a> - <a
+        href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/blog/generator">ironprof</a>
+    </p>
+  </footer>
+</body>
+
 </html>

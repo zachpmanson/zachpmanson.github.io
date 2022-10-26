@@ -2,5 +2,7 @@
 
 source ./venv/bin/activate
 echo Activated venv
-python3 ./generator/process_posts.py
+python3 ./generator/ironprof.py
+deactivate
+echo Deactivated venv
 echo Done!

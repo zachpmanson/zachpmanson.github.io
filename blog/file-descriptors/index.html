@@ -1,62 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/styles/colors.css" />
-    <link rel="stylesheet" href="/styles/code.css" />
-    <link rel="stylesheet" href="/styles/global.css" />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/icons/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/icons/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/icons/site.webmanifest" />
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
-    <link rel="shortcut icon" href="/icons/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#603cba" />
-    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-    <meta name="theme-color" content="#282A36" />
+<head>
+  <link rel="stylesheet" href="/styles/colors.css" />
+  <link rel="stylesheet" href="/styles/code.css" />
+  <link rel="stylesheet" href="/styles/global.css" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="UTF-8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+  <link rel="manifest" href="/icons/site.webmanifest" />
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+  <link rel="shortcut icon" href="/icons/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#603cba" />
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+  <meta name="theme-color" content="#282A36" />
 
-    <title>Sneaky File Descriptors in Popen()</title>
-  </head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
 
-  <body>
-    <nav>
-      <div class="flex">
-        <div class="flex-left">
-          <a href="/" class="discrete-link">Zach Manson</a>
-        </div>
-        <div class="flex-right">
-          <a href="/projects/" class="discrete-link">Projects</a>
-          <a href="/blog/" class="activated-link discrete-link">Blog</a>
-          <a href="/now" class="discrete-link">Now</a>
-        </div>
+  <title>Sneaky File Descriptors in Popen()</title>
+</head>
+
+<body>
+  <nav>
+    <div class="flex">
+      <div class="flex-left">
+        <a href="/" class="discrete-link">Zach Manson</a>
       </div>
-    </nav>
+      <div class="flex-right">
+        <a href="/projects/" class="discrete-link">Projects</a>
+        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+      </div>
+    </div>
+  </nav>
 
-    <header>
-      <h1>Sneaky File Descriptors in Popen()</h1>
-      <p>Always be closing</p>
-      <p><span class="date">2022-06-09</span></p>
-    </header>
+  <header>
+    <h1>Sneaky File Descriptors in Popen()</h1>
+    <p>Always be closing</p>
+    <p><span class="date">2022-06-09</span></p>
+  </header>
 
-    <main>
-      <article><p>In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, <a href="https://minecraftle.zachmanson.com">Minecraftle</a> was the most fun to put together, but <a href="https://github.com/pavo-etc/rake">rake</a> was the most <em>educational</em>.  I'd never worked with sockets or TCP protocols before so this project was out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile) client and server programs.</p>
+  <main>
+    <article><p>In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, <a href="https://minecraftle.zachmanson.com">Minecraftle</a> was the most fun to put together, but <a href="https://github.com/pavo-etc/rake">rake</a> was the most <em>educational</em>.  I'd never worked with sockets or TCP protocols before so this project was out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile) client and server programs.</p>
 <p>The assignment required the design and implementation of protocol to enable distributed compilation of files and remote command execution across multiple servers (r(emote) + (m)ake = rake).  We needed to write a server program, and two client programs (one in C, the other in Python).  Between Beej's guide and the coursework, we fumbled our way to working prototypes, able to pass files, messages, and any other arbitrary data between our clients and servers.  The commands and files needing to be passed to servers were defined in a <code>Rakefile</code>, a strictly written parody of makefiles.</p>
 <p>It was extremely satisfying to see the programs work, with files being sent from my partner's machine to servers at my house and back again in perfect-ish synchronicity.  Just for our own gratification we tested it by compiling larger and larger C programs, which the servers handled by creating subprocesses to execute in parallel threads.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Executes a given command</span>
@@ -119,13 +105,14 @@ OSError: <span class="o">[</span>Errno <span class="m">24</span><span class="o">
 <hr />
 <p><strong>Update 2022-06-20:</strong></p>
 <p>Just learnt about popen() in C, now I feel really stupid.</p></article>
-    </main>
+  </main>
 
-    <footer>
-      <p>
-        <a href="/blog/feed.xml">Feed</a><br />
-        Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-      </p>
-    </footer>
-  </body>
+  <footer>
+    <p>
+      <a href="/blog/feed.xml">Feed</a> - <a
+        href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/blog/generator">ironprof</a>
+    </p>
+  </footer>
+</body>
+
 </html>

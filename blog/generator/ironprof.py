@@ -22,7 +22,7 @@ ignore_dirs = [
     ".DS_Store",
     "feed.xml",
     "generator",
-    "generate_blog.sh",
+    "build.sh",
     "venv"
 ]
 
@@ -87,6 +87,7 @@ for post_dir in posts_dirs:
                 ]
             }
         )
+    meta["post_dir"] = post_dir
 
     data = {**meta, "body": body}
 
@@ -103,11 +104,10 @@ for post_dir in posts_dirs:
     fe.guid(link)
     fe.published(meta["datetime"])
 
-    meta["post_dir"] = post_dir
     posts_data.append(meta)
 
 with open("index.html", "w") as f:
-    f.write(postlist_template.render({"posts_data": reversed(posts_data)}))
+    f.write(postlist_template.render({"posts_data": reversed(posts_data), "date":datetime.datetime.now()}))
     print("Generated blog index")
 
 with open("feed.xml", "wb") as f:

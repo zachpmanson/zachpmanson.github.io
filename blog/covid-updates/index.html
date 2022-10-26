@@ -1,62 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/styles/colors.css" />
-    <link rel="stylesheet" href="/styles/code.css" />
-    <link rel="stylesheet" href="/styles/global.css" />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/icons/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/icons/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/icons/site.webmanifest" />
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
-    <link rel="shortcut icon" href="/icons/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#603cba" />
-    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-    <meta name="theme-color" content="#282A36" />
+<head>
+  <link rel="stylesheet" href="/styles/colors.css" />
+  <link rel="stylesheet" href="/styles/code.css" />
+  <link rel="stylesheet" href="/styles/global.css" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="UTF-8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+  <link rel="manifest" href="/icons/site.webmanifest" />
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+  <link rel="shortcut icon" href="/icons/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#603cba" />
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+  <meta name="theme-color" content="#282A36" />
 
-    <title>Web Scraping vs. Government Whimsy</title>
-  </head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
 
-  <body>
-    <nav>
-      <div class="flex">
-        <div class="flex-left">
-          <a href="/" class="discrete-link">Zach Manson</a>
-        </div>
-        <div class="flex-right">
-          <a href="/projects/" class="discrete-link">Projects</a>
-          <a href="/blog/" class="activated-link discrete-link">Blog</a>
-          <a href="/now" class="discrete-link">Now</a>
-        </div>
+  <title>Web Scraping vs. Government Whimsy</title>
+</head>
+
+<body>
+  <nav>
+    <div class="flex">
+      <div class="flex-left">
+        <a href="/" class="discrete-link">Zach Manson</a>
       </div>
-    </nav>
+      <div class="flex-right">
+        <a href="/projects/" class="discrete-link">Projects</a>
+        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+      </div>
+    </div>
+  </nav>
 
-    <header>
-      <h1>Web Scraping vs. Government Whimsy</h1>
-      <p>A minor problem that globally only affects me</p>
-      <p><span class="date">2022-04-01</span></p>
-    </header>
+  <header>
+    <h1>Web Scraping vs. Government Whimsy</h1>
+    <p>A minor problem that globally only affects me</p>
+    <p><span class="date">2022-04-01</span></p>
+  </header>
 
-    <main>
-      <article><p>The West Australian State Government has overall handled COVID-19 quite well, but in the arena of making my regex elegent they are have failed completely.  (Almost) every day since March 2020 they have published a media release detailing the number in overnight cases identified and other updates about the pandemic in the state.</p>
+  <main>
+    <article><p>The West Australian State Government has overall handled COVID-19 quite well, but in the arena of making my regex elegent they are have failed completely.  (Almost) every day since March 2020 they have published a media release detailing the number in overnight cases identified and other updates about the pandemic in the state.</p>
 <p><img alt="" src="media_release.png" /></p>
 <p>For the first 2 years, this was sufficient for me, since for the most part WA was both physically isolated and had restrictions on who could enter the state.  This led us to have very little community transmission, only having minor and shortlived clusters of cases every few months.</p>
 <p>All good things must come to an end, and COVID-19 v5.0 Omicron debuted in WA on Christmas Eve 2021.  Since then I've (somewhat unhealthily) been compulsively checking the listing of <a href="https://ww2.health.wa.gov.au/News/Media-releases-listing-page">media releases</a> every day to find the number of local cases. </p>
@@ -95,13 +81,14 @@ COVID-19 update: 27th March 2022 (colon and ORDINAL)
 <h1>Ongoing Development...</h1>
 <p>For now <a href="https://tracker.zachmanson.com">this setup</a> works without much any effort from me, barring the occasional regex update.</p>
 <p>Unfortunately, this experience hasn't turned me off web scraping so I feel a niggling desire to add more functionality to the site.  Daily hospitalisations, deaths, and other morbidities are all tempingly trivial to add, right?  It's hard to call a project complete, even when you've already done everything you set out to do.  I have a sneaking suspicious that the xkcd comic will be more prophetic than I'd like.</p></article>
-    </main>
+  </main>
 
-    <footer>
-      <p>
-        <a href="/blog/feed.xml">Feed</a><br />
-        Made inefficiently by <a href="https://zachmanson.com">Zach Manson</a>
-      </p>
-    </footer>
-  </body>
+  <footer>
+    <p>
+      <a href="/blog/feed.xml">Feed</a> - <a
+        href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/blog/generator">ironprof</a>
+    </p>
+  </footer>
+</body>
+
 </html>
