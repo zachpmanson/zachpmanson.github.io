@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <link rel="stylesheet" href="/styles/code.css" />
+    
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
 
-<head>
-  <link rel="stylesheet" href="/styles/colors.css" />
-  <link rel="stylesheet" href="/styles/code.css" />
-  <link rel="stylesheet" href="/styles/global.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#282A36" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
-  <link rel="manifest" href="/icons/site.webmanifest" />
-  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
-  <link rel="shortcut icon" href="/icons/favicon.ico" />
-  <meta name="msapplication-TileColor" content="#603cba" />
-  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-  <meta name="theme-color" content="#282A36" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta charset="UTF-8" />
+    <title>The Poor Man's Static Site Generator</title>
+  </head>
 
-  <title>The Poor Man's Static Site Generator</title>
-</head>
-
-<body>
-  <nav>
-    <div class="flex">
-      <div class="flex-left">
-        <a href="/" class="discrete-link">Zach Manson</a>
-      </div>
-      <div class="flex-right">
+  <body>
+    
+    <nav>
+        <div class="flex">
+        <div class="flex-left">
+            <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
         <a href="/projects/" class="discrete-link">Projects</a>
         <a href="/blog/" class="discrete-link activated-link">Blog</a>
-      </div>
-    </div>
-  </nav>
+        </div>
+        </div>
+    </nav>
 
-  <header>
-    <h1>The Poor Man's Static Site Generator</h1>
-    <p>Using Pandoc to well below its fullest potential!</p>
-    <p><span class="date">2022-06-11</span></p>
-  </header>
+    <header>
+      <h1>The Poor Man's Static Site Generator</h1>
+      <p>Using Pandoc to well below its fullest potential!</p>
+      <p><span class="date">2022-06-11</span></p>
+    </header>
 
-  <main>
-    <article><p><a href="https://pandoc.org/">Pandoc</a> is a Swiss Army knife that I exclusively use to cut cheese.</p>
+    <main>
+      <article><p><a href="https://pandoc.org/">Pandoc</a> is a Swiss Army knife that I exclusively use to cut cheese.</p>
 <p>Every time I begin to write for this site, I open Codium and create a new file in my repo.  Then I realise I meant to create a new folder, call myself an idiot and start over.  This is the first step of my process, which currently concludes with running my anemic static site generator.  I hope to soon replace with this a bespoke and iron proficient(?) site generator, but until then I will continue using Pandoc to fulfill my static site generator requirements.</p>
 <p>My static site generator requirements:</p>
 <ul>
@@ -224,14 +239,17 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 
 <p>It opens every directory (except those in <code>nonposts</code>), runs pandoc on a Markdown file with the same name as the directory, and outputs <code>index.html</code> based on <code>templates/template.html</code>.</p>
 <p>The top level <code>index.html</code> is not modified by the script at all.  This page presumably would link to the subdirectories and must be manually modified.  Ugh.</p></article>
-  </main>
+    </main>
 
-  <footer>
-    <p>
-      <a href="/blog/feed.xml">Feed</a> - <a
-        href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/blog/generator">ironprof</a>
-    </p>
-  </footer>
-</body>
-
+    
+    <footer>
+      <p>
+        <a href="/blog/feed.xml">Feed</a> -
+        <a
+          href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/blog/generator"
+          >ironprof</a
+        >
+      </p>
+    </footer>
+  </body>
 </html>

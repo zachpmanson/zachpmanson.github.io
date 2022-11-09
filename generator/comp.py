@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link rel="stylesheet" href="/styles/code.css" />
-    
+# Functions to generate components for ironprof jinja templates
+
+def meta():
+    return """
     <link rel="stylesheet" href="/styles/colors.css" />
     <link rel="stylesheet" href="/styles/global.css" />
 
@@ -32,42 +31,32 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
+"""
 
-    <title>Usernames</title>
-  </head>
-
-  <body>
+def nav(activated_link):
+    links = ["projects", "blog"]
+    link_elements = []
+    for link in links:
+        is_active = ' activated-link' if activated_link == link else ''
+        link_elements.append(f'        <a href="/{link}/" class="discrete-link{is_active}">{link.capitalize()}</a>')
     
+    right_links_str = '\n'.join(link_elements)
+
+    is_root_active = ' activated-link' if activated_link == '.' else ''
+    return f"""
     <nav>
         <div class="flex">
         <div class="flex-left">
             <a href="/" class="discrete-link">Zach Manson</a>
         </div>
         <div class="flex-right">
-        <a href="/projects/" class="discrete-link">Projects</a>
-        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+{right_links_str}
         </div>
         </div>
-    </nav>
+    </nav>"""
 
-    <header>
-      <h1>Usernames</h1>
-      <p>Why am I still surprised</p>
-      <p><span class="date">2022-03-11</span></p>
-    </header>
-
-    <main>
-      <article><p>I spend an inordinate amount of time reading arguments on the internet. Every now and then I'll find one that is actually thoughtful and in-depth. One with more kindness than usual, with genuine attempts to understand the perspectives of each other.</p>
-<p>And after the arguing has concluded, the fighting parties express that they respect the other.</p>
-<p>These are rare. But it isn't rare that upon finding one of these I will glance at the usernames.</p>
-<p>Today I glanced at the usernames of two people having a beautiful argument on a forum:</p>
-<p><code>"euronforpresident"</code></p>
-<p>Fine, nice little Game of Thrones reference.</p>
-<p>And their opponent:</p>
-<p><code>"Hitleresque"</code></p></article>
-    </main>
-
-    
+def blog_footer():
+    return """
     <footer>
       <p>
         <a href="/blog/feed.xml">Feed</a> -
@@ -76,6 +65,4 @@
           >ironprof</a
         >
       </p>
-    </footer>
-  </body>
-</html>
+    </footer>"""
