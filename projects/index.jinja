@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {{ comp.meta() }}
+  
+  <link rel="canonical" href="https://zachmanson.com/projects" />
+  <title>Projects</title>
+</head>
+
+<body>
+  {{ comp.nav("projects") }}
+
+
+  <header>
+    <h1>Projects</h1>
+    <p>A list of "usable" things I have developed that are on the internet</p>
+  </header>
+  <main>
+
+    <div class="postlist">
+      {{ comp.project_post(
+        "POOPS Platform",
+        "2022",
+        "https://github.com/codersforcauses/poops",
+        "Contributed to the Coders For Causes Winter Project, an open-source progressive web app built for the Pets of Older Persons. The PWA helps the nonprofit's volunteers track their volunteering activities, register vet concerns and log incident reports.",
+        "Built with TypeScript, React, Next.js, Tailwind, and Firebase",
+        "/images/POOPS_black_circle.png"
+      ) }}
+      {{ comp.project_post(
+        "WA COVID-19 Tracker",
+        "2022",
+        "https://tracker.zachmanson.com/",
+        "A recurringly generated static website that displays the number of local COVID-19 cases overnight in Western Australia. Data is scraped from the WA Department of Health media releases.",
+        "Built with Python (matplotlib, BeautifulSoup, jinja) and SQLite",
+        "/images/cases_dark.png"
+      ) }}
+      {{ comp.project_post(
+        "snakeware OS",
+        "2020",
+        "https://github.com/joshiemoore/snakeware",
+        "Contributed system applications and documentation for snakeware, an open-source project creating a Linux-based operating system with a pure Python userspace.",
+        "Built with Python",
+        "/images/snakeware.png"
+      ) }}
+    </div>
+
+    <h2 class="center">University Projects</h2>
+
+    <div class="postlist">
+      {{ comp.project_post(
+        "Minecraftle",
+        "2022",
+        "https://minecraftle.zachmanson.com",
+        "A daily puzzle game fusing Minecraft crafting recipes and Wordle.",
+        "Built with Flask",
+        "/images/minecraftle.png"
+      ) }}
+      {{ comp.project_post(
+        "rake",
+        "2022",
+        "https://github.com/pavo-etc/rake",
+        "Developed client and server applications for rake, a protocol for distributed compilation and remote command execution.",
+        "Built with C and Python",
+        "/images/rakeserver.png"
+      ) }}
+      {{ comp.project_post(
+        "duplicates",
+        "2021",
+        "https://github.com/pavo-etc/duplicates",
+        "duplicates is a command line utility for finding duplicate files in directories based on SHA2 hashes.",
+        "Built with C",
+        "/images/duplicates.png"
+      ) }}
+      {{ comp.project_post(
+        "runcool",
+        "2021",
+        "https://github.com/pavo-etc/runcool-emulator",
+        "runcool is an emulator of a simple 16-bit computer designed to execute programs compiled from the esoteric programming language cool.",
+        "Built with C",
+        "/images/coolbook.png"
+      ) }}
+      {{ comp.project_post(
+        "Aquarium",
+        "2020",
+        "https://github.com/pavo-etc/aquarium",
+        "A randomly-generated puzzle game in the vein of Picross.",
+        "Built with Java",
+        "/images/aquarium.png"
+      ) }}
+    </div>
+    <p>
+      Some more boring projects are listed here <a href="/projects/microprojects/">here</a>.
+      More detailed writeups on some of these can be found <a href="https://notes.zachmanson.com/development.html">here</a>. 
+    </p>
+
+  </main>
+
+  <footer></footer>
+</body>
+
+</html>

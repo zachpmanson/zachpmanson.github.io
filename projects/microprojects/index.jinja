@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ comp.meta() }}
+
+    <link rel="canonical" href="https://zachmanson.com/microprojects" />
+    <title>Microprojects</title>
+  </head>
+
+  <body>
+    {{ comp.nav("projects") }}
+
+    <header>
+      <h1>Microprojects</h1>
+      <p>Boring things that are only here so I don't lose the links to them</p>
+    </header>
+    <main>
+      <div class="postlist">
+        {{ comp.project_post(
+          "ironprof",
+          "2022",
+          "https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator",
+          "A simple static site generator that allows for component insertion into plain HTML using jinja templating. ironprof is used to build this website.",
+          "Built with Python",
+          ""
+        ) }}
+        {{ comp.project_post(
+          "Mean Reversion Trading Algorithm",
+          "2022",
+          "https://github.com/QFinUWA/2022-Mean-Reversion-Team4",
+          "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.",
+          "Built with Python",
+          "/images/TSLA-cropped.png"
+        ) }}
+        {{ comp.project_post(
+          "Todont",
+          "2022",
+          "https://todont.zachmanson.com/",
+          "A simple persistent todo list application.",
+          "Built with React",
+          "/images/todont.png"
+        ) }}
+        {{ comp.project_post(
+          "Person Picker",
+          "2022",
+          "https://zachmanson.com/person-picker/",
+          "A simple randomizer for pulling names from a hat.",
+          "Built with a tiny amount of JavaScript",
+          ""
+        ) }}
+        {{ comp.project_post(
+          "Wordle Clone",
+          "2022",
+          "https://zachmanson.com/wordle",
+          "A barebones clone of the game Wordle.",
+          "Built with JavaScript",
+          ""
+        ) }}
+      </div>
+    </main>
+
+    <footer></footer>
+  </body>
+</html>
