@@ -47,7 +47,7 @@ def nav(activated_link):
     <nav>
         <div class="flex">
         <div class="flex-left">
-            <a href="/" class="discrete-link">Zach Manson</a>
+            <a href="/" class="discrete-link{is_root_active}">Zach Manson</a>
         </div>
         <div class="flex-right">
 {right_links_str}
@@ -66,3 +66,29 @@ def blog_footer():
         >
       </p>
     </footer>"""
+
+def project_post(name, year, url, desc, lang, img):
+    if img != "":
+      img_el = f"""
+          <div class="post-image">
+            <img class="thumbnail" src="{img}" />
+          </div>"""
+    else:
+      img_el = ''
+
+
+    return f"""
+      <a class="post" href="{url}">
+        <h3>{name} <span class="date">({year})</span></h3>
+        <div class="inline-flex">
+          <div class="post-description">
+            <p>
+              {desc}
+            </p>
+            <p class="italic">
+              {lang}
+            </p>
+          </div>
+          {img_el}
+        </div>
+      </a>"""

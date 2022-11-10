@@ -53,9 +53,9 @@ def generate_blog():
     posts_dirs.sort(key=get_post_date)
     #posts_dirs.reverse()
 
-    post_template = jinja2.Template(open("generator/post.html", "r").read())
+    post_template = jinja2.Template(open("generator/post.jinja", "r").read())
     postlist_template = jinja2.Template(
-        open("generator/postlist.html", "r").read())
+        open("generator/postlist.jinja", "r").read())
 
     fg = FeedGenerator()
     fg.id(blog_meta["blog_link"])
@@ -136,10 +136,10 @@ for (root,dirs,files) in os.walk('.', topdown=True):
         continue
 
     title = root.split("/")[-1]
-    if "index.template.html" not in files:
+    if "index.jinja" not in files:
         continue
     
-    page_template = jinja2.Template(open(os.path.join(root,"index.template.html"), "r").read())
+    page_template = jinja2.Template(open(os.path.join(root,"index.jinja"), "r").read())
     with open(os.path.join(root, "index.html"), "w") as f:
         f.write(page_template.render({
             "comp":comp
