@@ -136,13 +136,14 @@ for (root,dirs,files) in os.walk('.', topdown=True):
         continue
 
     title = root.split("/")[-1]
-    if "index.jinja" not in files:
-        continue
-    
-    page_template = jinja2.Template(open(os.path.join(root,"index.jinja"), "r").read())
-    with open(os.path.join(root, "index.html"), "w") as f:
-        f.write(page_template.render({
-            "comp":comp
-        }))
-        print(f"Generated {root}/index.html")
+    for file in files:
+        if not file.endswith(".jinja"):
+            continue
+        page_name = file[:-6]
+        page_template = jinja2.Template(open(os.path.join(root, file), "r").read())
+        with open(os.path.join(root, f"{page_name}.html"), "w") as f:
+            f.write(page_template.render({
+                "comp":comp
+            }))
+            print(f"Generated {root}/{page_name}.html")
 
