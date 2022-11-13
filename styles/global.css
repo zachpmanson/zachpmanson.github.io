@@ -233,7 +233,8 @@ a.post p {
 
 /* For article itself */
 
-article img {
+article img,
+.center-image {
   display: block;
   margin: 0 auto;
 }
