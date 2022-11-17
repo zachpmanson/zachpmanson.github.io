@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/styles/code.css" />
+    
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#282A36" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+    <title>Plain HTML Components</title>
+  </head>
+
+  <body>
+    
+    <nav>
+        <div class="flex">
+        <div class="flex-left">
+            <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+        <a href="/projects/" class="discrete-link">Projects</a>
+        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+        </div>
+        </div>
+    </nav>
+
+    <header>
+      <h1>Plain HTML Components</h1>
+      <p>Building resuable components in plain HTML using Jinja</p>
+      <p><span class="date">2022-11-17</span></p>
+    </header>
+
+    <main>
+      <article><p>Building sites with vanilla HTML can be a pain in the ass if you want to redesign an element that appears in every page, like a navigation bar or footer. Static site generators solve this problem with components, but I like reinventing the wheel. Jinja templating can be used to ape components since it is capable of passing arbitrary functions into its DOM templates.</p>
+<p class="filename">ssg.py</p>
+
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">blog_footer</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;footer&gt;</span>
+<span class="s2">      &lt;p&gt;</span>
+<span class="s2">        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -</span>
+<span class="s2">        &lt;a</span>
+<span class="s2">          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;</span>
+<span class="s2">          &gt;ironprof&lt;/a</span>
+<span class="s2">        &gt;</span>
+<span class="s2">      &lt;/p&gt;</span>
+<span class="s2">    &lt;/footer&gt;&quot;&quot;&quot;</span>
+
+<span class="n">page_template</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;template.html&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;output.html&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">page_template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span>
+        <span class="s2">&quot;blog_footer&quot;</span><span class="p">:</span><span class="n">blog_footer</span>
+    <span class="p">}))</span>
+</code></pre></div>
+
+<p class="filename">template.html</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    {{ blog_footer() }}
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p class="filename">output.html</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">footer</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/blog/feed.xml&quot;</span><span class="p">&gt;</span>Feed<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> -
+        <span class="p">&lt;</span><span class="nt">a</span>
+          <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;</span>
+          <span class="p">&gt;</span>ironprof<span class="p">&lt;/</span><span class="nt">a</span>
+        <span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">footer</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>This follows normal Python rules, so inheritance is followed and parameters can be passed into functions in the template.</p>
+<p class="filename">components.py</p>
+
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">nav</span><span class="p">(</span><span class="n">activated_link</span><span class="p">):</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">,</span> <span class="s2">&quot;blog&quot;</span><span class="p">]</span>
+    <span class="n">link_elements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+        <span class="n">is_active</span> <span class="o">=</span> <span class="s1">&#39; activated-link&#39;</span> <span class="k">if</span> <span class="n">activated_link</span> <span class="o">==</span> <span class="n">link</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">link_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        &lt;a href=&quot;/</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s1">/&quot; class=&quot;discrete-link</span><span class="si">{</span><span class="n">is_active</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">link</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span><span class="p">)</span>
+
+    <span class="n">right_links_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">link_elements</span><span class="p">)</span>
+
+    <span class="n">is_root_active</span> <span class="o">=</span> <span class="s1">&#39; activated-link&#39;</span> <span class="k">if</span> <span class="n">activated_link</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;nav&gt;</span>
+<span class="s2">        &lt;div class=&quot;flex&quot;&gt;</span>
+<span class="s2">        &lt;div class=&quot;flex-left&quot;&gt;</span>
+<span class="s2">            &lt;a href=&quot;/&quot; class=&quot;discrete-link</span><span class="si">{</span><span class="n">is_root_active</span><span class="si">}</span><span class="s2">&quot;&gt;Zach Manson&lt;/a&gt;</span>
+<span class="s2">        &lt;/div&gt;</span>
+<span class="s2">        &lt;div class=&quot;flex-right&quot;&gt;</span>
+<span class="si">{</span><span class="n">right_links_str</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &lt;/div&gt;</span>
+<span class="s2">        &lt;/div&gt;</span>
+<span class="s2">    &lt;/nav&gt;&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">blog_footer</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;footer&gt;</span>
+<span class="s2">      &lt;p&gt;</span>
+<span class="s2">        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -</span>
+<span class="s2">        &lt;a</span>
+<span class="s2">          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;</span>
+<span class="s2">          &gt;ironprof&lt;/a</span>
+<span class="s2">        &gt;</span>
+<span class="s2">      &lt;/p&gt;</span>
+<span class="s2">    &lt;/footer&gt;&quot;&quot;&quot;</span>
+</code></pre></div>
+
+<p class="filename">ssg.py</p>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">components</span>
+
+<span class="n">page_template</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;template.html&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;output.html&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">page_template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span>
+        <span class="s2">&quot;components&quot;</span><span class="p">:</span><span class="n">components</span>
+    <span class="p">}))</span>
+</code></pre></div>
+
+<p class="filename">template.html</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    {{ components.nav(&quot;blog&quot;)}}
+
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Lorem ipsum amirite<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    {{ components.blog_footer() }}
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p class="filename">output.html</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">nav</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex-left&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;discrete-link&quot;</span><span class="p">&gt;</span>Zach Manson<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex-right&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/projects/&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;discrete-link&quot;</span><span class="p">&gt;</span>Projects<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/blog/&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;discrete-link activated-link&quot;</span><span class="p">&gt;</span>Blog<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Lorem ipsum amirite<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">footer</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/blog/feed.xml&quot;</span><span class="p">&gt;</span>Feed<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> -
+        <span class="p">&lt;</span><span class="nt">a</span>
+          <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;</span>
+          <span class="p">&gt;</span>ironprof<span class="p">&lt;/</span><span class="nt">a</span>
+        <span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">footer</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div></article>
+    </main>
+
+    
+    <footer>
+      <p>
+        <a href="/blog/feed.xml">Feed</a> -
+        <a
+          href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator"
+          >ironprof</a
+        >
+      </p>
+    </footer>
+  </body>
+</html>

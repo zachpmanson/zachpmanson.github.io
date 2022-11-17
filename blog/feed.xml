@@ -13,7 +13,152 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Thu, 10 Nov 2022 08:50:25 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Nov 2022 06:25:52 +0000</lastBuildDate>
+    <item>
+      <title>Plain HTML Components</title>
+      <link>https://zachmanson.com/blog/jinja-components</link>
+      <description>Building resuable components in plain HTML using Jinja</description>
+      <content:encoded><![CDATA[<p>Building sites with vanilla HTML can be a pain in the ass if you want to redesign an element that appears in every page, like a navigation bar or footer. Static site generators solve this problem with components, but I like reinventing the wheel. Jinja templating can be used to ape components since it is capable of passing arbitrary functions into its DOM templates.</p>
+<p class="filename">ssg.py</p>
+
+<pre><code class="language-python">def blog_footer():
+    return &quot;&quot;&quot;
+    &lt;footer&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -
+        &lt;a
+          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;
+          &gt;ironprof&lt;/a
+        &gt;
+      &lt;/p&gt;
+    &lt;/footer&gt;&quot;&quot;&quot;
+
+page_template = jinja2.Template(open(&quot;template.html&quot;, &quot;r&quot;).read())
+with open(&quot;output.html&quot;), &quot;w&quot;) as f:
+    f.write(page_template.render({
+        &quot;blog_footer&quot;:blog_footer
+    }))
+</code></pre>
+<p class="filename">template.html</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    {{ blog_footer() }}
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p class="filename">output.html</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;footer&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -
+        &lt;a
+          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;
+          &gt;ironprof&lt;/a
+        &gt;
+      &lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>This follows normal Python rules, so inheritance is followed and parameters can be passed into functions in the template.</p>
+<p class="filename">components.py</p>
+
+<pre><code class="language-python">def nav(activated_link):
+    links = [&quot;projects&quot;, &quot;blog&quot;]
+    link_elements = []
+    for link in links:
+        is_active = ' activated-link' if activated_link == link else ''
+        link_elements.append(f'        &lt;a href=&quot;/{link}/&quot; class=&quot;discrete-link{is_active}&quot;&gt;{link.capitalize()}&lt;/a&gt;')
+
+    right_links_str = '\n'.join(link_elements)
+
+    is_root_active = ' activated-link' if activated_link == '.' else ''
+    return f&quot;&quot;&quot;
+    &lt;nav&gt;
+        &lt;div class=&quot;flex&quot;&gt;
+        &lt;div class=&quot;flex-left&quot;&gt;
+            &lt;a href=&quot;/&quot; class=&quot;discrete-link{is_root_active}&quot;&gt;Zach Manson&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex-right&quot;&gt;
+{right_links_str}
+        &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;&quot;&quot;&quot;
+
+def blog_footer():
+    return &quot;&quot;&quot;
+    &lt;footer&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -
+        &lt;a
+          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;
+          &gt;ironprof&lt;/a
+        &gt;
+      &lt;/p&gt;
+    &lt;/footer&gt;&quot;&quot;&quot;
+</code></pre>
+<p class="filename">ssg.py</p>
+
+<pre><code class="language-python">import components
+
+page_template = jinja2.Template(open(&quot;template.html&quot;, &quot;r&quot;).read())
+with open(&quot;output.html&quot;), &quot;w&quot;) as f:
+    f.write(page_template.render({
+        &quot;components&quot;:components
+    }))
+</code></pre>
+<p class="filename">template.html</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    {{ components.nav(&quot;blog&quot;)}}
+
+    &lt;p&gt;Lorem ipsum amirite&lt;/p&gt;
+
+    {{ components.blog_footer() }}
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p class="filename">output.html</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;nav&gt;
+      &lt;div class=&quot;flex&quot;&gt;
+        &lt;div class=&quot;flex-left&quot;&gt;
+          &lt;a href=&quot;/&quot; class=&quot;discrete-link&quot;&gt;Zach Manson&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex-right&quot;&gt;
+          &lt;a href=&quot;/projects/&quot; class=&quot;discrete-link&quot;&gt;Projects&lt;/a&gt;
+          &lt;a href=&quot;/blog/&quot; class=&quot;discrete-link activated-link&quot;&gt;Blog&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;p&gt;Lorem ipsum amirite&lt;/p&gt;
+
+    &lt;footer&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;/blog/feed.xml&quot;&gt;Feed&lt;/a&gt; -
+        &lt;a
+          href=&quot;https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator&quot;
+          &gt;ironprof&lt;/a
+        &gt;
+      &lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>]]></content:encoded>
+      <guid isPermaLink="false">https://zachmanson.com/blog/jinja-components</guid>
+      <pubDate>Thu, 17 Nov 2022 00:00:00 +0800</pubDate>
+    </item>
     <item>
       <title>Antisocial Media</title>
       <link>https://zachmanson.com/blog/github-feed</link>
