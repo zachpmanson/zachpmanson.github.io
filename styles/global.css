@@ -245,7 +245,7 @@ article img,
 }
 
 .post-image {
-  margin: auto;
+  margin: auto auto auto 0.5rem;
 }
 
 .post-image img {
