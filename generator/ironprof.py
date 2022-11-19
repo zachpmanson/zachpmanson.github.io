@@ -128,22 +128,27 @@ def generate_blog():
     with open("blog/feed.xml", "wb") as f:
         f.write((fg.rss_str(pretty=True)))
 
-generate_blog()
-
-# Recursively walk tree and generate index.html based on index.template.html 
-for (root,dirs,files) in os.walk('.', topdown=True):
-    if (root != ".") and root.split("/")[1] in ignore_dirs:
-        continue
-
-    title = root.split("/")[-1]
-    for file in files:
-        if not file.endswith(".jinja"):
+def recursive_build():
+    # Recursively walk tree and generate index.html based on index.template.html 
+    for (root,dirs,files) in os.walk('.', topdown=True):
+        if (root != ".") and root.split("/")[1] in ignore_dirs:
             continue
-        page_name = file[:-6]
-        page_template = jinja2.Template(open(os.path.join(root, file), "r").read())
-        with open(os.path.join(root, f"{page_name}.html"), "w") as f:
-            f.write(page_template.render({
-                "comp":comp
-            }))
-            print(f"Generated {root}/{page_name}.html")
+
+        title = root.split("/")[-1]
+        for file in files:
+            if not file.endswith(".jinja"):
+                continue
+            page_name = file[:-6]
+            page_template = jinja2.Template(open(os.path.join(root, file), "r").read())
+            with open(os.path.join(root, f"{page_name}.html"), "w") as f:
+                f.write(page_template.render({
+                    "comp":comp
+                }))
+                print(f"Generated {root}/{page_name}.html")
+
+if __name__=="__main__":
+    generate_blog()
+    recursive_build()
+
+
 
