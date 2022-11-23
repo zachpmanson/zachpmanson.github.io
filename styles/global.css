@@ -239,13 +239,17 @@ article img,
   margin: 0 auto;
 }
 
+.post > .inline-flex {
+  column-gap: 0.5rem;
+}
+
 .post-description {
   flex-basis: 70%;
   flex-grow: 2;
 }
 
 .post-image {
-  margin: auto auto auto 0.5rem;
+  margin: auto;
 }
 
 .post-image img {
