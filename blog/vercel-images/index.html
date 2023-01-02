@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/styles/code.css" />
+    
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#282A36" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+    <title>Vercel Image Optimisation</title>
+  </head>
+
+  <body>
+    
+    <nav>
+        <div class="flex">
+        <div class="flex-left">
+            <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+        <a href="/projects/" class="discrete-link">Projects</a>
+        <a href="/blog/" class="discrete-link activated-link">Blog</a>
+        </div>
+        </div>
+    </nav>
+
+    <header>
+      <h1>Vercel Image Optimisation</h1>
+      <p>A small footgun for beginners using Vercel</p>
+      <p><span class="date">2023-01-02</span></p>
+    </header>
+
+    <main>
+      <article><p>TLDR: If you are using Vercel and display a lot of images hosted on someone else's server, you probably want to turn off <a href="https://vercel.com/docs/concepts/image-optimization">Image Optimisation</a>.</p>
+<p>Over the last week I built <a href="https://alculator.zachmanson.com">Alculator</a> using Next.js and hosted on Vercel. The site uses data lovingly freebooted from the Dan Murphy's public API to rank products by the ratio of price to standard drinks, and displaying this data in a card.</p>
+<p><img alt="" src="cards.png" /></p>
+<p>The images for these cards are hosted on a Dan Murphy's server (media.danmurphys.com.au), and I am simply using Next.js <code>&lt;Image&gt;</code> tags to point to them.</p>
+<div class="codehilite"><pre><span></span><code>...
+    <span class="nt">&lt;div</span> <span class="na">className=</span><span class="s">&quot;card center&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span>
+        <span class="na">className=</span><span class="s">&quot;flex center-aligned&quot;</span>
+        <span class="na">onClick=</span><span class="s">{()</span> <span class="err">=</span><span class="nt">&gt;</span> (window.location.href = `https://www.danmurphys.com.au/product/<span class="cp">${</span><span class="n">item</span><span class="o">.</span><span class="n">stockcode</span><span class="cp">}</span>`)}
+      &gt;
+        <span class="nt">&lt;Image</span>
+          <span class="na">alt=</span><span class="s">&quot;Image of drink&quot;</span>
+          <span class="na">height=</span><span class="s">&quot;100&quot;</span>
+          <span class="na">width=</span><span class="s">&quot;80&quot;</span>
+          <span class="na">src=</span><span class="s">{`https://media.danmurphys.com.au/dmo/product/${item.stockcode}-1.png`}</span>
+        <span class="nt">/&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">className=</span><span class="s">&quot;fill-width&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">className=</span><span class="s">&quot;flex space-between align-center&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;h3&gt;</span>{item.name}<span class="nt">&lt;/h3&gt;</span>
+...
+</code></pre></div>
+
+<p>I'm using Vercel's free tier to serve the application which grants 100GB of bandwidth, which is magnitudes higher than any amount of users I expected to serve. I put the finishing touches on the site on December 30th, sent the link to a few people and went to the pub.</p>
+<p>Over the next few hours I started receiving strongly worded alerts from Vercel:</p>
+<p><img alt="" src="warnings.png" /></p>
+<p>Either I had gone viral or my code was a lot more inefficient than I thought. At 1AM I returned home, having reached the Ballmer Peak to diagnose the problem.</p>
+<p>On the Vercel/Dashboard/Usage page, right at the bottom is the harmless looking graph titled "Image Optimisations" which turned out to be the culprit. By default, Vercel takes all images hosted in <code>&lt;Image&gt;</code> tags and caches them all at the Edge. Vercel had optimised 1400 of these images before I discovered this and at the free tier this is capped at 1000 images. Whoops.</p>
+<p>The solution is simple:</p>
+<p class="filename">next-config.js</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cm">/** @type {import(&#39;next&#39;).NextConfig} */</span><span class="w"></span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">nextConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">reactStrictMode</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nx">images</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">unoptimized</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nextConfig</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></article>
+    </main>
+
+    
+    <footer>
+      <p>
+        <a href="/blog/feed.xml">Feed</a> -
+        <a
+          href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator"
+          >ironprof</a
+        >
+      </p>
+    </footer>
+  </body>
+</html>
