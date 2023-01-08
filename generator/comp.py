@@ -34,11 +34,14 @@ def meta():
 """
 
 def nav(activated_link):
-    links = ["projects", "blog"]
+    links = {
+      "projects":"Projects",
+      "blog":"Posts"
+    }
     link_elements = []
-    for link in links:
+    for (link, name) in links.items():
         is_active = ' activated-link' if activated_link == link else ''
-        link_elements.append(f'        <a href="/{link}/" class="discrete-link{is_active}">{link.capitalize()}</a>')
+        link_elements.append(f'        <a href="/{link}/" class="discrete-link{is_active}">{name}</a>')
     
     right_links_str = '\n'.join(link_elements)
 
