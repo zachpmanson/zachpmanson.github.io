@@ -54,6 +54,8 @@
 
   <script type="text/javascript">
     function submit(form) {
+      document.getElementById("response").innerText = "";
+
       console.log("Submitting");
       let formData = new FormData(form);
       let inputs = Object.fromEntries(formData);
@@ -62,6 +64,7 @@
 
       fetch('https://api.zachmanson.com/days-since', {
         method: 'POST',
+        mode: "cors",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
