@@ -85,7 +85,7 @@
           request.setRequestHeader("Content-Type", "application/json");
           request.onreadystatechange = (x, e) => {
             console.log(x);
-            console.log(v);
+            console.log(e);
           };
           request.send(JSON.stringify(payload));
 
