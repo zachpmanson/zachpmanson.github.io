@@ -59,6 +59,18 @@
       let inputs = Object.fromEntries(formData);
       let payload = {"key": inputs.password, "update": {},};
       payload.update[inputs.deployment] = inputs.date;
+      console.log("XML Request");
+      var request = new XMLHttpRequest();
+      request.open("POST", "https://api.zachmanson.com/days-since", true);
+      request.setRequestHeader('Accept', 'application/json');
+      request.setRequestHeader('Content-Type', 'application/json');
+      request.onreadystatechange => {
+        if (this.readyState == XMLHttpRequest.DONE) {
+          console.log(this)
+        }
+      };
+      request.send(JSON.stringify(payload));
+
       fetch('https://api.zachmanson.com/days-since', {
         method: 'POST',
         headers: {
