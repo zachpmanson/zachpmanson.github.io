@@ -112,7 +112,13 @@
         },
         body: JSON.stringify(payload)
       })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status !== 500) {
+          return response.json()
+        } else {
+					return {"error": "Internal server error"}
+        }
+      })
       .then(response => {
         document.getElementById("response").innerText = JSON.stringify(response)
       })
