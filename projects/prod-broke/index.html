@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#282A36" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+  
+  <link rel="canonical" href="https://zachmanson.com/projects/prod-broke" />
+  <title>Prod Broke?</title>
+
+</head>
+
+<body>
+  
+    <nav>
+        <div class="flex">
+        <div class="flex-left">
+            <a href="/" class="discrete-link">Zach Manson</a>
+        </div>
+        <div class="flex-right">
+        <a href="/projects/" class="discrete-link activated-link">Projects</a>
+        <a href="/blog/" class="discrete-link">Posts</a>
+        </div>
+        </div>
+    </nav>
+
+
+  <header>
+    <h1>Prod Broke?</h1>
+    <p>Report a broken deployment</p>
+  </header>
+  <main>
+
+    <form id="form" class="center">
+      <select
+        name="deployment"
+        id="deployment"
+        defaultValue="DEV"
+      >
+        <option key="DEV" value="DEV">
+          DEV
+        </option>
+        <option key="UAT" value="UAT">
+          UAT
+        </option>
+        <option key="PROD" value="PROD">
+          PROD
+        </option>
+      </select>
+      <input
+        id="date"
+        type="text"
+        name="date"
+      />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+
+      <input type="submit" value="Submit" />
+    </form>
+    <p class="center" id="response"></p>
+
+
+  <script type="text/javascript">
+    function submit(form) {
+      console.log("Submitting");
+      let formData = new FormData(form);
+      let inputs = Object.fromEntries(formData);
+      let payload = {"key": inputs.password, "update": {},};
+      payload.update[inputs.deployment] = inputs.date;
+      fetch('https://api.zachmanson.com/days-since', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(response => {
+        document.getElementById("response").innerText = JSON.stringify(response)
+      })
+      .catch(e=>{
+        document.getElementById("response").innerText = e;
+      });
+
+    }
+    let day = (new Date()).toISOString()
+    document.getElementById("date").placeholder = day.slice(0,day.indexOf("T"));
+    document.getElementById("date").value = day.slice(0,day.indexOf("T"));
+
+    document.getElementById("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      submit(e.target);
+    });
+  </script>
+
+  </main>
+
+  <footer></footer>
+</body>
+
+</html>
