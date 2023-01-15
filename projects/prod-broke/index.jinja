@@ -88,7 +88,6 @@
 
     }
     let day = (new Date()).toISOString()
-    document.getElementById("date").placeholder = day.slice(0,day.indexOf("T"));
     document.getElementById("date").value = day.slice(0,day.indexOf("T"));
 
     document.getElementById("form").addEventListener("submit", function (e) {
