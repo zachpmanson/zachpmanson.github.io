@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Mon, 16 Jan 2023 11:23:27 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Jan 2023 09:17:13 +0000</lastBuildDate>
     <item>
       <title>Vercel Image Optimisation</title>
       <link>https://zachmanson.com/blog/vercel-images</link>
@@ -897,7 +897,7 @@ yellow_bed.json:      &quot;tag&quot;: &quot;minecraft:planks&quot;
 </table>
 
 <h2>Abstract</h2>
-<p>This hEP proposes a framework for adding first-class support for additional forms of h used in mathematical contexts, and that "𝐡" be added to the h programming language standard implementation.  As of version 1.0, the only supported output characters are "h" and "'".</p>
+<p>This hEP proposes a framework for adding first-class support for additional forms of h used in mathematical contexts, and that "𝐡" be added to the h programming language standard implementation. As of version 1.0, the only supported output characters are "h" and "'".</p>
 <h2>Motivation</h2>
 <p>The h Programming language is borne from <a href="https://christine.website/blog/formal-grammar-of-h-2019-05-19">the conlang h</a> which was formalised in 2019 by Xe Iaso.</p>
 <p>In their unveiling of the language they exhibited how the conlang's simple syntax could be used for complex conversation, all within the use of a single written character and phone:</p>
@@ -906,10 +906,10 @@ yellow_bed.json:      &quot;tag&quot;: &quot;minecraft:planks&quot;
 * Cadey facepalms
 </code></pre>
 <p>As stated in h's formal specification, it can be used to represent all possible communications within the confines of the letter h.</p>
-<p>She later developed a syntax, compiler and runtime for <a href="https://christine.website/blog/h-language-2019-06-30">the h Programming Language</a> (hlang).  This programming language was designed for the output of the h conlang, and expanded the character set in use to include both the Romanic form "h" and its Lojbanic equivalent "'".</p>
-<p>A long-standing difficulty for the programming language is expressing mathematical notation in its output.  While it is entirely possible to express any and all equations in the language, for this purpose it doesn't utiltise the "h" character to its maximum capacity and as such is unnecessarily verbose.</p>
+<p>They later developed a syntax, compiler and runtime for <a href="https://christine.website/blog/h-language-2019-06-30">the h Programming Language</a> (hlang). This programming language was designed for the output of the h conlang, and expanded the character set in use to include both the Romanic form "h" and its Lojbanic equivalent "'".</p>
+<p>A long-standing difficulty for the programming language is expressing mathematical notation in its output. While it is entirely possible to express any and all equations in the language, for this purpose it doesn't utiltise the "h" character to its maximum capacity and as such is unnecessarily verbose.</p>
 <h2>Goals</h2>
-<p>The primary goals of this proposal are to provide a specification for implementing additional forms of "h" in hlang to enable more terse output for use in mathematical contexts.  The only additional form of "h" proposed in this hEP is "𝐡" (U+1D421).</p>
+<p>The primary goals of this proposal are to provide a specification for implementing additional forms of "h" in hlang to enable more terse output for use in mathematical contexts. The only additional form of "h" proposed in this hEP is "𝐡" (U+1D421).</p>
 <p>The proposal would enable programs such as this:</p>
 <pre><code class="language-sh">$ cat new_equation.h
 𝐡 𝐡 h '
@@ -928,11 +928,11 @@ h h h ' ' h ' h h h h h h h h h ' h
 <pre><code class="language-h">a^2 + b^2 = c^2
 </code></pre>
 <h2>Non-Goals</h2>
-<p>This hEP is not an attempt to sully hlang with characters outside of the formal grammar of the h conlang.  The scope of the specification, while allowing for additional forms of "h" to be supported, is exclusively for forms of "h".  It is not applicable to other characters, such as "g".</p>
-<p>This hEP only explicitly proposes the addition of "𝐡" (U+1D421) though is designed to allow other forms of "h" to be supported by hlang in the future, such as "𝒉" (U+1D489), "𝓱" (U+1D4F1), or "𝕙" (U+1D559).  While these forms could be implemented in a near identical manner to "𝐡", that is outside of the scope of this hEP.  All of these forms of "h" are UTF-8 characters designed for use in mathematical equations.</p>
-<p>The hEP is also explicitly not intending to enable support for "h" with diacritics, such as "ḧ" (U+1E27).  Etymologically related forms of modern "h" are also outside the scope of this hEP.</p>
+<p>This hEP is not an attempt to sully hlang with characters outside of the formal grammar of the h conlang. The scope of the specification, while allowing for additional forms of "h" to be supported, is exclusively for forms of "h". It is not applicable to other characters, such as "g".</p>
+<p>This hEP only explicitly proposes the addition of "𝐡" (U+1D421) though is designed to allow other forms of "h" to be supported by hlang in the future, such as "𝒉" (U+1D489), "𝓱" (U+1D4F1), or "𝕙" (U+1D559). While these forms could be implemented in a near identical manner to "𝐡", that is outside of the scope of this hEP. All of these forms of "h" are UTF-8 characters designed for use in mathematical equations.</p>
+<p>The hEP is also explicitly not intending to enable support for "h" with diacritics, such as "ḧ" (U+1E27). Etymologically related forms of modern "h" are also outside the scope of this hEP.</p>
 <h2>Semantics</h2>
-<p>Under this proposal, "𝐡" would receive first class support by hlang.  To output it would be the same as the standard "h" character:</p>
+<p>Under this proposal, "𝐡" would receive first class support by hlang. To output it would be the same as the standard "h" character:</p>
 <pre><code class="language-sh">$ cat math_h.h
 𝐡
 </code></pre>
@@ -942,7 +942,7 @@ h h h ' ' h ' h h h h h h h h h ' h
 <p>Output:</p>
 <pre><code class="language-h">𝐡
 </code></pre>
-<p>Represented with a node tree: </p>
+<p>Represented with a node tree:</p>
 <pre><code class="language-h">&amp;peg.Node{
     Name: &quot;H&quot;,
     Text: &quot;𝐡&quot;,
@@ -977,7 +977,7 @@ h h h ' ' h ' h h h h h h h h h ' h
     },
 }
 </code></pre>
-<p>The "𝐡" character should be usable in all contexts where "h" and "'" are currently usable.  Grammatically it should follow all the same principles and restrictions as "h" and "'".</p>
+<p>The "𝐡" character should be usable in all contexts where "h" and "'" are currently usable. Grammatically it should follow all the same principles and restrictions as "h" and "'".</p>
 <h2>Dependencies</h2>
 <p>As with hlang v1.0, this proposal not require any dependencies, other than UTF-8 formatted source files.</p>
 <h2>Acknowledgements</h2>
