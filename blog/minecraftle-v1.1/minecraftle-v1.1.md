@@ -99,6 +99,6 @@ Since initial release 2500+ people have played the game. From what I can tell th
 
 ---
 
-It was some of the first JavaScript I every wrote and it reflects that, much of the old code makes me want to cringe. With the benefit of 6 months professionally working on large TypeScript projects, Minecraftle seems quaint (and somewhat shocking that it even works).
+It was some of the first JavaScript I ever wrote and it reflects that, much of the old code makes me want to cringe. With the benefit of 6 months professionally working on large TypeScript projects, Minecraftle seems quaint (and somewhat shocking that it even works).
 
 Regardless, it holds a place in my heart as my webdev project with any complexity and is likely responsible for getting my foot in the door at my current job. For this reason I am willing to continue tending the garden it occupies.
