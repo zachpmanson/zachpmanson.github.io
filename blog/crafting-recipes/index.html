@@ -57,17 +57,13 @@
     </header>
 
     <main>
-      <article><p>As of Minecraft version 1.18.1, there are 739 crafting recipes in the game...depending on how you count.  This little rabbithole is something I fell into during a meeting for a group project this week.  The project tasks us with building a "daily puzzle game" in vein of Wordle, as my web development unit likes the idea of looking anacronistic in a few years.</p>
-<p>The meeting was very preliminary, essentially just getting to know one another and bounce some ideas off each other.  One idea I had been mulling over was "Wordle but with for Minecraft crafting recipes", which requires no explanation for players of these two games (which among my peers includes everyone).  My group immediately latched onto the idea, but acknowledged the scope of including all Minecraft recipes would be challenge, both in terms of game design and actually acquiring them.</p>
-<p>Transcribing by hand was possible but likely impractical, as was automatically scraping the <a href="https://minecraft.fandom.com/wiki/Minecraft_Wiki">wiki</a>.  Luckily, the thousands of modders before us had poured through Minecraft's source file and through <a href="https://gaming.stackexchange.com/questions/382431/list-of-all-minecraft-crafting-recipes-for-crafting-web">cursory googling</a> we were able to get to <code>.minecraft/versions/1.18.1.jar/data/minecraft/recipes/</code>, where all crafting recipes in the game are stored as lovely little JSON files.  Perfect!  </p>
-<p>Upon further inspection there are some mildly interesting quirks within these JSON files.  The majority of recipes vaguely follow this format:</p>
+      <article><p>As of Minecraft version 1.18.1, there are 739 crafting recipes in the game...depending on how you count. This little rabbithole is something I fell into during a meeting for a group project this week. The project tasks us with building a "daily puzzle game" in vein of Wordle, as my web development unit likes the idea of looking anacronistic in a few years.</p>
+<p>The meeting was very preliminary, essentially just getting to know one another and bounce some ideas off each other. One idea I had been mulling over was "Wordle but with for Minecraft crafting recipes", which requires no explanation for players of these two games (which among my peers includes everyone). My group immediately latched onto the idea, but acknowledged the scope of including all Minecraft recipes would be challenge, both in terms of game design and actually acquiring them.</p>
+<p>Transcribing by hand was possible but likely impractical, as was automatically scraping the <a href="https://minecraft.fandom.com/wiki/Minecraft_Wiki">wiki</a>. Luckily, the thousands of modders before us had poured through Minecraft's source file and through <a href="https://gaming.stackexchange.com/questions/382431/list-of-all-minecraft-crafting-recipes-for-crafting-web">cursory googling</a> we were able to get to <code>.minecraft/versions/1.18.1.jar/data/minecraft/recipes/</code>, where all crafting recipes in the game are stored as lovely little JSON files. Perfect!</p>
+<p>Upon further inspection there are some mildly interesting quirks within these JSON files. The majority of recipes vaguely follow this format:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shaped&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;###&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;#X#&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;#R#&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;###&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;#X#&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;#R#&quot;</span><span class="p">],</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;R&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:redstone&quot;</span><span class="w"></span>
@@ -85,7 +81,7 @@
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>Seems like a straightforward and logical way of laying it all out.  Presumably the "type" being "crafting_shaped" is to denote recipes with particular shapes (like a dispenser) as different from recipes where block arrangment doesn't matter (like mushroom stew).</p>
+<p>Seems like a straightforward and logical way of laying it all out. Presumably the "type" being "crafting_shaped" is to denote recipes with particular shapes (like a dispenser) as different from recipes where block arrangment doesn't matter (like mushroom stew).</p>
 <p>Shapeless crafting recipes follow a simpler format:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shapeless&quot;</span><span class="p">,</span><span class="w"></span>
@@ -131,7 +127,7 @@
  <span class="m">198</span>   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:stonecutting&quot;</span>,
 </code></pre></div>
 
-<p>Hold on, that's not just crafting recipes!  All kinds "recipes" are stored in this directory, from normal smoking to smithing.  This explains the repeated entries for items like cooked porkchop.</p>
+<p>Hold on, that's not just crafting recipes! All kinds "recipes" are stored in this directory, from normal smoking to smithing. This explains the repeated entries for items like cooked porkchop.</p>
 <div class="codehilite"><pre><span></span><code>zach@grannysmith recipes % ls cooked*.json
 cooked_beef.json                           cooked_mutton_from_smoking.json
 cooked_beef_from_campfire_cooking.json     cooked_porkchop.json
@@ -220,22 +216,22 @@ cooked_mutton_from_campfire_cooking.json
 </code></pre></div>
 
 <p>Tools smithed with netherite get a different and simple format as well:</p>
-<div class="codehilite"><pre><span></span><code><span class="kc">net</span><span class="err">heri</span><span class="kc">te</span><span class="err">_sword_smi</span><span class="kc">t</span><span class="err">hi</span><span class="kc">n</span><span class="err">g.jso</span><span class="kc">n</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:smithing&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;base&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:diamond_sword&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;addition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:netherite_ingot&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:netherite_sword&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code>&gt; cat netherite_sword_smithing.json
+<span class="o">{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:smithing&quot;</span>,
+  <span class="s2">&quot;base&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:diamond_sword&quot;</span>
+  <span class="o">}</span>,
+  <span class="s2">&quot;addition&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:netherite_ingot&quot;</span>
+  <span class="o">}</span>,
+  <span class="s2">&quot;result&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:netherite_sword&quot;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div>
 
-<p>Stonecutting unveiled an interesting quirk: </p>
+<p>Stonecutting unveiled an interesting quirk:</p>
 <div class="codehilite"><pre><span></span><code>&gt; cat chiseled_stone_bricks_stone_from_stonecutting.json
 <span class="o">{</span>
   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:stonecutting&quot;</span>,
@@ -247,14 +243,14 @@ cooked_mutton_from_campfire_cooking.json
 <span class="o">}</span>
 </code></pre></div>
 
-<p>The count value determine how many items are output by the recipe, and appears in over 579 total recipes.  For the standard crafting recipes this value only appears for recipes that output more than 1 item, but curiously stonecutter recipes always include this value.</p>
-<p>All this elicited a nose exhale and an "oh neat" from me as I poked around the files.  Most of these details aren't important to the project, but the parts that are  important will be a huge time save.  Web scraping in my experience is a pain (though somehow I think the maintainers of the Minecraft wiki would be more consistent than the <a href="https://github.com/pavo-etc/wa-covid-tracker/blob/1e1e8e317084e22aba6c143afbe9a8249e6231dc/scraper.py#L29">WA Government</a>).</p>
-<p>Now we can focus on the real trouble - every other aspect of puzzle game design and web development.  I am particularly not looking forward to dealing with the interaction between Wordle-style position hints and different crafting orientation/positions.</p>
+<p>The count value determine how many items are output by the recipe, and appears in over 579 total recipes. For the standard crafting recipes this value only appears for recipes that output more than 1 item, but curiously stonecutter recipes always include this value.</p>
+<p>All this elicited a nose exhale and an "oh neat" from me as I poked around the files. Most of these details aren't important to the project, but the parts that are important will be a huge time save. Web scraping in my experience is a pain (though somehow I think the maintainers of the Minecraft wiki would be more consistent than the <a href="https://github.com/pavo-etc/wa-covid-tracker/blob/1e1e8e317084e22aba6c143afbe9a8249e6231dc/scraper.py#L29">WA Government</a>).</p>
+<p>Now we can focus on the real trouble - every other aspect of puzzle game design and web development. I am particularly not looking forward to dealing with the interaction between Wordle-style position hints and different crafting orientation/positions.</p>
 <hr />
 <p><strong>Update 2022-06-05:</strong></p>
-<p>Minecraftle is <a href="https://minecraftle.zachmanson.com">playable</a> and nearly fully finished.  We submitted two weeks ago but there are a few things I want to implement for my own interest.  The JSON files discussed in this post were used, but their format was inconvenient for querying so needed to be restructured. Yesterday I rewrote the script to restructure the recipe JSON files since the initial version was a mess, and finally implemented the functions to validate recipes on object placement.  These changes revealed a few more quirks in the recipe JSON files.</p>
-<p>Some recipes have multiple forms, such as torches which use coal or charcoal.  I had assumed this would just result in two seperate recipe files, but:</p>
-<div class="codehilite"><pre><span></span><code>&gt; cat torch.json 
+<p>Minecraftle is <a href="https://minecraftle.zachmanson.com">playable</a> and nearly fully finished. We submitted two weeks ago but there are a few things I want to implement for my own interest. The JSON files discussed in this post were used, but their format was inconvenient for querying so needed to be restructured. Yesterday I rewrote the script to restructure the recipe JSON files since the initial version was a mess, and finally implemented the functions to validate recipes on object placement. These changes revealed a few more quirks in the recipe JSON files.</p>
+<p>Some recipes have multiple forms, such as torches which use coal or charcoal. I had assumed this would just result in two seperate recipe files, but:</p>
+<div class="codehilite"><pre><span></span><code>&gt; cat torch.json
 <span class="o">{</span>
   <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_shaped&quot;</span>,
   <span class="s2">&quot;pattern&quot;</span>: <span class="o">[</span>
@@ -281,32 +277,32 @@ cooked_mutton_from_campfire_cooking.json
 <span class="o">}</span>
 </code></pre></div>
 
-<p>This actually caused a mild issue in Minecraftle that I currently have a hacky solution for.  As far as I can tell this doesn't appear in many recipes (though I'm too lazy to write the regex to check).  When we restructure the JSON files, we simplify the format so the <code>pattern</code> field contains the actual item names rather than character representations.  This doesn't leave much room alternate forms, short of just repeating the whole recipe with the differing items.  While totally possible, I just forced it to select the first item whenever there are multiple options.  This means that you would be unable to craft a torch with charcoal.</p>
+<p>This actually caused a mild issue in Minecraftle that I currently have a hacky solution for. As far as I can tell this doesn't appear in many recipes (though I'm too lazy to write the regex to check). When we restructure the JSON files, we simplify the format so the <code>pattern</code> field contains the actual item names rather than character representations. This doesn't leave much room alternate forms, short of just repeating the whole recipe with the differing items. While totally possible, I just forced it to select the first item whenever there are multiple options. This means that you would be unable to craft a torch with charcoal.</p>
 <p>As far as I can tell this poses no issues since in Minecraftle's current form you don't receive charcoal as a crafting ingredient, and I am yet to find another appearance of this format that uses the items in <code>given_ingredients.json</code>. I'm still uncomfortable with this though, and I hope to come back and fix it after exams.</p>
 <p>Another oddity reared its head with stone tools:</p>
-<div class="codehilite"><pre><span></span><code><span class="err">&gt;</span><span class="w"> </span><span class="err">ca</span><span class="kc">t</span><span class="w"> </span><span class="err">s</span><span class="kc">t</span><span class="err">o</span><span class="kc">ne</span><span class="err">_axe.jso</span><span class="kc">n</span><span class="w"> </span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:crafting_shaped&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;XX&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;X#&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot; #&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;#&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stick&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;X&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stone_tool_materials&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minecraft:stone_axe&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code>&gt; cat stone_axe.json
+<span class="o">{</span>
+  <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;minecraft:crafting_shaped&quot;</span>,
+  <span class="s2">&quot;pattern&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;XX&quot;</span>,
+    <span class="s2">&quot;X#&quot;</span>,
+    <span class="s2">&quot; #&quot;</span>
+  <span class="o">]</span>,
+  <span class="s2">&quot;key&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;#&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:stick&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;X&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:stone_tool_materials&quot;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>,
+  <span class="s2">&quot;result&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;item&quot;</span>: <span class="s2">&quot;minecraft:stone_axe&quot;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div>
 
-<p>See it? <code>tag</code> replaces <code>item</code> in a number of cases, such as stone tools.  Blackstone and cobbled deepslate have been added fairly recently to the game, and can be used for interchangably for cobblestone in a number of recipes.  This kind of notation appears in a number of recipes:</p>
+<p>See it? <code>tag</code> replaces <code>item</code> in a number of cases, such as stone tools. Blackstone and cobbled deepslate have been added fairly recently to the game, and can be used for interchangably for cobblestone in a number of recipes. This kind of notation appears in a number of recipes:</p>
 <div class="codehilite"><pre><span></span><code>&gt; grep  <span class="s2">&quot;\&quot;tag\&quot;:&quot;</span> *
 acacia_planks.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:acacia_logs&quot;</span>
 barrel.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
@@ -374,7 +370,7 @@ wooden_sword.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2
 yellow_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">&quot;minecraft:planks&quot;</span>
 </code></pre></div>
 
-<p>These tags are referring to <code>.minecraft/versions/1.18.1.jar/data/minecraft/tags/items/</code>, which holds yet more JSON files with lists of all items that belong to each tag.  For example:</p>
+<p>These tags are referring to <code>.minecraft/versions/1.18.1.jar/data/minecraft/tags/items/</code>, which holds yet more JSON files with lists of all items that belong to each tag. For example:</p>
 <div class="codehilite"><pre><span></span><code>&gt; cat stone_crafting_materials.json
 <span class="o">{</span>
   <span class="s2">&quot;replace&quot;</span>: false,
@@ -388,7 +384,7 @@ yellow_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">
 
 <p>To deal with these I've currently just put edge cases in to handle these tags manually, though I would like to have a more robust solution in the future that can be determined by <code>given_ingredients.json</code>.</p>
 <p>Both of these appear to be solving the same problem, and it's strange that coal doesn't use the <code>tag</code> field, especially since there is <code>tag</code> JSON file that seems made for this:</p>
-<div class="codehilite"><pre><span></span><code>&gt; cat coals.json 
+<div class="codehilite"><pre><span></span><code>&gt; cat coals.json
 <span class="o">{</span>
   <span class="s2">&quot;replace&quot;</span>: false,
   <span class="s2">&quot;values&quot;</span>: <span class="o">[</span>
@@ -398,8 +394,8 @@ yellow_bed.json:      <span class="s2">&quot;tag&quot;</span>: <span class="s2">
 <span class="o">}</span>
 </code></pre></div>
 
-<p>I theorize that the torch was older method of achieving this goal and just hasn't been updated to use the new system (though I am again too lazy and won't check old versions), unless there is some other difference I am not aware of between the two methods.  Maybe I should send Mojang a pull request.</p>
-<p>Recipe validation was the final feature I really felt was necessary for my own sense of completion.  That said, we never added shapeless recipe support... or varying difficulties... or hardcore mode.  Oh well.</p></article>
+<p>I theorize that the torch was older method of achieving this goal and just hasn't been updated to use the new system (though I am again too lazy and won't check old versions), unless there is some other difference I am not aware of between the two methods. Maybe I should send Mojang a pull request.</p>
+<p>Recipe validation was the final feature I really felt was necessary for my own sense of completion. That said, we never added shapeless recipe support... or varying difficulties... or hardcore mode. Oh well.</p></article>
     </main>
 
     
