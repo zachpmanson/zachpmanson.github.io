@@ -256,3 +256,8 @@ article img,
   max-width: 10em;
   max-height: 8rem;
 }
+
+/* Inline monospace */
+p code {
+  color: var(--yellow);
+}
