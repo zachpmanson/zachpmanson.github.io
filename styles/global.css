@@ -187,7 +187,7 @@ img.profile {
 
 a.post {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   text-decoration: none;
   color: var(--white);
   outline-color: var(--purple);
@@ -201,12 +201,35 @@ a.post:hover {
 }
 
 a.post h3 {
-  margin: 0.5rem 0;
+  margin: 0;
 }
 
 a.post p {
-  margin: 0.5rem 0;
-  font-weight: 300;
+  margin: 0;
+  font-weight: 200;
+}
+
+a.post .post-description p {
+  margin: 0.5rem 0 0 0;
+}
+
+.post > .inline-flex {
+  column-gap: 0.5rem;
+}
+
+.post-description {
+  flex-basis: 70%;
+  flex-grow: 2;
+}
+
+.post-image {
+  margin: auto;
+  max-height: 8rem;
+}
+
+.post-image img {
+  max-width: 10rem;
+  max-height: 8rem;
 }
 
 /* Flex */
@@ -237,24 +260,6 @@ article img,
 .center-image {
   display: block;
   margin: 0 auto;
-}
-
-.post > .inline-flex {
-  column-gap: 0.5rem;
-}
-
-.post-description {
-  flex-basis: 70%;
-  flex-grow: 2;
-}
-
-.post-image {
-  margin: auto;
-}
-
-.post-image img {
-  max-width: 10em;
-  max-height: 8rem;
 }
 
 /* Inline monospace */
