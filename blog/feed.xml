@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Thu, 26 Jan 2023 07:24:29 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Jan 2023 07:25:01 +0000</lastBuildDate>
     <item>
       <title>Minecraftle v1.1</title>
       <link>https://zachmanson.com/blog/minecraftle-v1.1</link>
@@ -88,7 +88,7 @@ After:
 <p><code>c0ce8c2</code>: Fixed stick recipe being overwritten by second stick recipes that uses bamboo.</p>
 <hr />
 <p>It was some of the first JavaScript I ever wrote and it reflects that, much of the old code makes me want to cringe. With the benefit of 6 months professionally working on large TypeScript projects, Minecraftle seems quaint (and somewhat shocking that it even works).</p>
-<p>Regardless, it holds a place in my heart as my webdev project with any complexity and is likely responsible for getting my foot in the door at my current job. For this reason I am willing to continue tending the garden it occupies.</p>]]></content:encoded>
+<p>Regardless, it holds a place in my heart as my first webdev project with any complexity and is likely responsible for getting my foot in the door at my current job. For this reason I am willing to continue tending the garden it occupies.</p>]]></content:encoded>
       <guid isPermaLink="false">https://zachmanson.com/blog/minecraftle-v1.1</guid>
       <pubDate>Thu, 26 Jan 2023 00:00:00 +0800</pubDate>
     </item>
