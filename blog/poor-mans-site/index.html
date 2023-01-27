@@ -68,12 +68,12 @@
 <li>Minimum (ideally 0) depedencies</li>
 <li>Automated?</li>
 </ul>
-<h2>Markdown Input</h2>
+<h2 id="markdown-input">Markdown Input</h2>
 <p>It can convert documents between myriad formats, most relevantly Markdown to HTML.</p>
 <div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5 
 </code></pre></div>
 
-<h2>Code Highlighting</h2>
+<h2 id="code-highlighting">Code Highlighting</h2>
 <p>There are plenty of tools that can do this, but Pandoc was the first I found that had code highlighting without having any depedencies like <a href="https://highlightjs.org/">highlight.js</a>, just saving the colour information in inline CSS</p>
 <p>Any fenced Markdown code blocks with a language specified (like the following) will have the syntax automatically highlighted by Pandoc.</p>
 <div class="codehilite"><pre><span></span><code><span class="gh"># Title</span>
@@ -133,14 +133,14 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 </code></pre></div>
 
 <p>This CSS is great, but only actually needs to be generated once.  I copied this CSS in a single <a href="https://github.com/pavo-etc/pavo-etc.github.io/blob/94d59de43188660d625d12b5df33894841f99922/styles/code.css">file</a>.  After copying this text, the <code>--standalone</code> flag can be omitted.</p>
-<h3>with theming?</h3>
+<h3 id="with-theming">with theming?</h3>
 <p>The colours used in the highlighting can be customised!  As with everything else in my life at the moment, I use <a href="https://draculatheme.com/">Dracula</a>, which thankfully <a href="https://draculatheme.com/pandoc">already has a theme for Pandoc</a>.</p>
 <p>Once the theme is installed, Pandoc can highlight using the theme with the <code>--defaults</code> flag:</p>
 <div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5 --standalone --defaults path/to/theme/dracula.yaml
 </code></pre></div>
 
 <p>The HTML classes will be the same names regardless of the theme, but the inline CSS will be dependent on the theme.  Again, this only needs to be run once, and the inline CSS can be copied and saved to be used later.</p>
-<h2>Simple Templating</h2>
+<h2 id="simple-templating">Simple Templating</h2>
 <p>Pandoc makes it simple, as long as you only need simple template insertions!  HTML templates can be created easily.  A basic template could look like the following:</p>
 <div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
@@ -183,9 +183,9 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 <div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o outputfile.html --to<span class="o">=</span>html5 --template<span class="o">=</span>path/to/template.html
 </code></pre></div>
 
-<h2>Dependencies</h2>
+<h2 id="dependencies">Dependencies</h2>
 <p>None!  The outputted HTML has no external dependencies.</p>
-<h2>Automated?</h2>
+<h2 id="automated">Automated?</h2>
 <p>It's a pain typing out that command for each post - so don't.</p>
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
 

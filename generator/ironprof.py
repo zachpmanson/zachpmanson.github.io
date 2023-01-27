@@ -81,7 +81,7 @@ def generate_blog():
             meta["datetime"] = tz.localize(meta["datetime"])
             body = markdown.markdown(
                 post.content,
-                extensions=['fenced_code', "codehilite", 'md_in_html']
+                extensions=['fenced_code', "codehilite", 'md_in_html', 'toc']
             )
 
             # RSS description uses absolute links and no code highlighting

@@ -60,7 +60,7 @@
       <article><p>The library most commonly recommended for web automation is Selenium, which supports driving a variety of browsers and officially provides bindings for a number of languages. Unfortunately it doesn't officially support the ultimate programming language, Visual Basic. For VB, this is a single blemish on the otherwise immaculate language, and for Selenium, it's a unforgivable crime.</p>
 <p>Luckily there is a glimmer of hope. SeleniumBasic is a Selenium based framework for the VB family. Now you may look at it and think "this is unmaintained and hasn't been updated since 2016", but it was actually perfected in 2016 and no update could ever possibly improve it.</p>
 <p>So it is only natural that these two exquisite pieces of software (that are in no way whatsoever out of date) work together. Unfortunately there's a few...underdocumented hiccups that arise from integrating these two. This post is written in the hopes of making the hiccups between VBA (in Excel) and SeleniumBasic slightly more documented.</p>
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 <ul>
 <li>Excel (duh)</li>
 <li><a href="https://github.com/florentbr/SeleniumBasic/releases">SeleniumBasic</a></li>
@@ -73,7 +73,7 @@
 <p>To fix this you will need to manually replace the WebDrivers you intend to use. Each of the major browser vendors distribute up to date versions of their own WebDrivers (<a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">Edge</a>, <a href="https://chromedriver.chromium.org/downloads">Chrome</a>, <a href="https://github.com/mozilla/geckodriver/releases">Firefox</a>). Within each of these zip archive you'll find an executable, e.g. <code>msedgedriver.exe</code> for everyone's fifth favourite browser. To replace driver included with SeleniumBasic, you need to place the up to date executable in <code>C:\Users\&lt;username&gt;\AppData\Local\SeleniumBasic</code>. The up to date WebDriver will need to have the same name as the original outdated WebDriver, so <code>msedgedriver.exe</code> needs to be renamed <code>edgedriver.exe</code>. Irritatingly, it's probable that eventually automatic browser updates will render even these updated WebDrivers outdated, and these executables will need to be replaced again.</p>
 <p>.NET Framework versions annoyingly don't show up as installed programs, so if you want to find out what versions you already have installed, you must use one of several annoying ways. The least annoying of these is to look in the <code>C:\Windows\Microsoft.NET\Framework</code> directory.</p>
 <p><img alt="" src="dotnet-frameworks.png" /></p>
-<h2>Actual Use</h2>
+<h2 id="actual-use">Actual Use</h2>
 <p>Now you can actually use it as you'd expect.  Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.</p>
 <p>To enable SeleniumBasic in Excel you'll need to navigate to <code>Tools &gt; References</code> and check <code>Selenium Type Library</code>.</p>
 <p><img alt="" src="adding-reference.png" /></p>
@@ -99,7 +99,7 @@
 <span class="k">End</span> <span class="nv">Sub</span>
 </code></pre></div>
 
-<h2>Footnotes</h2>
+<h2 id="footnotes">Footnotes</h2>
 <ol>
 <li>Software versions used: Windows 10 10.0.19043, Excel 2201, SeleniumBasic 2.0.9.0, Edge 98.0.1108.50, EdgeDriver 98.0.1108.51</li>
 <li><a href="https://www.selenium.dev/documentation/overview/">Official Selenium Documentation</a></li>

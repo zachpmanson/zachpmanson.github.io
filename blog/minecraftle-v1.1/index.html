@@ -59,7 +59,7 @@
     <main>
       <article><p><a href="https://minecraftle.zachmanson.com">Minecraftle</a> is a simple game written for my introductory web development unit (CITS3403 with Tim French, would recommend) in 2022 Semester 1. The project was submitted (and completed) on May 23, but since then I have been periodically updating it with "nice to have" features that we didn't manage to get in before the deadline. After 8 months I am happy to label this Minecraftle version 1.1, with changes stemming from three main motivations: usability, optimisation, and revenge.</p>
 <p><img alt="" src="git-log.png" /></p>
-<h2>Usability</h2>
+<h2 id="usability">Usability</h2>
 <p><code>537c928</code>: Made the emoji summary more vague, so a correct guess shows up as 9 green squares no matter what, rather than giving away the shape of the final solution.</p>
 <details>
 <summary>Before and after comparison</summary>
@@ -112,17 +112,17 @@ After:
 <p><code>f43b062</code>: Added loading indicator to initial pageload.</p>
 <p><code>8a842d9</code>: Added slot highlighting to the ingredients panel to help keep track of which items have been used before.</p>
 <p><img alt="" src="panel.png" /></p>
-<h2>Optimisation</h2>
+<h2 id="optimisation">Optimisation</h2>
 <p><code>c502eb2</code>: Rewrote the entire script that turned the 600+ Minecraft crafting recipe JSON files into single file with a usable schema. Previous implementation was very messy, future modifications will be much easier.</p>
 <p><code>172b3f2</code>: Optimised recipes validation, still relatively inefficient though.</p>
 <p><code>cd0c61e</code>: Made game submission API a seperate endpoint to user stats endpoint, rather than being a hacky overload of the stats endpoint.</p>
 <p><code>007865b</code>: Significantly reduced size of <code>recipes.json</code> to only include recipes that are actually possible to create with the given ingredients. This reduces initial pageload time and reduces load on my server.</p>
 <p><code>007865b</code>: Set <code>init.js</code> to store <code>recipes.json</code> and <code>items.json</code> in local storage, and only request them if they don't exist there. This makes pageloading much faster, and reduces load on my server.</p>
-<h2>Revenge</h2>
+<h2 id="revenge">Revenge</h2>
 <p>Since initial release 2500+ people have played the game. From what I can tell this primary originated from popularity at a local primary school and the now-defunct <a href="https://web.archive.org/web/20220927035303/https://likewordle.com/">LikeWordle.com</a>. Most of these players haven't become regular users though, only playing one or two games. Really its just me and my ex competing for the number one spot on the leaderboard. After months of hard work she overtook me as number 1 and I have been clawing my way back ever since. Obviously I could cheat since I'm the admin but where's the fun in that? Despite that, I'm not opposed to adding features to help me take back the crown.</p>
 <p><code>309a557</code>: Added indicators to the stats page to show users how far behind and ahead they are of their neighbours on the leaderboard.</p>
 <p><code>5dca9d2</code>: Added an account recovery button since I accidentally deleted my account the day after taking back the crown (I swear). This does expose a prexisting security flaw, but does enable it to be used in a positive way. For reference, clearing your browser data will make your device forget which account is it associated with.</p>
-<h2>Bugfixes</h2>
+<h2 id="bugfixes">Bugfixes</h2>
 <p><code>23dc225</code>: Fixed bug caused by the use of item tags in Minecraft source files. Item tags represent groups of items that are effectively interchangable in crafting recipes, such as coal and charcoal. Minecraftle conversion scripts have been updated to expect this, and will replace these with the preferred variant e.g. coal/charcoal group will be replaced with coal.</p>
 <p><code>d98e83a</code>: Forced game to be set to Perth timezone. Deployment VPS is in North America, so the server-side calculation of the current recipes wasn't changing at midnight in Perth, where most of the player base is.</p>
 <p><code>c0ce8c2</code>: Fixed stick recipe being overwritten by second stick recipes that uses bamboo.</p>
