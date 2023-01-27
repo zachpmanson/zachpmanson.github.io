@@ -48,7 +48,7 @@ def generate_blog():
 
     tz = pytz.timezone("Australia/Perth")
 
-    posts_dirs = [d for d in os.listdir("blog") if d not in ignore_dirs]
+    posts_dirs = [d for d in os.listdir("blog") if d not in ignore_dirs if d[0] != "."]
 
     posts_dirs.sort(key=get_post_date)
     #posts_dirs.reverse()
