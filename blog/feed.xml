@@ -13,7 +13,22 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Mon, 06 Feb 2023 13:41:25 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 Feb 2023 14:52:28 +0000</lastBuildDate>
+    <item>
+      <title>Planting a Flag in Wikipedia</title>
+      <link>https://zachmanson.com/blog/libkey-nomad</link>
+      <description>LibKey Nomad's Stolen Valour</description>
+      <content:encoded><![CDATA[<p>There is a wonderful browser extension with an awful name made by Third Iron called <a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a>. It allows university staff and students gain access to academic journals that your univesity is subscribed to without logging in or requesting access. You install the extension, sign in with your university credentials, and then it just works. Whenever you are on a site that LibKey Nomad is automatically allowing you access to, it displays this little banner in the corner of the page.</p>
+<p><img alt="" src="/blog/libkey-nomad/proper-popup.png" /></p>
+<p>You click it and you are taken direct to the paper. It really streamlines the process for a lot of sites.</p>
+<p><img alt="" src="/blog/libkey-nomad/wikipedia-popup.png" /></p>
+<p>It hilariously appears on Wikipedia articles, as if the University of Western Australia has been incredibly gracious by allowing me to see Wikipedia. The reasoning here is that access to (at least one of) the citations is being provided through LibKey Nomad, but this makes the banner no less obnoxious.</p>
+<p>The banner doesn't even have a function like it does on other journals, clicking it just takes you to the references list.</p>
+<p><img alt="" src="/blog/libkey-nomad/citations.png" /></p>
+<p>Wikipedia is one of the most impressive things humans have created. Keep your banners to yourself, Third Iron.</p>]]></content:encoded>
+      <guid isPermaLink="false">https://zachmanson.com/blog/libkey-nomad</guid>
+      <pubDate>Mon, 06 Feb 2023 00:00:00 +0800</pubDate>
+    </item>
     <item>
       <title>The Curse of the Last Good Day</title>
       <link>https://zachmanson.com/blog/last-good-day</link>
