@@ -45,7 +45,7 @@ def nav(activated_link):
     
     right_links_str = '\n'.join(link_elements)
 
-    is_root_active = ' activated-link' if activated_link == '.' else ''
+    is_root_active = ' activated-link' if activated_link == '/' else ''
     return f"""
     <nav>
         <div class="flex">
