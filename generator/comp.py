@@ -70,7 +70,7 @@ def blog_footer():
       </p>
     </footer>"""
 
-def project_post(name, year, url, desc, lang, img):
+def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
     if img != "":
       img_el = f"""
           <div class="post-image">
@@ -79,19 +79,24 @@ def project_post(name, year, url, desc, lang, img):
     else:
       img_el = ''
 
+    repo_link = f'<a href="{repo}">Source code</a>' if repo != "" else ""
+    name_with_link = f'<a href="{url}">{name}</a>' if url != "" else name
 
     return f"""
-      <a class="post" href="{url}">
-        <h3>{name} <span class="date">({year})</span></h3>
+      <div class="project">
+        <h3>{name_with_link} <span class="date">({year})</span></h3>
         <div class="inline-flex">
-          <div class="post-description">
+          <div class="project-description">
             <p>
               {desc}
             </p>
             <p class="italic">
               {lang}
             </p>
+            <p>
+              {repo_link}
+            </p>
           </div>
           {img_el}
         </div>
-      </a>"""
+      </div>"""

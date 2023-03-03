@@ -183,9 +183,54 @@ img.profile {
   text-decoration-color: var(--purple);
 }
 
-/* For blog/projects */
+/* For projects */
 
-a.post {
+/* For blog */
+
+.project {
+  display: block;
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--white);
+  text-align: left;
+  border-radius: 8px;
+}
+
+.project h3 {
+  margin: 0;
+}
+
+.project p {
+  margin: 0;
+  font-weight: 200;
+}
+
+.project .project-description p {
+  margin: 0.5rem 0 0 0;
+}
+
+.project > .inline-flex {
+  column-gap: 0.5rem;
+}
+
+.project-description {
+  flex-basis: 70%;
+  flex-grow: 2;
+}
+
+.project-image {
+  margin: auto;
+  max-height: 8rem;
+}
+
+.project-image img {
+  max-width: 10rem;
+  max-height: 8rem;
+}
+
+/* For blog */
+
+.post {
   display: block;
   padding: 1rem;
   text-decoration: none;
@@ -196,20 +241,20 @@ a.post {
   border-radius: 8px;
 }
 
-a.post:hover {
+.post:hover {
   outline-style: solid;
 }
 
-a.post h3 {
+.post h3 {
   margin: 0;
 }
 
-a.post p {
+.post p {
   margin: 0;
   font-weight: 200;
 }
 
-a.post .post-description p {
+.post .post-description p {
   margin: 0.5rem 0 0 0;
 }
 
