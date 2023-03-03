@@ -79,7 +79,7 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
     else:
       img_el = ''
 
-    repo_link = f'<a href="{repo}">Source code</a>' if repo != "" else ""
+    repo_link = f'<br><a href="{repo}">Source code</a>' if repo != "" else ""
     name_with_link = f'<a href="{url}">{name}</a>' if url != "" else name
 
     return f"""
@@ -89,13 +89,12 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
           <div class="project-description">
             <p>
               {desc}
+              {repo_link}
             </p>
             <p class="italic">
               {lang}
             </p>
-            <p>
-              {repo_link}
-            </p>
+         
           </div>
           {img_el}
         </div>
