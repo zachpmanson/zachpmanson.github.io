@@ -64,13 +64,13 @@ def blog_footer():
       <p>
         <a href="/blog/feed.xml">Feed</a> -
         <a
-          href="https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator"
+          href="https://notes.zachmanson.com/ironprof/"
           >ironprof</a
         >
       </p>
     </footer>"""
 
-def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
+def project_post(name="", year="", url="", desc="", lang="", img="", repo="", writeup=""):
     if img != "":
       img_el = f"""
           <div class="post-image">
@@ -79,8 +79,21 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
     else:
       img_el = ''
 
-    repo_link = f'<br><a href="{repo}">Source code</a>' if repo != "" else ""
     name_with_link = f'<a href="{url}">{name}</a>' if url != "" else name
+
+    repo_link = f'<br><a href="{repo}">Source code</a>' if repo != "" else ""
+    writeup_link = f' - <a href="{writeup}">Writeup</a>' if writeup != "" else ""
+    
+    links = []
+
+    if repo != "":
+      links.append(f'<a href="{repo}">Source code</a>')
+
+    if writeup != "":
+      links.append(f'<a href="{writeup}">Writeup</a>')
+
+    link_html = f"<br>{' - '.join(links)}" if len(links) > 0 else ""
+
 
     return f"""
       <div class="project">
@@ -92,7 +105,7 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
               <span class="italic">
                 <br>{lang}
               </span>
-              {repo_link}
+              {link_html}
             </p>
          
           </div>

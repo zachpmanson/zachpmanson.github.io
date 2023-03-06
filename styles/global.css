@@ -80,17 +80,40 @@ summary {
 }
 
 a {
-  color: var(--purple);
+  color: var(--pink);
   text-decoration: underline;
   text-decoration-color: transparent;
   transition: all 0.1s ease-in;
 }
 
 a:hover {
-  text-decoration-color: var(--purple);
+  text-decoration-color: var(--pink);
 }
 
 a:active {
+  color: var(--white);
+  text-decoration-color: var(--white);
+  transition: all 0s ease-in;
+}
+
+a[href^="/"],
+a[href^="./"],
+a[href*="zachmanson.com"] {
+  color: var(--purple);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: all 0.1s ease-in;
+}
+
+a[href^="/"]:hover,
+a[href^="./"]:hover,
+a[href*="zachmanson.com"]:hover {
+  text-decoration-color: var(--purple);
+}
+
+a[href^="/"]:active,
+a[href^="./"]:active,
+a[href*="zachmanson.com"]:active {
   color: var(--white);
   text-decoration-color: var(--white);
   transition: all 0s ease-in;
@@ -228,7 +251,9 @@ img.profile {
 
 /* For blog */
 
-.post {
+.post,
+.post[href^="./"],
+.post[href^="/"] {
   display: block;
   padding: 1rem;
   text-decoration: none;
