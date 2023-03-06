@@ -48,14 +48,14 @@ def nav(activated_link):
     is_root_active = ' activated-link' if activated_link == '/' else ''
     return f"""
     <nav>
-        <div class="flex">
-        <div class="flex-left">
-            <a href="/" class="discrete-link{is_root_active}">Zach Manson</a>
-        </div>
-        <div class="flex-right">
-{right_links_str}
-        </div>
-        </div>
+      <div class="flex">
+      <div class="flex-left">
+        <a href="/" class="discrete-link{is_root_active}">Zach Manson</a>
+      </div>
+      <div class="flex-right">
+        {right_links_str}
+      </div>
+      </div>
     </nav>"""
 
 def blog_footer():
@@ -89,10 +89,10 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo=""):
           <div class="project-description">
             <p>
               {desc}
+              <span class="italic">
+                <br>{lang}
+              </span>
               {repo_link}
-            </p>
-            <p class="italic">
-              {lang}
             </p>
          
           </div>
