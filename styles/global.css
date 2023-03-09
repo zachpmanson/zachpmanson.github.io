@@ -197,11 +197,17 @@ img.profile {
   margin: 0 0.5rem;
 }
 
-.activated-link {
+.activated-link,
+.activated-link[href^="/"],
+.activated-link[href^="./"],
+.activated-link[href*="zachmanson.com"] {
   color: var(--white);
 }
 
-.activated-link:hover {
+.activated-link:hover,
+.activated-link[href^="/"]:hover,
+.activated-link[href^="./"]:hover,
+.activated-link[href*="zachmanson.com"]:hover {
   color: var(--purple);
   text-decoration-color: var(--purple);
 }
