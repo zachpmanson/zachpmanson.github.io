@@ -97,14 +97,15 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
 
     return f"""
       <div class="project">
-        <h3>{name_with_link} <span class="date">({year})</span></h3>
+        <div>
+          <h3>{name_with_link} <span class="date">({year})</span></h3>
+        </div>
+
         <div class="inline-flex">
           <div class="project-description">
             <p>
               {desc}
-              <span class="italic">
-                <br>{lang}
-              </span>
+              <span class="italic"><br>{lang}</span>
               {link_html}
             </p>
          
