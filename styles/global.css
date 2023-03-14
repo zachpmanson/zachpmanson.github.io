@@ -218,15 +218,14 @@ img.profile {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .project {
   display: block;
   text-decoration: none;
-  /* margin: 1rem; */
   color: var(--white);
   text-align: left;
-  border-radius: 8px;
 }
 
 .project h3 {
@@ -273,18 +272,8 @@ img.profile {
 .post[href^="./"],
 .post[href^="/"] {
   display: block;
-  /* padding: 1rem 0; */
-  /* text-decoration: none; */
-  /* color: var(--white); */
-  /* outline-color: var(--purple); */
-  /* transition: all 0.1s ease-in; */
   text-align: left;
-  /* border-radius: 8px; */
 }
-
-/* .post:hover {
-  outline-style: solid;
-} */
 
 .post h3 {
   margin: 0;
