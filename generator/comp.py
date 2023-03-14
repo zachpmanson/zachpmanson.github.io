@@ -58,15 +58,15 @@ def nav(activated_link):
       </div>
     </nav>"""
 
-def blog_footer():
-    return """
+def blog_footer(title=""):
+    reply_link = "" if title == "" else f'- <a href="mailto:zachpmanson@gmail.com?subject=Reply: {title}">reply</a>'
+
+    return f"""
     <footer>
       <p>
-        <a href="/blog/feed.xml">Feed</a> -
-        <a
-          href="https://notes.zachmanson.com/ironprof/"
-          >ironprof</a
-        >
+        <a href="/blog/feed.xml">rss</a>
+        - <a href="https://notes.zachmanson.com/ironprof/">ironprof</a>
+        {reply_link}
       </p>
     </footer>"""
 
