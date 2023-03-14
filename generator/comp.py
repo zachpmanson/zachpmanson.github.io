@@ -98,7 +98,7 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
     return f"""
       <div class="project">
         <div>
-          <h3>{name_with_link} <span class="date">({year})</span></h3>
+          <h3>{name_with_link} <!-- <span class="date">({year})</span> --></h3>
         </div>
 
         <div class="inline-flex">
