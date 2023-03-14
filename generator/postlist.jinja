@@ -16,13 +16,21 @@
     <main>
       <div class="postlist">
         {% for post in posts_data %}
-        <a class="post" href="./{{post.post_dir}}/">
+        <div class="post">
+          <div class="flex">
+            <h3><a href="./{{post.post_dir}}/">{{post.title}}</a></h3>
+            <p class="flex-right date">{{post.date}}</p>
+          </div>
+          <p>{{post.tagline}}</p>
+        </div>
+
+        {# <a class="post" href="./{{post.post_dir}}/">
           <div class="flex">
             <h3>{{post.title}}</h3>
             <p class="flex-right date">{{post.date}}</p>
           </div>
           <p>{{post.tagline}}</p>
-        </a>
+        </a> #}
         {% endfor %}
       </div>
     </main>

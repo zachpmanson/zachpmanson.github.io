@@ -217,13 +217,13 @@ img.profile {
 .project-list {
   display: flex;
   flex-direction: column;
-  /* gap: 0.5rem; */
+  gap: 1.5rem;
 }
 
 .project {
   display: block;
   text-decoration: none;
-  margin: 1rem;
+  /* margin: 1rem; */
   color: var(--white);
   text-align: left;
   border-radius: 8px;
@@ -263,22 +263,28 @@ img.profile {
 
 /* For blog */
 
+.postlist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .post,
 .post[href^="./"],
 .post[href^="/"] {
   display: block;
-  padding: 1rem;
-  text-decoration: none;
-  color: var(--white);
-  outline-color: var(--purple);
-  transition: all 0.1s ease-in;
+  /* padding: 1rem 0; */
+  /* text-decoration: none; */
+  /* color: var(--white); */
+  /* outline-color: var(--purple); */
+  /* transition: all 0.1s ease-in; */
   text-align: left;
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 
-.post:hover {
+/* .post:hover {
   outline-style: solid;
-}
+} */
 
 .post h3 {
   margin: 0;
