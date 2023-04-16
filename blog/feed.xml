@@ -13,13 +13,16 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Apr 2023 09:22:12 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 16 Apr 2023 09:40:25 +0000</lastBuildDate>
     <item>
       <title>LinkedIn's Ghost Text</title>
       <link>https://zachmanson.com/blog/linkedin-duplication</link>
       <description>Why does LinkedIn copy text twice</description>
       <content:encoded><![CDATA[<p>Why does LinkedIn do this?</p>
-<p><img alt="" src="/blog/linkedin-duplication/duplication.webm" /></p>
+<video autoplay loop muted>
+   <source src="./duplication.webm" type="video/webm">
+</video>
+
 <p>If you look into the source of a LinkedIn profile page (at your own personal risk) you'll find a text element like this</p>
 <p><img alt="" src="/blog/linkedin-duplication/element.png" /></p>
 <p>will have HTML like this</p>

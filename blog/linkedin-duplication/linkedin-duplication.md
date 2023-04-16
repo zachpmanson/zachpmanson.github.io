@@ -7,7 +7,9 @@ date: 2023-04-16
 
 Why does LinkedIn do this?
 
-![](duplication.webm)
+<video autoplay loop muted>
+   <source src="./duplication.webm" type="video/webm">
+</video>
 
 If you look into the source of a LinkedIn profile page (at your own personal risk) you'll find a text element like this
 
