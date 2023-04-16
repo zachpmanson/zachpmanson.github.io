@@ -7,7 +7,7 @@ date: 2023-04-16
 
 Why does LinkedIn do this?
 
-![](./duplication.webm)
+![](duplication.webm)
 
 If you look into the source of a LinkedIn profile page (at your own personal risk) you'll find a text element like this
 
