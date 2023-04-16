@@ -13,7 +13,52 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Tue, 14 Mar 2023 14:09:43 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 16 Apr 2023 08:28:17 +0000</lastBuildDate>
+    <item>
+      <title>LinkedIn's Ghost Text</title>
+      <link>https://zachmanson.com/blog/linkedin-duplication</link>
+      <description>Why does LinkedIn copy text twice</description>
+      <content:encoded><![CDATA[<p>Why does LinkedIn do this?</p>
+<p><img alt="" src="/blog/linkedin-duplication/duplication.webm" /></p>
+<p>If you look into the source of a LinkedIn profile page (at your own personal risk) you'll find a lot of a text element like this</p>
+<p><img alt="" src="/blog/linkedin-duplication/element.png" /></p>
+<p>will have HTML like this</p>
+<pre><code class="language-html">&lt;div class=&quot;display-flex flex-row justify-space-between&quot;&gt;
+    &lt;div class=&quot;
+          display-flex flex-column full-width&quot;&gt;
+
+        &lt;div class=&quot;display-flex flex-wrap align-items-center full-height&quot;&gt;
+            &lt;span class=&quot;mr1 t-bold&quot;&gt;
+                &lt;span aria-hidden=&quot;true&quot;&gt;&lt;!----&gt;Product manager, Creative coder&lt;!----&gt;&lt;/span&gt;
+                &lt;span class=&quot;visually-hidden&quot;&gt;&lt;!----&gt;Product manager, Creative coder&lt;!----&gt;&lt;/span&gt;
+            &lt;/span&gt;
+            &lt;!----&gt;&lt;!----&gt;&lt;!----&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;t-14 t-normal&quot;&gt;
+            &lt;span aria-hidden=&quot;true&quot;&gt;&lt;!----&gt;Freelancer/Consultant&lt;!----&gt;&lt;/span&gt;
+            &lt;span class=&quot;visually-hidden&quot;&gt;&lt;!----&gt;Freelancer/Consultant&lt;!----&gt;&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;t-14 t-normal t-black--light&quot;&gt;
+            &lt;span aria-hidden=&quot;true&quot;&gt;&lt;!----&gt;2009 - 2018 · 9 yrs&lt;!----&gt;&lt;/span&gt;
+            &lt;span class=&quot;visually-hidden&quot;&gt;&lt;!----&gt;2009 - 2018 · 9 yrs&lt;!----&gt;&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;t-14 t-normal t-black--light&quot;&gt;
+            &lt;span aria-hidden=&quot;true&quot;&gt;&lt;!----&gt;Europe&lt;!----&gt;&lt;/span&gt;
+            &lt;span class=&quot;visually-hidden&quot;&gt;&lt;!----&gt;Europe&lt;!----&gt;&lt;/span&gt;
+        &lt;/span&gt;
+
+    &lt;/div&gt;
+
+    &lt;!----&gt;
+    &lt;div class=&quot;pvs-entity__action-container&quot;&gt;
+        &lt;!----&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Gross.  Why the hidden duplicated text?  Why the empty comments?  Why seperate aria versions of text?  Is this related to using Ember?  LinkedIn has so many little unpleasantries like this.</p>]]></content:encoded>
+      <guid isPermaLink="false">https://zachmanson.com/blog/linkedin-duplication</guid>
+      <pubDate>Sun, 16 Apr 2023 00:00:00 +0800</pubDate>
+    </item>
     <item>
       <title>Planting a Flag in Wikipedia</title>
       <link>https://zachmanson.com/blog/libkey-nomad</link>
