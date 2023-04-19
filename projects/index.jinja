@@ -1,57 +1,52 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  {{ comp.meta() }}
-  
-  <link rel="canonical" href="https://zachmanson.com/projects" />
-  <title>Projects</title>
-</head>
-
-<body>
-  {{ comp.nav("projects") }}
-
-  <header>
-    <h1>Projects</h1>
-  </header>
-  <main>
-
-    <p>
-      A list of "usable" things I have developed that are on the internet.
-      The archive has <a href="https://notes.zachmanson.com/projects">detailed writeups</a>
-      on a few of these.  I also have a list of more <a href="/projects/microprojects/">boring projects</a>.
-    </p>
-    <div class="project-list">
-      {{ comp.project_post(
+<html lang="en">
+  <head>
+    {{ comp.meta() }}
+    <link rel="canonical" href="https://zachmanson.com/projects" />
+    <title>Projects</title>
+  </head>
+  <body>
+    {{ comp.nav("projects") }}
+    <header>
+      <h1>Projects</h1>
+    </header>
+    <main>
+      <p>
+        A list of "usable" things I have developed that are on the internet.
+        The archive has <a href="https://notes.zachmanson.com/projects">detailed writeups</a>
+        on a few of these.  I also have a list of more <a href="/projects/microprojects/">boring projects</a>.
+      </p>
+      <div class="project-list">
+        {{ comp.project_post(
         "Penultimate Guitar",
         "2023",
         "https://pg.zachmanson.com",
         "An alternate frontend for Ultimate Guitar that doesn't suck on phones.",
-        "Built with TypeScript, Next.js+Tailwind, Prisma+Postgres and deployed on Vercel",
+        "Built with Next.js",
         "/images/pg.png",
         "https://github.com/pavo-etc/penultimate-guitar",
         "https://notes.zachmanson.com/penultimate-guitar/"
-      ) }}
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "Alculator",
         "2022-",
         "https://alculator.zachmanson.com",
         "A tool to help find the cheapest products at Dan Murphy's, per standard drink.",
-        "Built with TypeScript, React, Next.js, Vercel, and abuse of Dan Murphy's public APIs",
+        "Built with Next.js and abuse of Dan Murphy's public APIs",
         "/images/alculator.png",
         "https://github.com/pavo-etc/alculator",
         "https://notes.zachmanson.com/alculator/"
-      ) }}
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "POOPS Platform",
         "2022-",
         "",
         "Contributed to the Coders For Causes Winter Project, an open-source progressive web app built for the Pets of Older Persons. The PWA helps the nonprofit's volunteers track their volunteering activities, register vet concerns and log incident reports.",
-        "Built with TypeScript, React, Next.js, Tailwind, and Firebase",
+        "Built with Next.js and Firebase",
         "/images/POOPS_black_circle.png",
         "https://github.com/codersforcauses/poops"
-      ) }}
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "Minecraftle",
         "2022-",
         "https://minecraftle.zachmanson.com",
@@ -60,42 +55,40 @@
         "/images/minecraftle.png",
         "https://github.com/pavo-etc/minecraftle",
         "https://notes.zachmanson.com/minecraftle/"
-      ) }}
-
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "Status Messenger",
         "2023",
         "https://marketplace.visualstudio.com/items?itemName=ZachManson.status-messenger",
         "A VS Code extension that displays messages from a remote server in the status bar. Designed to serve as a constant reminder of how long it's been since someone broke prod. Also came with an accompanying API server to interact with it.",
-        "Built with TypeScript and a simple server built with Flask",
+        "",
         "/images/status-messenger.png",
         "https://github.com/pavo-etc/status-messenger",
         "https://notes.zachmanson.com/status-messenger/"
-      ) }}
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "WA COVID-19 Tracker",
         "2022",
         "https://tracker.zachmanson.com/",
         "A recurringly generated static website that displays the number of local COVID-19 cases overnight in Western Australia. Data is scraped from the WA Department of Health media releases.",
-        "Built with Python (matplotlib, BeautifulSoup, jinja) and SQLite",
+        "Built with Python and SQLite",
         "/images/cases_dark.png",
         "https://github.com/pavo-etc/wa-covid-tracker",
         "https://notes.zachmanson.com/covid-19-tracker/"
-      ) }}
-      {{ comp.project_post(
+        ) }}
+        {{ comp.project_post(
         "snakeware OS",
         "2020",
         "",
         "Contributed system applications and documentation for snakeware, an open-source project creating a Linux-based operating system with a pure Python userspace.",
-        "Built with Python",
+        "",
         "/images/snakeware.png",
         "https://github.com/joshiemoore/snakeware",
         "https://notes.zachmanson.com/snakeware/"
-      ) }}
-    </div>
-  </main>
-
-  <footer></footer>
-</body>
-
+        ) }}
+      </div>
+    </main>
+    <footer>
+    </footer>
+  </body>
 </html>

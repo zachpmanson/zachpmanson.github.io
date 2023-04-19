@@ -2,23 +2,21 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="/styles/code.css" />
-    {{comp.meta()}}
+    {{ comp.meta() }}
     <title>{{ title }}</title>
   </head>
-
   <body>
     {{ comp.nav("blog") }}
-
     <header>
-      <h1>{{title}}</h1>
-      <p>{{subtitle}}</p>
-      <p><span class="date">{{date}}</span></p>
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+      <p>
+        <span class="date">{{ date }}</span>
+      </p>
     </header>
-
     <main>
-      <article>{{body}}</article>
+      <article>{{ body }}</article>
     </main>
-
     {{ comp.blog_footer(title) }}
   </body>
 </html>

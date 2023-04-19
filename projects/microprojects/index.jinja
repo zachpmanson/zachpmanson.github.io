@@ -2,14 +2,11 @@
 <html>
   <head>
     {{ comp.meta() }}
-
     <link rel="canonical" href="https://zachmanson.com/microprojects" />
     <title>Microprojects</title>
   </head>
-
   <body>
     {{ comp.nav("projects") }}
-
     <header>
       <h1>Microprojects</h1>
       <p>Boring things that are only here so I don't lose the links to them</p>
@@ -17,101 +14,101 @@
     <main>
       <div class="project-list">
         {{ comp.project_post(
-          "Broke Prod?",
-          "2023",
-          "https://zachmanson.com/projects/prod-broke",
-          "A page to report broken deployments to api.zachmanson.com, so Status Messenger can stay updated.",
-          "Built with vanilla JavaScript",
+        "Broke Prod?",
+        "2023",
+        "https://zachmanson.com/projects/prod-broke",
+        "A page to report broken deployments to api.zachmanson.com, so Status Messenger can stay updated.",
+        "Built with vanilla JavaScript",
         ) }}
         {{ comp.project_post(
-          "api.zachmanson.com",
-          "2023",
-          "https://api.zachmanson.com",
-          "A simple API server for various purposes.",
-          "Built with Flask",
-          "",
-          "https://github.com/pavo-etc/api"
+        "api.zachmanson.com",
+        "2023",
+        "https://api.zachmanson.com",
+        "A simple API server for various purposes.",
+        "Built with Flask",
+        "",
+        "https://github.com/pavo-etc/api"
         ) }}
         {{ comp.project_post(
-          "Ochrs",
-          "2022",
-          "https://notes.zachmanson.com",
-          "A static wiki generator that I used to build my personal wiki and archive.  It was originally a fork of Nchrs (which is itself a fork of XXIIVV), but has been rebuilt from the ground up for use with Obsidian.",
-          "Built with Python",
-          "",
-          "https://github.com/pavo-etc/notes",
-          "https://notes.zachmanson.com/ochrs/"
+        "Ochrs",
+        "2022",
+        "https://notes.zachmanson.com",
+        "A static wiki generator that I used to build my personal wiki and archive.  It was originally a fork of Nchrs (which is itself a fork of XXIIVV), but has been rebuilt from the ground up for use with Obsidian.",
+        "Built with Python",
+        "",
+        "https://github.com/pavo-etc/notes",
+        "https://notes.zachmanson.com/ochrs/"
         ) }}
         {{ comp.project_post(
-          "ironprof",
-          "2022",
-          "",
-          "A simple static site generator that allows for component insertion into plain HTML using jinja templating. ironprof is used to build this website.",
-          "Built with Python",
-          "",
-          "https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator",
-          "https://notes.zachmanson.com/ironprof/"
+        "ironprof",
+        "2022",
+        "",
+        "A simple static site generator that allows for component insertion into plain HTML using jinja templating. ironprof is used to build this website.",
+        "Built with Python",
+        "",
+        "https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator",
+        "https://notes.zachmanson.com/ironprof/"
         ) }}
         {{ comp.project_post(
-          "Mean Reversion Trading Algorithm",
-          "2022",
-          "",
-          "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.",
-          "Built with Python",
-          "/images/TSLA-cropped.png",
-          "https://github.com/QFinUWA/2022-Mean-Reversion-Team4"
+        "Mean Reversion Trading Algorithm",
+        "2022",
+        "",
+        "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.",
+        "Built with Python",
+        "/images/TSLA-cropped.png",
+        "https://github.com/QFinUWA/2022-Mean-Reversion-Team4"
         ) }}
         {{ comp.project_post(
-          "Todont",
-          "2022",
-          "https://todont.zachmanson.com/",
-          "A simple persistent todo list application.",
-          "Built with React",
-          "/images/todont.png",
-          "https://github.com/pavo-etc/todont"
+        "Todont",
+        "2022",
+        "https://todont.zachmanson.com/",
+        "A simple persistent todo list application.",
+        "Built with React",
+        "/images/todont.png",
+        "https://github.com/pavo-etc/todont"
         ) }}
       </div>
       <h2 class="center">University Projects</h2>
       <div class="project-list">
         {{ comp.project_post(
-          "rake",
-          "2022",
-          "",
-          "Developed client and server applications for rake, a protocol for distributed compilation and remote command execution.",
-          "Built with C and Python",
-          "/images/rakeserver.png",
-          "https://github.com/pavo-etc/rake"
+        "rake",
+        "2022",
+        "",
+        "Developed client and server applications for rake, a protocol for distributed compilation and remote command execution.",
+        "Built with C and Python",
+        "/images/rakeserver.png",
+        "https://github.com/pavo-etc/rake"
         ) }}
         {{ comp.project_post(
-          "duplicates",
-          "2021",
-          "",
-          "duplicates is a command line utility for finding duplicate files in directories based on SHA2 hashes.",
-          "Built with C",
-          "/images/duplicates.png",
-          "https://github.com/pavo-etc/duplicates"
+        "duplicates",
+        "2021",
+        "",
+        "duplicates is a command line utility for finding duplicate files in directories based on SHA2 hashes.",
+        "Built with C",
+        "/images/duplicates.png",
+        "https://github.com/pavo-etc/duplicates"
         ) }}
         {{ comp.project_post(
-          "runcool",
-          "2021",
-          "",
-          "runcool is an emulator of a simple 16-bit computer designed to execute programs compiled from the esoteric programming language cool.",
-          "Built with C",
-          "/images/coolbook.png",
-          "https://github.com/pavo-etc/runcool-emulator"
+        "runcool",
+        "2021",
+        "",
+        "runcool is an emulator of a simple 16-bit computer designed to execute programs compiled from the esoteric programming language cool.",
+        "Built with C",
+        "/images/coolbook.png",
+        "https://github.com/pavo-etc/runcool-emulator"
         ) }}
         {{ comp.project_post(
-          "Aquarium",
-          "2020",
-          "",
-          "A randomly-generated puzzle game in the vein of Picross.",
-          "Built with Java",
-          "/images/aquarium.png",
-          "https://github.com/pavo-etc/aquarium"
+        "Aquarium",
+        "2020",
+        "",
+        "A randomly-generated puzzle game in the vein of Picross.",
+        "Built with Java",
+        "/images/aquarium.png",
+        "https://github.com/pavo-etc/aquarium"
         ) }}
       </div>
     </main>
-
-    <footer></footer>
+    <footer>
+    </footer>
   </body>
 </html>

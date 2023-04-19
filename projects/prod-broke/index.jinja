@@ -1,59 +1,29 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  {{ comp.meta() }}
-  
-  <link rel="canonical" href="https://zachmanson.com/projects/prod-broke" />
-  <title>Prod Broke?</title>
-
-</head>
-
-<body>
-  {{ comp.nav("projects") }}
-
-
-  <header>
-    <h1>Prod Broke?</h1>
-    <p>Report a broken deployment</p>
-  </header>
-  <main>
-
-    <form id="form" class="center">
-      <select
-        name="deployment"
-        id="deployment"
-        defaultValue="DEV"
-      >
-        <option key="DEV" value="DEV">
-          DEV
-        </option>
-        <option key="UAT" value="UAT">
-          UAT
-        </option>
-        <option key="PROD" value="PROD">
-          PROD
-        </option>
-      </select>
-      <input
-        id="date"
-        type="text"
-        name="date"
-        placeholder="Date"
-      />
-      <input
-        id="password"
-        type="password"
-        name="password"
-        placeholder="Password"
-      />
-
-      <input type="submit" value="Submit" />
-    </form>
-    <p class="center" id="response"></p>
-
-
-  <script type="text/javascript">
+  <head>
+    {{ comp.meta() }}
+    <link rel="canonical" href="https://zachmanson.com/projects/prod-broke" />
+    <title>Prod Broke?</title>
+  </head>
+  <body>
+    {{ comp.nav("projects") }}
+    <header>
+      <h1>Prod Broke?</h1>
+      <p>Report a broken deployment</p>
+    </header>
+    <main>
+      <form id="form" class="center">
+        <select name="deployment" id="deployment" defaultValue="DEV">
+          <option key="DEV" value="DEV">DEV</option>
+          <option key="UAT" value="UAT">UAT</option>
+          <option key="PROD" value="PROD">PROD</option>
+        </select>
+        <input id="date" type="text" name="date" placeholder="Date" />
+        <input id="password" type="password" name="password" placeholder="Password" />
+        <input type="submit" value="Submit" />
+      </form>
+      <p class="center" id="response"></p>
+      <script type="text/javascript">
     function submit(form) {
       document.getElementById("response").innerText = "";
 
@@ -94,11 +64,9 @@
       e.preventDefault();
       submit(e.target);
     });
-  </script>
-
-  </main>
-
-  <footer></footer>
-</body>
-
+      </script>
+    </main>
+    <footer>
+    </footer>
+  </body>
 </html>

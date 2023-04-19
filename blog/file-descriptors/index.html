@@ -35,7 +35,6 @@
 
     <title>Sneaky File Descriptors in Popen()</title>
   </head>
-
   <body>
     
     <nav>
@@ -49,13 +48,13 @@
       </div>
       </div>
     </nav>
-
     <header>
       <h1>Sneaky File Descriptors in Popen()</h1>
       <p>Always be closing</p>
-      <p><span class="date">2022-06-09</span></p>
+      <p>
+        <span class="date">2022-06-09</span>
+      </p>
     </header>
-
     <main>
       <article><p>In the last month I had three projects due dates converge, on top of full-time work I accidentally signed up for and on top of standard full-time uni commitments.  Of these projects, <a href="https://minecraftle.zachmanson.com">Minecraftle</a> was the most fun to put together, but <a href="https://github.com/pavo-etc/rake">rake</a> was the most <em>educational</em>.  I'd never worked with sockets or TCP protocols before so this project was out of my comfort zone, and barring a few hiccups, we managed to build decent (and fragile) client and server programs.</p>
 <p>The assignment required the design and implementation of protocol to enable distributed compilation of files and remote command execution across multiple servers (r(emote) + (m)ake = rake).  We needed to write a server program, and two client programs (one in C, the other in Python).  Between Beej's guide and the coursework, we fumbled our way to working prototypes, able to pass files, messages, and any other arbitrary data between our clients and servers.  The commands and files needing to be passed to servers were defined in a <code>Rakefile</code>, a strictly written parody of makefiles.</p>
@@ -121,7 +120,6 @@ OSError: <span class="o">[</span>Errno <span class="m">24</span><span class="o">
 <p><strong>Update 2022-06-20:</strong></p>
 <p>Just learnt about popen() in C, now I feel really stupid.</p></article>
     </main>
-
     
     <footer>
       <p>

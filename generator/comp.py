@@ -86,11 +86,11 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
     
     links = []
 
+    if writeup != "":
+      links.append(f'<a href="{writeup}">Read more</a>')
     if repo != "":
       links.append(f'<a href="{repo}">Source code</a>')
 
-    if writeup != "":
-      links.append(f'<a href="{writeup}">Writeup</a>')
 
     link_html = f"<br>{' - '.join(links)}" if len(links) > 0 else ""
 
@@ -105,7 +105,7 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
           <div class="project-description">
             <p>
               {desc}
-              <span class="italic"><br>{lang}</span>
+              {f'<span class="italic"><br>{lang}</span>' if lang else ''}
               {link_html}
             </p>
          
