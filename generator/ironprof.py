@@ -7,7 +7,7 @@ import frontmatter
 import jinja2
 from feedgen.feed import FeedGenerator
 
-import comp
+import components
 
 ignore_dirs = [
     "templates",
@@ -101,7 +101,7 @@ def generate_blog():
             f.write(post_template.render({
                 **meta,
                 "body":body,
-                "comp":comp
+                "comp":components
             }))
             print(f"Generated ./blog/{post_dir}")
 
@@ -121,7 +121,7 @@ def generate_blog():
         f.write(postlist_template.render({
             "posts_data": reversed(posts_data), 
             "date":datetime.datetime.now(),
-            "comp":comp
+            "comp":components
         }))
         print("Generated ./blog/index")
 
@@ -142,7 +142,7 @@ def recursive_build():
             page_template = jinja2.Template(open(os.path.join(root, file), "r").read())
             with open(os.path.join(root, f"{page_name}.html"), "w") as f:
                 f.write(page_template.render({
-                    "comp":comp
+                    "comp":components
                 }))
                 print(f"Generated {root}/{page_name}.html")
 
