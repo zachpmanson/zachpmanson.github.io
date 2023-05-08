@@ -3,7 +3,6 @@ title: Basic SeleniumBasic
 subtitle: <span class="strikethrough">Unmaintained</span> Looking for love
 tagline: Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.
 date: 2022-02-15
-
 ---
 
 The library most commonly recommended for web automation is Selenium, which supports driving a variety of browsers and officially provides bindings for a number of languages. Unfortunately it doesn't officially support the ultimate programming language, Visual Basic. For VB, this is a single blemish on the otherwise immaculate language, and for Selenium, it's a unforgivable crime.
@@ -14,11 +13,11 @@ So it is only natural that these two exquisite pieces of software (that are in n
 
 ## Installation
 
- - Excel (duh)
- - [SeleniumBasic](https://github.com/florentbr/SeleniumBasic/releases)
- - A WebDriver
- - [.NET Framework 3.5](https://www.microsoft.com/en-au/download/details.aspx?id=21)
- 
+- Excel (duh)
+- [SeleniumBasic](https://github.com/florentbr/SeleniumBasic/releases)
+- A WebDriver
+- [.NET Framework 3.5](https://www.microsoft.com/en-au/download/details.aspx?id=21)
+
 Given that the VBA interface in Excel hasn't been updated since...1832...I am going to assume Excel version will not have any major impacts, but for reference I used Version 2201.
 
 Each of the major web browsers provides a WebDriver, which is a piece of software that allows a browser to be controlled and automated by external programs. The SeleniumBasic installer includes a number of WebDrivers which you can choose to include, but these all appear to be wildly out of date and will cause Excel to crash if you have a recent browser installed.
@@ -33,7 +32,7 @@ To fix this you will need to manually replace the WebDrivers you intend to use. 
 
 ## Actual Use
 
-Now you can actually use it as you'd expect.  Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.
+Now you can actually use it as you'd expect. Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.
 
 To enable SeleniumBasic in Excel you'll need to navigate to `Tools > References` and check `Selenium Type Library`.
 
