@@ -13,7 +13,39 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Sun, 07 May 2023 04:56:47 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 May 2023 16:57:29 +0000</lastBuildDate>
+    <item>
+      <title>The H Chord</title>
+      <link>https://zachmanson.com/blog/h-chord</link>
+      <description>How German monks broke my website</description>
+      <content:encoded><![CDATA[<p>I received a <a href="https://github.com/pavo-etc/penultimate-guitar/issues/41">strange bug report</a> on <a href="https://pg.zachmanson.com">Penultimate Guitar</a> where the Next.js rendering would fail completely on certain songs.</p>
+<h2>The Error</h2>
+<p>The type error was being triggered by a chord component, where the key was undefined. The chords are pulled from Ultimate Guitar, so I inspected the JSON payload from the <a href="https://tabs.ultimate-guitar.com/tab/1684995">original source</a>.</p>
+<p><img alt="" src="/blog/h-chord/ug.png" /></p>
+<p>Why the hell is there a <code>[ch]H[/ch]</code> chord in there? That's definitely the cause as I never accounted for non-existent keys. Looking at Ultimate Guitar, it renders as a B chord.</p>
+<p><img alt="" src="/blog/h-chord/ug-rendered.png" /></p>
+<p>Huh?</p>
+<details>
+<summary>An aside on Ultimate Guitar HTML</summary>
+<p>The way Ultimate Guitar handles data is bizarre. It passes a static HTML page to the client, but this page doesn't contain any chords, lyrics or metadata. This information is all contained within a giant JSON payload in an escaped string within an attribute of a random <code>div</code>, and is rendered using client side JavaScript. This contains all the metadata, the content of the songs, the chord patterns and a ton of other information. Why isn't this just incrementally statically generated? Or SSR?</p>
+</details>
+<h2>One Google Search Later</h2>
+<p>Germany and the Netherlands ha(d/ve) their own musical key notation that include(d/s) a H chord. <a href="https://www.guitarsite.com/newsletters/010122/12.shtml">This site</a> claims it ended in "1994/1995", though I've seen <a href="https://github.com/pavo-etc/penultimate-guitar/issues/41#issuecomment-1538452351">other</a> <a href="https://www.reddit.com/r/musictheory/comments/8rn0ve">sources</a> claim its still taught this way. This comes as an artifact of the bizarre history Western music notation, which is a problem I seem to keep running into recently in my attempts to learn more about music theory.</p>
+<blockquote>
+<p>I learned in music school that the chord is called "B" (like in the rest of the world), but the note is called "H" (eg. the C Major scale would be C, D, E, F, G, A, H, C).</p>
+</blockquote>
+<p><cite>TobTobXX, who reported the bug</cite></p>
+<h2>Western Music's Stupid Origins</h2>
+<p>Western music is based on ecclesiastic modes used in church in the early Middle ages, which only the notes of the modern C scale were used (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.</p>
+<p>Modern B♭ and B were called "soft" and "hard" B at the time as they were represented with a rounded lowercase "b" and a squared off lowercase "b" respectively. The flat and natural symbols derived from these characters.</p>
+<p>Another theory posits that flats were represented with b due to the German word <em>blatt</em> meaning "planar" (at least <a href="https://en.wikipedia.org/wiki/Flat_(music)">according to Wikipedia</a> without a citation).</p>
+<p>Somewhere along the line, monks transcribing these characters confused the squared of "b" for "h", and this was later assumed to be intentional. "H" became a convention for writing modern B, while the "b" character remained convention for writing modern Bb. "B" and "b" eventually became amalgamated, both coming to represent modern B♭.</p>
+<h2>Resolution</h2>
+<p>I don't love dealing with problems caused by the whims of millenia dead monks, but this was an interesting rabbit hole to fall into. The issue has since been patched, and I look forward to my mistakes ruining someone's day in 3023.</p>
+<p><img alt="" src="/blog/h-chord/commit.png" /></p>]]></content:encoded>
+      <guid isPermaLink="false">https://zachmanson.com/blog/h-chord</guid>
+      <pubDate>Mon, 08 May 2023 00:00:00 +0800</pubDate>
+    </item>
     <item>
       <title>LinkedIn's Ghost Text</title>
       <link>https://zachmanson.com/blog/linkedin-duplication</link>
@@ -1176,7 +1208,7 @@ h h h ' ' h ' h h h h h h h h h ' h
 <p>.NET Framework versions annoyingly don't show up as installed programs, so if you want to find out what versions you already have installed, you must use one of several annoying ways. The least annoying of these is to look in the <code>C:\Windows\Microsoft.NET\Framework</code> directory.</p>
 <p><img alt="" src="/blog/basic-seleniumbasic/dotnet-frameworks.png" /></p>
 <h2>Actual Use</h2>
-<p>Now you can actually use it as you'd expect.  Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.</p>
+<p>Now you can actually use it as you'd expect. Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.</p>
 <p>To enable SeleniumBasic in Excel you'll need to navigate to <code>Tools &gt; References</code> and check <code>Selenium Type Library</code>.</p>
 <p><img alt="" src="/blog/basic-seleniumbasic/adding-reference.png" /></p>
 <p>From here you can write fairly standard Selenium code in VBA.</p>
