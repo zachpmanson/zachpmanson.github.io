@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Mon, 08 May 2023 16:57:29 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 May 2023 13:03:17 +0000</lastBuildDate>
     <item>
       <title>The H Chord</title>
       <link>https://zachmanson.com/blog/h-chord</link>
@@ -36,7 +36,7 @@
 </blockquote>
 <p><cite>TobTobXX, who reported the bug</cite></p>
 <h2>Western Music's Stupid Origins</h2>
-<p>Western music is based on ecclesiastic modes used in church in the early Middle ages, which only the notes of the modern C scale were used (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.</p>
+<p>Western music is based on ecclesiastic modes used in church in the early Middle ages, which only used the notes of the modern C scale (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.</p>
 <p>Modern B♭ and B were called "soft" and "hard" B at the time as they were represented with a rounded lowercase "b" and a squared off lowercase "b" respectively. The flat and natural symbols derived from these characters.</p>
 <p>Another theory posits that flats were represented with b due to the German word <em>blatt</em> meaning "planar" (at least <a href="https://en.wikipedia.org/wiki/Flat_(music)">according to Wikipedia</a> without a citation).</p>
 <p>Somewhere along the line, monks transcribing these characters confused the squared of "b" for "h", and this was later assumed to be intentional. "H" became a convention for writing modern B, while the "b" character remained convention for writing modern Bb. "B" and "b" eventually became amalgamated, both coming to represent modern B♭.</p>

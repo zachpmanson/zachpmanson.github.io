@@ -34,7 +34,7 @@ Germany and the Netherlands ha(d/ve) their own musical key notation that include
 
 ## Western Music's Stupid Origins
 
-Western music is based on ecclesiastic modes used in church in the early Middle ages, which only the notes of the modern C scale were used (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.
+Western music is based on ecclesiastic modes used in church in the early Middle ages, which only used the notes of the modern C scale (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.
 
 Modern B♭ and B were called "soft" and "hard" B at the time as they were represented with a rounded lowercase "b" and a squared off lowercase "b" respectively. The flat and natural symbols derived from these characters.
 
