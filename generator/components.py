@@ -72,10 +72,7 @@ def blog_footer(title=""):
 
 def project_post(name="", year="", url="", desc="", lang="", img="", repo="", writeup=""):
     if img != "":
-      img_el = f"""
-          <div class="post-image">
-            <img class="thumbnail" src="{img}" />
-          </div>"""
+      img_el = f"""<img src="{img}" />"""
     else:
       img_el = ''
 
@@ -96,18 +93,11 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
 
     # {f'<span class="italic"><br>{lang}</span>' if lang else ''}
     
+          # {link_html}
     return f"""
       <div class="project">
-        <h3>{name_with_link} <!-- <span class="date">({year})</span> --></h3>
-
-        <div class="inline-flex">
-          <div class="project-description">
-            <p>
-              {desc}
-              {link_html}
-            </p>
-         
-          </div>
-          {img_el}
-        </div>
+        {img_el}
+        <p>
+          <span class="project-title">{name_with_link}</span> {desc}
+        </p>
       </div>"""

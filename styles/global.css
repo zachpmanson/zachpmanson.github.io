@@ -216,9 +216,10 @@ img.profile {
 
 .project-list {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
 }
 
 .project {
@@ -226,19 +227,21 @@ img.profile {
   text-decoration: none;
   color: var(--white);
   text-align: left;
-}
-
-.project h3 {
-  margin: 0;
+  width: 18rem;
 }
 
 .project p {
-  margin: 0;
-  font-weight: 200;
+  margin: 0.5rem 0;
 }
 
-.project .project-description p {
-  margin: 0;
+.project img {
+  width: 18rem;
+  max-height: 8rem;
+  object-fit: cover;
+}
+
+.project-title {
+  font-weight: 700;
 }
 
 .project > .inline-flex {
@@ -251,8 +254,8 @@ img.profile {
 }
 
 .project-image {
-  margin: auto;
-  max-height: 8rem;
+  width: 100%;
+  max-width: 640px;
 }
 
 .project-image img {
