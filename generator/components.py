@@ -41,20 +41,20 @@ def nav(activated_link):
     link_elements = []
     for (link, name) in links.items():
         is_active = ' activated-link' if activated_link == link else ''
-        link_elements.append(f'        <a href="/{link}/" class="discrete-link{is_active}">{name}</a>')
+        link_elements.append(f'        <a href="/{link}/" class="{is_active}">{name}</a>')
     
     right_links_str = '\n'.join(link_elements)
 
     is_root_active = ' activated-link' if activated_link == '/' else ''
     return f"""
     <nav>
-      <div class="flex">
-      <div class="flex-left">
-        <a href="/" class="discrete-link{is_root_active}">Zach Manson</a>
-      </div>
-      <div class="flex-right">
-        {right_links_str}
-      </div>
+      <div class="flex justify-between">
+        <div class="flex">
+          <a href="/" class="{is_root_active}">Zach Manson</a>
+        </div>
+        <div class="flex gap-1">
+          {right_links_str}
+        </div>
       </div>
     </nav>"""
 

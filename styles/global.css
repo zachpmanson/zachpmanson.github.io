@@ -16,6 +16,10 @@ nav {
   margin: 1rem auto;
 }
 
+nav a {
+  margin: 0;
+}
+
 main {
   text-align: left;
   max-width: 40rem;
@@ -55,6 +59,10 @@ summary h2 {
 .vert-items-tight * {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.m-0 {
+  margin: 0;
 }
 
 footer {
@@ -284,7 +292,7 @@ img.profile {
 
 .post p {
   margin: 0;
-  font-weight: 200;
+  /* font-weight: 200; */
 }
 
 .post .post-description p {
@@ -314,6 +322,14 @@ img.profile {
 
 .flex {
   display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 1rem;
 }
 
 .flex-left {
@@ -357,4 +373,17 @@ blockquote + p > cite {
 
 cite::before {
   content: "– ";
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }

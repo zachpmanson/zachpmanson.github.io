@@ -7,18 +7,18 @@
   <body>
     {{ comp.nav("blog") }}
     <header>
-      <h1>Memory Leaks</h1>
-      <p>Artisanally crafted text dumps</p>
+      <h1 class="reset">Memory Leaks</h1>
+      {# <p>Artisanally crafted text dumps</p> #}
     </header>
     <main>
       <div class="postlist">
         {% for post in posts_data %}
           <div class="post">
-            <div class="flex">
-              <h3>
+            <div class="flex justify-between">
+              <p class="bold">
                 <a href="./{{ post.post_dir }}/">{{ post.title }}</a>
-              </h3>
-              <p class="flex-right date">{{ post.date }}</p>
+              </p>
+              <p class="date">{{ post.date }}</p>
             </div>
           </div>
         {% endfor %}
