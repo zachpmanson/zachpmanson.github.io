@@ -13,7 +13,7 @@
       <link>https://zachmanson.com/blog/rss.xml</link>
     </image>
     <language>en</language>
-    <lastBuildDate>Sat, 03 Jun 2023 04:20:25 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Jul 2023 02:02:06 +0000</lastBuildDate>
     <item>
       <title>The H Chord</title>
       <link>https://zachmanson.com/blog/h-chord</link>
@@ -21,9 +21,9 @@
       <content:encoded><![CDATA[<p>I received a <a href="https://github.com/pavo-etc/penultimate-guitar/issues/41">strange bug report</a> on <a href="https://pg.zachmanson.com">Penultimate Guitar</a> where the Next.js rendering would fail completely on certain songs.</p>
 <h2>The Error</h2>
 <p>The type error was being triggered by a chord component, where the key was undefined. The chords are pulled from Ultimate Guitar, so I inspected the JSON payload from the <a href="https://tabs.ultimate-guitar.com/tab/1684995">original source</a>.</p>
-<p><img alt="" src="/blog/h-chord/ug.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/h-chord/ug.png" /></p>
 <p>Why the hell is there a <code>[ch]H[/ch]</code> chord in there? That's definitely the cause as I never accounted for non-existent keys. Looking at Ultimate Guitar, it renders as a B chord.</p>
-<p><img alt="" src="/blog/h-chord/ug-rendered.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/h-chord/ug-rendered.png" /></p>
 <p>Huh?</p>
 <details>
 <summary>An aside on Ultimate Guitar HTML</summary>
@@ -42,7 +42,7 @@
 <p>Somewhere along the line, monks transcribing these characters confused the squared of "b" for "h", and this was later assumed to be intentional. "H" became a convention for writing modern B, while the "b" character remained convention for writing modern Bb. "B" and "b" eventually became amalgamated, both coming to represent modern B♭.</p>
 <h2>Resolution</h2>
 <p>I don't love dealing with problems caused by the whims of millenia dead monks, but this was an interesting rabbit hole to fall into. The issue has since been patched, and I look forward to my mistakes ruining someone's day in 3023.</p>
-<p><img alt="" src="/blog/h-chord/commit.png" /></p>]]></content:encoded>
+<p><img alt="" src="https://zachmanson.com/blog/h-chord/commit.png" /></p>]]></content:encoded>
       <guid isPermaLink="false">https://zachmanson.com/blog/h-chord</guid>
       <pubDate>Mon, 08 May 2023 00:00:00 +0800</pubDate>
     </item>
@@ -56,7 +56,7 @@
 </video>
 
 <p>If you look into the source of a LinkedIn profile page (at your own personal risk) you'll find a text element like this</p>
-<p><img alt="" src="/blog/linkedin-duplication/element.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/linkedin-duplication/element.png" /></p>
 <p>will have HTML like this</p>
 <pre><code class="language-html">&lt;div class=&quot;display-flex flex-row justify-space-between&quot;&gt;
     &lt;div class=&quot;
@@ -99,12 +99,12 @@
       <link>https://zachmanson.com/blog/libkey-nomad</link>
       <description>LibKey Nomad's Stolen Valour</description>
       <content:encoded><![CDATA[<p>There is a wonderful browser extension with an awful name made by Third Iron called <a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a>. It allows university staff and students gain access to academic journals that your univesity is subscribed to without logging in or requesting access. You install the extension, sign in with your university credentials, and then it just works. Whenever you are on a site that LibKey Nomad is automatically allowing you access to, it displays this little banner in the corner of the page.</p>
-<p><img alt="" src="/blog/libkey-nomad/proper-popup.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/libkey-nomad/proper-popup.png" /></p>
 <p>You click it and you are taken direct to the paper. It really streamlines the process for a lot of sites.</p>
-<p><img alt="" src="/blog/libkey-nomad/wikipedia-popup.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/libkey-nomad/wikipedia-popup.png" /></p>
 <p>It hilariously appears on Wikipedia articles, as if the University of Western Australia has been incredibly gracious by allowing me to see Wikipedia. The reasoning here is that access to (at least one of) the citations is being provided through LibKey Nomad, but this makes the banner no less obnoxious.</p>
 <p>The banner doesn't even have a function like it does on other journals, clicking it just takes you to the references list.</p>
-<p><img alt="" src="/blog/libkey-nomad/citations.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/libkey-nomad/citations.png" /></p>
 <p>Wikipedia is one of the most impressive things humans have created. Keep your banners to yourself, Third Iron.</p>]]></content:encoded>
       <guid isPermaLink="false">https://zachmanson.com/blog/libkey-nomad</guid>
       <pubDate>Mon, 06 Feb 2023 00:00:00 +0800</pubDate>
@@ -132,7 +132,7 @@
       <link>https://zachmanson.com/blog/minecraftle-v1.1</link>
       <description>Enumerating some small usability changes</description>
       <content:encoded><![CDATA[<p><a href="https://minecraftle.zachmanson.com">Minecraftle</a> is a simple game written for my introductory web development unit (CITS3403 with Tim French, would recommend) in 2022 Semester 1. The project was submitted (and completed) on May 23, but since then I have been periodically updating it with "nice to have" features that we didn't manage to get in before the deadline. After 8 months I am happy to label this Minecraftle version 1.1, with changes stemming from three main motivations: usability, optimisation, and revenge.</p>
-<p><img alt="" src="/blog/minecraftle-v1.1/git-log.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/minecraftle-v1.1/git-log.png" /></p>
 <h2>Usability</h2>
 <p><code>537c928</code>: Made the emoji summary more vague, so a correct guess shows up as 9 green squares no matter what, rather than giving away the shape of the final solution.</p>
 <details>
@@ -184,7 +184,7 @@ After:
 <p><code>30a3829</code>: Made end-of-game popup togglable.</p>
 <p><code>f43b062</code>: Added loading indicator to initial pageload.</p>
 <p><code>8a842d9</code>: Added slot highlighting to the ingredients panel to help keep track of which items have been used before.</p>
-<p><img alt="" src="/blog/minecraftle-v1.1/panel.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/minecraftle-v1.1/panel.png" /></p>
 <h2>Optimisation</h2>
 <p><code>c502eb2</code>: Rewrote the entire script that turned the 600+ Minecraft crafting recipe JSON files into single file with a usable schema. Previous implementation was very messy, future modifications will be much easier.</p>
 <p><code>172b3f2</code>: Optimised recipes validation, still relatively inefficient though.</p>
@@ -211,7 +211,7 @@ After:
       <description>A small footgun for beginners using Vercel</description>
       <content:encoded><![CDATA[<p>TLDR: If you are using Vercel and display a lot of images hosted on someone else's server, you probably want to turn off <a href="https://vercel.com/docs/concepts/image-optimization">Image Optimisation</a>.</p>
 <p>Over the last week I built <a href="https://alculator.zachmanson.com">Alculator</a> using Next.js and hosted on Vercel. The site uses data lovingly freebooted from the Dan Murphy's public API to rank products by the ratio of price to standard drinks, and displaying this data in a card.</p>
-<p><img alt="" src="/blog/vercel-images/cards.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/vercel-images/cards.png" /></p>
 <p>The images for these cards are hosted on a Dan Murphy's server (media.danmurphys.com.au), and I am simply using Next.js <code>&lt;Image&gt;</code> tags to point to them.</p>
 <pre><code class="language-tsx">...
     &lt;div className=&quot;card center&quot;&gt;
@@ -232,7 +232,7 @@ After:
 </code></pre>
 <p>I'm using Vercel's free tier to serve the application which grants 100GB of bandwidth, which is magnitudes higher than any amount of users I expected to serve. I put the finishing touches on the site on December 30th, sent the link to a few people and went to the pub.</p>
 <p>Over the next few hours I started receiving strongly worded alerts from Vercel:</p>
-<p><img alt="" src="/blog/vercel-images/warnings.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/vercel-images/warnings.png" /></p>
 <p>Either I had gone viral or my code was a lot more inefficient than I thought. At 1AM I returned home, having reached the Ballmer Peak to diagnose the problem.</p>
 <p>On the Vercel/Dashboard/Usage page, right at the bottom is the harmless looking graph titled "Image Optimisations" which turned out to be the culprit. By default, Vercel takes all images hosted in <code>&lt;Image&gt;</code> tags and caches them all at the Edge. Vercel had optimised 1400 of these images before I discovered this and at the free tier this is capped at 1000 images. Whoops.</p>
 <p>The solution is simple:</p>
@@ -418,7 +418,7 @@ with open(&quot;output.html&quot;), &quot;w&quot;) as f:
       <description>Minor but impactful differences between DALL·E and Midjourney</description>
       <content:encoded><![CDATA[<p><a href="https://openai.com/dall-e-2/">DALL·E</a> and <a href="https://www.midjourney.com/">Midjourney</a> offer similar products, but had very different emotional impacts on me as a user.</p>
 <p>I recently received access to DALL·E and played around with it for a while. The interface is simple, just a textbox and a few curated images to give you some inspiration.</p>
-<p><img alt="" src="/blog/collaborative-awe/dall-e.jpg" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/dall-e.jpg" /></p>
 <p>Once you submit a prompt to DALL·E, you are shown more curated images and their corresponding prompts while your request is processed.</p>
 <p>Using Midjourney is completely a different experience. Midjourney currently runs its generative art AI through a bot on their company Discord server. You generate art by typing in a command in certain channels, and all the art produced is visible to everyone on the server simultaneously. Before you can even type something you are assaulted by an array of incredible pieces of art, generated right before your eyes.</p>
 <video autoplay loop muted>
@@ -429,24 +429,24 @@ with open(&quot;output.html&quot;), &quot;w&quot;) as f:
 <p>DALL·E is capable of producing some amazing images. It takes a bit of warming up, but after little practice I was able to create wonderful and bizarre generative art. Despite this, I felt I didn't know how to produce something as interesting or engaging as their curated images the presented to me when using DALL·E. I could logically understand that the tool had potential, but I felt seperated from it.</p>
 <p>The design of Midjourney makes it abundantly clear how big an impact this technology will have on the world. Watching hundreds of strangers generate incredible images in real-time is jaw dropping. Seeing an unfiltered, uncurated stream of regular people using the software is a lot more impressive than the sanitised, slick, and isolated interface of DALL·E. I was mesmerised, and within minutes saw images that moved me, despite being created by an AI without any intention behind them.</p>
 <p>While I am sure both of these are the future, only one made me feel it.</p>
-<p><img alt="" src="/blog/collaborative-awe/soldiers.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/soldiers.png" /></p>
 <details>
 <summary>
 <h2>Appendix: Some Generative Art</h2>
 </summary>
 <p>Some images I generated with DALL·E:</p>
-<p><img alt="" src="/blog/collaborative-awe/lemur-pears.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/cyberpunk-toadstool-explodes.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/gemstone-horse.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/toilet-wizard.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/lemur-pears.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/cyberpunk-toadstool-explodes.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/gemstone-horse.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/toilet-wizard.png" /></p>
 <p>Some images I generated or watched others generate with Midjourney:</p>
-<p><img alt="" src="/blog/collaborative-awe/black-hole.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/canaries.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/frogs.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/helheim.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/human_virus.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/neonrain.png" /></p>
-<p><img alt="" src="/blog/collaborative-awe/vendy.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/black-hole.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/canaries.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/frogs.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/helheim.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/human_virus.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/neonrain.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/collaborative-awe/vendy.png" /></p>
 </details>]]></content:encoded>
       <guid isPermaLink="false">https://zachmanson.com/blog/collaborative-awe</guid>
       <pubDate>Sat, 06 Aug 2022 00:00:00 +0800</pubDate>
@@ -700,7 +700,7 @@ proc.stderr.close()
       <link>https://zachmanson.com/blog/covid-updates</link>
       <description>"another spaghetto in my spaghetti"</description>
       <content:encoded><![CDATA[<p>The West Australian State Government has overall handled COVID-19 quite well, but in the arena of making my regex elegent they are have failed completely.  (Almost) every day since March 2020 they have published a media release detailing the number in overnight cases identified and other updates about the pandemic in the state.</p>
-<p><img alt="" src="/blog/covid-updates/media_release.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/covid-updates/media_release.png" /></p>
 <p>For the first 2 years, this was sufficient for me, since for the most part WA was both physically isolated and had restrictions on who could enter the state.  This led us to have very little community transmission, only having minor and shortlived clusters of cases every few months.</p>
 <p>All good things must come to an end, and COVID-19 v5.0 Omicron debuted in WA on Christmas Eve 2021.  Since then I've (somewhat unhealthily) been compulsively checking the listing of <a href="https://ww2.health.wa.gov.au/News/Media-releases-listing-page">media releases</a> every day to find the number of local cases. </p>
 <h2>Why not automate this?</h2>
@@ -1203,14 +1203,14 @@ h h h ' ' h ' h h h h h h h h h ' h
 </ul>
 <p>Given that the VBA interface in Excel hasn't been updated since...1832...I am going to assume Excel version will not have any major impacts, but for reference I used Version 2201.</p>
 <p>Each of the major web browsers provides a WebDriver, which is a piece of software that allows a browser to be controlled and automated by external programs. The SeleniumBasic installer includes a number of WebDrivers which you can choose to include, but these all appear to be wildly out of date and will cause Excel to crash if you have a recent browser installed.</p>
-<p><img alt="" src="/blog/basic-seleniumbasic/seleniumbasic-installer.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/basic-seleniumbasic/seleniumbasic-installer.png" /></p>
 <p>To fix this you will need to manually replace the WebDrivers you intend to use. Each of the major browser vendors distribute up to date versions of their own WebDrivers (<a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">Edge</a>, <a href="https://chromedriver.chromium.org/downloads">Chrome</a>, <a href="https://github.com/mozilla/geckodriver/releases">Firefox</a>). Within each of these zip archive you'll find an executable, e.g. <code>msedgedriver.exe</code> for everyone's fifth favourite browser. To replace driver included with SeleniumBasic, you need to place the up to date executable in <code>C:\Users\&lt;username&gt;\AppData\Local\SeleniumBasic</code>. The up to date WebDriver will need to have the same name as the original outdated WebDriver, so <code>msedgedriver.exe</code> needs to be renamed <code>edgedriver.exe</code>. Irritatingly, it's probable that eventually automatic browser updates will render even these updated WebDrivers outdated, and these executables will need to be replaced again.</p>
 <p>.NET Framework versions annoyingly don't show up as installed programs, so if you want to find out what versions you already have installed, you must use one of several annoying ways. The least annoying of these is to look in the <code>C:\Windows\Microsoft.NET\Framework</code> directory.</p>
-<p><img alt="" src="/blog/basic-seleniumbasic/dotnet-frameworks.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/basic-seleniumbasic/dotnet-frameworks.png" /></p>
 <h2>Actual Use</h2>
 <p>Now you can actually use it as you'd expect. Open the VBA IDE in Excel start using some of the gorgeous syntax and best in-class tools that Microsoft so kindly allows you to purchase.</p>
 <p>To enable SeleniumBasic in Excel you'll need to navigate to <code>Tools &gt; References</code> and check <code>Selenium Type Library</code>.</p>
-<p><img alt="" src="/blog/basic-seleniumbasic/adding-reference.png" /></p>
+<p><img alt="" src="https://zachmanson.com/blog/basic-seleniumbasic/adding-reference.png" /></p>
 <p>From here you can write fairly standard Selenium code in VBA.</p>
 <pre><code class="language-VB">Sub AutoSearch()
 

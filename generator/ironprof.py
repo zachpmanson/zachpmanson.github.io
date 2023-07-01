@@ -8,6 +8,9 @@ import jinja2
 from feedgen.feed import FeedGenerator
 
 import components
+from extensions.pathconverter import PathConverterExtension
+
+baseurl = "https://zachmanson.com"
 
 ignore_dirs = [
     "templates",
@@ -37,13 +40,13 @@ def generate_blog():
     blog_meta = {
         "title": "Memory Leaks",
         "subtitle": "Artisanally crafted text dumps",
-        "blog_link": "https://zachmanson.com/blog/",
-        "rss_link": "https://zachmanson.com/blog/rss.xml",
+        "blog_link": f"{baseurl}/blog/",
+        "rss_link": f"{baseurl}/blog/rss.xml",
         "author": {
             "name": "Zach Manson",
             "email": "zachpmanson@gmail.com"
         },
-        "logo": "https://zachmanson.com/icons/android-chrome-256x256.png"
+        "logo": f"{baseurl}/icons/android-chrome-256x256.png"
     }
 
     tz = pytz.timezone("Australia/Perth")
@@ -71,7 +74,7 @@ def generate_blog():
 
 
     for post_dir in posts_dirs:
-        link = "https://zachmanson.com/blog/"+post_dir
+        link = f"{baseurl}/blog/{post_dir}"
 
         with open(os.path.join("blog", post_dir, post_dir+".md"), "r") as post_file:
             post = frontmatter.load(post_file)
@@ -83,18 +86,20 @@ def generate_blog():
                 post.content,
                 extensions=['fenced_code', "codehilite", 'md_in_html', 'toc']
             )
-
             # RSS description uses absolute links and no code highlighting
             rss_body = markdown.markdown(
                 post.content,
-                extensions=['pymdownx.pathconverter', 'fenced_code', 'md_in_html'],
+                extensions=["extensions.pathconverter", 'fenced_code', 'md_in_html'],
                 extension_configs={
-                    'pymdownx.pathconverter': [
-                        ('base_path', f"blog/{post_dir}"),
-                        ('absolute', True)
-                    ]
+                    'extensions.pathconverter': {
+                        "domain": baseurl,
+                        'base_path': f"/blog/{post_dir}",
+                        'absolute': True
+                    }
+                    
                 }
             )
+
         meta["post_dir"] = post_dir
 
         with open(os.path.join("blog", post_dir, "index.html"), "w") as f:
@@ -149,6 +154,3 @@ def recursive_build():
 if __name__=="__main__":
     generate_blog()
     recursive_build()
-
-
-
