@@ -18,7 +18,9 @@
               <p class="bold">
                 <a href="./{{ post.post_dir }}/">{{ post.title }}</a>
               </p>
-              <p class="date">{{ post.date }}</p>
+              <p>
+                <time datetime="{{ post.date }}">{{ post.date }}</time>
+              </p>
             </div>
           </div>
         {% endfor %}

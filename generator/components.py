@@ -46,6 +46,17 @@ def nav(activated_link):
     right_links_str = '\n'.join(link_elements)
 
     is_root_active = ' activated-link' if activated_link == '/' else ''
+    # return f"""
+    # <nav>
+    #   <div class="flex justify-between">
+    #     <div class="flex">
+    #       {'' if is_root_active else '<a href="/">Zach Manson</a>'}
+    #     </div>
+    #     <div class="flex gap-1">
+    #       {right_links_str}
+    #     </div>
+    #   </div>
+    # </nav>"""
     return f"""
     <nav>
       <div class="flex justify-between">
@@ -91,7 +102,7 @@ def project_post(name="", year="", url="", desc="", lang="", img="", repo="", wr
 
     link_html = f"<br>{' - '.join(links)}" if len(links) > 0 else ""
 
-    # {f'<span class="italic"><br>{lang}</span>' if lang else ''}
+    # {f'<i><br>{lang}</i>' if lang else ''}
     
           # {link_html}
     return f"""

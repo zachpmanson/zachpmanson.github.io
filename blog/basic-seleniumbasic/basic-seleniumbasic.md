@@ -1,6 +1,6 @@
 ---
 title: Basic SeleniumBasic
-subtitle: <span class="strikethrough">Unmaintained</span> Looking for love
+subtitle: <s>Unmaintained</s> Looking for love
 tagline: Writing down everything that's required to get VBA and Selenium to work together before link rot sets in.
 date: 2022-02-15
 ---

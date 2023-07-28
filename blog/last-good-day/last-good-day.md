@@ -1,7 +1,7 @@
 ---
 title: The Curse of the Last Good Day
-subtitle: Spoilers for <span class="italic">The Fault in Our Stars</span>, I guess
-tagline: Spoilers for <span class="italic">The Fault in Our Stars</span>, I guess
+subtitle: Spoilers for <i>The Fault in Our Stars</i>, I guess
+tagline: Spoilers for <i>The Fault in Our Stars</i>, I guess
 
 date: 2023-01-27
 ---
