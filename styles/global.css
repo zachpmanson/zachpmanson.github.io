@@ -149,7 +149,7 @@ time {
 
 /* For homepage */
 
-img.profile {
+.profile img {
   border-radius: 50%;
 }
 
@@ -173,36 +173,13 @@ img.profile {
   text-decoration-color: var(--purple);
 }
 
-.profile-card {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-  height: fit-content;
-  gap: 2rem;
-  max-width: 50rem;
-  margin: auto;
-  text-align: left;
-}
-
-.profile-card div {
-  min-width: 15rem;
-  flex: 1;
-}
-
-.profile-image {
+.profile {
   text-align: center;
 }
 
-.profile-image img {
-  /* max-width: 15rem; */
+.profile img {
   height: 15rem;
   width: 15rem;
-}
-
-.profile-card .left-panel {
-  min-width: 10rem;
 }
 
 /* For projects */
