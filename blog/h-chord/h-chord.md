@@ -34,16 +34,34 @@ Germany and the Netherlands ha(d/ve) their own musical key notation that include
 
 ## Western Music's Stupid Origins
 
-Western music is based on ecclesiastic modes used in church in the early Middle ages, which only used the notes of the modern C scale (diatonic). This is why these notes are considered the natural notes. Sharp and flat notes only came into common use hundred of years later, and added to the existing system as a kind of kluge where they were slotted between the diatonics. They were considered less important than the natural notes until the Romantic Era. Sadly we still have to deal with this technical debt.
+Western music is based on ecclesiastic modes used in church in the early Middle Ages, which only used the diatonic notes of the C scale (*natural* notes).  The musical notation systems of the time reflected this, not accounting for notes outside of the C scale. When sharps and flats later came into more common use, the existing notation systems needed a way to distinguish them from the natural notes they sat between.
 
-Modern B♭ and B were called "soft" and "hard" B at the time as they were represented with a rounded lowercase "b" and a squared off lowercase "b" respectively. The flat and natural symbols derived from these characters.
+This problem first arose with B natural and B flat, according to the [Encyclopedia Britannica](https://www.britannica.com/art/musical-expression).  The first method of distinguishing B from B flat was using two different forms of the lowercase "b" character:
 
-Another theory posits that flats were represented with b due to the German word _blatt_ meaning "planar" (at least [according to Wikipedia](<https://en.wikipedia.org/wiki/Flat_(music)>) without a citation).
+![](The-Flat-Sharp-And-Natural-A-Historical-Sketch.png)
 
-Somewhere along the line, monks transcribing these characters confused the squared of "b" for "h", and this was later assumed to be intentional. "H" became a convention for writing modern B, while the "b" character remained convention for writing modern Bb. "B" and "b" eventually became amalgamated, both coming to represent modern B♭.
+Niecks, Frederick. “The Flat, Sharp, and Natural. A Historical Sketch.” _Proceedings of the Musical Association_, vol. 16, 1889, pp. 79–100.
 
+Somewhere along the line in Germany, monks transcribing these square and round "b" characters confused the squared "b" for "h", and this was later assumed to be intentional. "H" became a convention for writing B natural, while the "b" character remained convention for writing B flat. "B" and "b" became amalgamated, both coming to represent modern B flat.
+
+In the rest of the world, this "H" note didn't catch on.
+
+In time, notation for sharp and flat notes other than B flat was needed.   This use of square and round "b" to denote B and B flat eventually evolved into our modern notation for indicating natural and non-natural, *accidentals*.  ♭ comes from the round "b", while ♯ and ♮ come from the square "b".
+
+Somehow, Germany still hasn't fully corrected this mistake, continuing to use "H" to represent B natural and many places.  Including Ultimate Guitar. Ugh.
 ## Resolution
 
 I don't love dealing with problems caused by the whims of millenia dead monks, but this was an interesting rabbit hole to fall into. The issue has since been patched, and I look forward to my mistakes ruining someone's day in 3023.
 
 ![](commit.png)
+
+
+<details markdown="1">
+<summary> An aside on The Flat, Sharp, and Natural. A Historical Sketch </summary>
+
+When I first copied the text from the article, it copied that "square b" as a "h".  Funny that modern OCR technology makes the same mistakes at 1000 year old monks.
+
+> The first known writer who distinguished between b natural and b flat was Odo of Clugny, who died in 942 ; the b natural being indicated by a square b (h), the b flat by a round b (b)
+
+It was also a pain in the ass to find a copy of that article.  It's mostly found on paywalled academic sites despite the article definitely being out of copyright.  Luckily the Internet Archive [has a copy](https://scholar.archive.org/work/3jdud373effq3e376gqtlkxqvq).
+</details>
