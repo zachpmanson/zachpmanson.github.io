@@ -36,7 +36,7 @@ def meta():
 def nav(activated_link):
     links = {
       "projects":"Projects",
-      "blog":"Posts"
+      # "blog":"Posts"
     }
     link_elements = []
     for (link, name) in links.items():

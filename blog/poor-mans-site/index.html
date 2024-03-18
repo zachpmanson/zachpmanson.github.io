@@ -44,7 +44,6 @@
         </div>
         <div class="flex gap-1">
                   <a href="/projects/" class="">Projects</a>
-        <a href="/blog/" class=" activated-link">Posts</a>
         </div>
       </div>
     </nav>
@@ -57,19 +56,19 @@
     </header>
     <main>
       <article><p><a href="https://pandoc.org/">Pandoc</a> is a Swiss Army knife that I exclusively use to cut cheese.</p>
-<p>Every time I begin to write for this site, I open Codium and create a new file in my repo.  Then I realise I meant to create a new folder, call myself an idiot and start over.  This is the first step of my process, which currently concludes with running my anemic static site generator.  I hope to soon replace with this a bespoke and iron proficient(?) site generator, but until then I will continue using Pandoc to fulfill my static site generator requirements.</p>
+<p>Every time I begin to write for this site, I open Codium and create a new file in my repo. Then I realise I meant to create a new folder, call myself an idiot and start over. This is the first step of my process, which currently concludes with running my anemic static site generator. I hope to soon replace with this a bespoke and iron proficient(?) site generator, but until then I will continue using Pandoc to fulfill my static site generator requirements.</p>
 <p>My static site generator requirements:</p>
 <ul>
 <li>Markdown input</li>
 <li>Code highlighting</li>
 <li>with theming?</li>
 <li>Simple templating</li>
-<li>Minimum (ideally 0) depedencies</li>
+<li>Minimum (ideally 0) dependencies</li>
 <li>Automated?</li>
 </ul>
 <h2 id="markdown-input">Markdown Input</h2>
 <p>It can convert documents between myriad formats, most relevantly Markdown to HTML.</p>
-<div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5 
+<div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5
 </code></pre></div>
 
 <h2 id="code-highlighting">Code Highlighting</h2>
@@ -95,7 +94,7 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 <span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;cb3-2&quot;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#cb3-2&quot;</span> <span class="na">aria-hidden</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="na">tabindex</span><span class="o">=</span><span class="s">&quot;-1&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;bu&quot;</span><span class="p">&gt;</span>print<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>(<span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;st&quot;</span><span class="p">&gt;</span>&quot;x is equal to 5&quot;<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>)<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">code</span><span class="p">&gt;&lt;/</span><span class="nt">pre</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </code></pre></div>
 
-<p>The various HTML tag class spaghetti are used to highlight the code, though the CSS required to actually make this work is not included in the standard Pandoc command invocation.  To actually generate the CSS that makes these classes work you need to use the <code>--standalone</code> flag, à la:</p>
+<p>The various HTML tag class spaghetti are used to highlight the code, though the CSS required to actually make this work is not included in the standard Pandoc command invocation. To actually generate the CSS that makes these classes work you need to use the <code>--standalone</code> flag, à la:</p>
 <div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5 --standalone
 </code></pre></div>
 
@@ -131,16 +130,16 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 <span class="nt">code</span><span class="w"> </span><span class="nt">span</span><span class="p">.</span><span class="nc">wa</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#60a0b0</span><span class="p">;</span><span class="w"> </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span><span class="w"> </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c">/* Warning */</span><span class="w"></span>
 </code></pre></div>
 
-<p>This CSS is great, but only actually needs to be generated once.  I copied this CSS in a single <a href="https://github.com/pavo-etc/pavo-etc.github.io/blob/94d59de43188660d625d12b5df33894841f99922/styles/code.css">file</a>.  After copying this text, the <code>--standalone</code> flag can be omitted.</p>
+<p>This CSS is great, but only actually needs to be generated once. I copied this CSS in a single <a href="https://github.com/pavo-etc/pavo-etc.github.io/blob/94d59de43188660d625d12b5df33894841f99922/styles/code.css">file</a>. After copying this text, the <code>--standalone</code> flag can be omitted.</p>
 <h3 id="with-theming">with theming?</h3>
-<p>The colours used in the highlighting can be customised!  As with everything else in my life at the moment, I use <a href="https://draculatheme.com/">Dracula</a>, which thankfully <a href="https://draculatheme.com/pandoc">already has a theme for Pandoc</a>.</p>
+<p>The colours used in the highlighting can be customised! As with everything else in my life at the moment, I use <a href="https://draculatheme.com/">Dracula</a>, which thankfully <a href="https://draculatheme.com/pandoc">already has a theme for Pandoc</a>.</p>
 <p>Once the theme is installed, Pandoc can highlight using the theme with the <code>--defaults</code> flag:</p>
 <div class="codehilite"><pre><span></span><code>pandoc inputfile.md -o output.html --to<span class="o">=</span>html5 --standalone --defaults path/to/theme/dracula.yaml
 </code></pre></div>
 
-<p>The HTML classes will be the same names regardless of the theme, but the inline CSS will be dependent on the theme.  Again, this only needs to be run once, and the inline CSS can be copied and saved to be used later.</p>
+<p>The HTML classes will be the same names regardless of the theme, but the inline CSS will be dependent on the theme. Again, this only needs to be run once, and the inline CSS can be copied and saved to be used later.</p>
 <h2 id="simple-templating">Simple Templating</h2>
-<p>Pandoc makes it simple, as long as you only need simple template insertions!  HTML templates can be created easily.  A basic template could look like the following:</p>
+<p>Pandoc makes it simple, as long as you only need simple template insertions! HTML templates can be created easily. A basic template could look like the following:</p>
 <div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/styles/code.css&quot;</span><span class="p">&gt;</span>
@@ -160,13 +159,13 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 </code></pre></div>
 
-<p>Note the inclusion of the stylesheet.  <code>code.css</code> includes the CSS for code highlighting.</p>
+<p>Note the inclusion of the stylesheet. <code>code.css</code> includes the CSS for code highlighting.</p>
 <p>The <code>body</code> variable is automatically assigned to the content of the Markdown file, and the rest of the variables can be assigned manually using a YAML header in the Markdown file.</p>
 <div class="codehilite"><pre><span></span><code>---
 title: A Titular Title
 subtitle: A subtitular subtitle
-date: 2022-06-12
---- 
+<span class="gu">date: 2022-06-12</span>
+<span class="gu">---</span>
 
 <span class="gu">## Chapter 1: Where it all began</span>
 
@@ -183,7 +182,7 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 </code></pre></div>
 
 <h2 id="dependencies">Dependencies</h2>
-<p>None!  The outputted HTML has no external dependencies.</p>
+<p>None! The outputted HTML has no external dependencies.</p>
 <h2 id="automated">Automated?</h2>
 <p>It's a pain typing out that command for each post - so don't.</p>
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
@@ -237,7 +236,7 @@ Lorem ipsum amirite.  Hey look a fenced code block:
 </code></pre></div>
 
 <p>It opens every directory (except those in <code>nonposts</code>), runs pandoc on a Markdown file with the same name as the directory, and outputs <code>index.html</code> based on <code>templates/template.html</code>.</p>
-<p>The top level <code>index.html</code> is not modified by the script at all.  This page presumably would link to the subdirectories and must be manually modified.  Ugh.</p></article>
+<p>The top level <code>index.html</code> is not modified by the script at all. This page presumably would link to the subdirectories and must be manually modified. Ugh.</p></article>
     </main>
     
     <footer>

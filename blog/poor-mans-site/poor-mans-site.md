@@ -7,24 +7,23 @@ date: 2022-06-11
 
 [Pandoc](https://pandoc.org/) is a Swiss Army knife that I exclusively use to cut cheese.
 
-Every time I begin to write for this site, I open Codium and create a new file in my repo.  Then I realise I meant to create a new folder, call myself an idiot and start over.  This is the first step of my process, which currently concludes with running my anemic static site generator.  I hope to soon replace with this a bespoke and iron proficient(?) site generator, but until then I will continue using Pandoc to fulfill my static site generator requirements.
+Every time I begin to write for this site, I open Codium and create a new file in my repo. Then I realise I meant to create a new folder, call myself an idiot and start over. This is the first step of my process, which currently concludes with running my anemic static site generator. I hope to soon replace with this a bespoke and iron proficient(?) site generator, but until then I will continue using Pandoc to fulfill my static site generator requirements.
 
 My static site generator requirements:
 
- * Markdown input
- * Code highlighting
-   * with theming?
- * Simple templating
- * Minimum (ideally 0) depedencies
- * Automated?
-
+- Markdown input
+- Code highlighting
+  - with theming?
+- Simple templating
+- Minimum (ideally 0) dependencies
+- Automated?
 
 ## Markdown Input
 
 It can convert documents between myriad formats, most relevantly Markdown to HTML.
 
 ```bash
-pandoc inputfile.md -o output.html --to=html5 
+pandoc inputfile.md -o output.html --to=html5
 ```
 
 ## Code Highlighting
@@ -56,7 +55,7 @@ Pandoc will turn this Markdown into the following HTML:
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"x is equal to 5"</span>)</span></code></pre></div>
 ```
 
-The various HTML tag class spaghetti are used to highlight the code, though the CSS required to actually make this work is not included in the standard Pandoc command invocation.  To actually generate the CSS that makes these classes work you need to use the `--standalone` flag, à la:
+The various HTML tag class spaghetti are used to highlight the code, though the CSS required to actually make this work is not included in the standard Pandoc command invocation. To actually generate the CSS that makes these classes work you need to use the `--standalone` flag, à la:
 
 ```bash
 pandoc inputfile.md -o output.html --to=html5 --standalone
@@ -96,11 +95,11 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 ```
 
-This CSS is great, but only actually needs to be generated once.  I copied this CSS in a single [file](https://github.com/pavo-etc/pavo-etc.github.io/blob/94d59de43188660d625d12b5df33894841f99922/styles/code.css).  After copying this text, the `--standalone` flag can be omitted.
+This CSS is great, but only actually needs to be generated once. I copied this CSS in a single [file](https://github.com/pavo-etc/pavo-etc.github.io/blob/94d59de43188660d625d12b5df33894841f99922/styles/code.css). After copying this text, the `--standalone` flag can be omitted.
 
 ### with theming?
 
-The colours used in the highlighting can be customised!  As with everything else in my life at the moment, I use [Dracula](https://draculatheme.com/), which thankfully [already has a theme for Pandoc](https://draculatheme.com/pandoc).
+The colours used in the highlighting can be customised! As with everything else in my life at the moment, I use [Dracula](https://draculatheme.com/), which thankfully [already has a theme for Pandoc](https://draculatheme.com/pandoc).
 
 Once the theme is installed, Pandoc can highlight using the theme with the `--defaults` flag:
 
@@ -108,11 +107,11 @@ Once the theme is installed, Pandoc can highlight using the theme with the `--de
 pandoc inputfile.md -o output.html --to=html5 --standalone --defaults path/to/theme/dracula.yaml
 ```
 
-The HTML classes will be the same names regardless of the theme, but the inline CSS will be dependent on the theme.  Again, this only needs to be run once, and the inline CSS can be copied and saved to be used later.
+The HTML classes will be the same names regardless of the theme, but the inline CSS will be dependent on the theme. Again, this only needs to be run once, and the inline CSS can be copied and saved to be used later.
 
 ## Simple Templating
 
-Pandoc makes it simple, as long as you only need simple template insertions!  HTML templates can be created easily.  A basic template could look like the following:
+Pandoc makes it simple, as long as you only need simple template insertions! HTML templates can be created easily. A basic template could look like the following:
 
 ```HTML
 <!DOCTYPE html>
@@ -134,7 +133,7 @@ Pandoc makes it simple, as long as you only need simple template insertions!  HT
 </body>
 ```
 
-Note the inclusion of the stylesheet.  `code.css` includes the CSS for code highlighting.
+Note the inclusion of the stylesheet. `code.css` includes the CSS for code highlighting.
 
 The `body` variable is automatically assigned to the content of the Markdown file, and the rest of the variables can be assigned manually using a YAML header in the Markdown file.
 
@@ -143,7 +142,7 @@ The `body` variable is automatically assigned to the content of the Markdown fil
 title: A Titular Title
 subtitle: A subtitular subtitle
 date: 2022-06-12
---- 
+---
 
 ## Chapter 1: Where it all began
 
@@ -163,7 +162,7 @@ pandoc inputfile.md -o outputfile.html --to=html5 --template=path/to/template.ht
 
 ## Dependencies
 
-None!  The outputted HTML has no external dependencies.
+None! The outputted HTML has no external dependencies.
 
 ## Automated?
 
@@ -224,5 +223,4 @@ blog
 
 It opens every directory (except those in `nonposts`), runs pandoc on a Markdown file with the same name as the directory, and outputs `index.html` based on `templates/template.html`.
 
-The top level `index.html` is not modified by the script at all.  This page presumably would link to the subdirectories and must be manually modified.  Ugh.  
-
+The top level `index.html` is not modified by the script at all. This page presumably would link to the subdirectories and must be manually modified. Ugh.

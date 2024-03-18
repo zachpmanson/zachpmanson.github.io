@@ -21,7 +21,7 @@ Huh?
 
 <details markdown="1">
 <summary>An aside on Ultimate Guitar HTML</summary>
-The way Ultimate Guitar handles data is bizarre. It passes a static HTML page to the client, but this page doesn't contain any chords, lyrics or metadata. This information is all contained within a giant JSON payload in an escaped string within an attribute of a random `div`, and is rendered using client side JavaScript. This contains all the metadata, the content of the songs, the chord patterns and a ton of other information. Why isn't this just incrementally statically generated? Or SSR?
+The way Ultimate Guitar handles data is bizarre. It passes a static dehydrated HTML page to the client.  The data payload is in the HTML as well, but instead of being contained in a `script` tag it's a giant JSON payload in an escaped string within an attribute of a random `div`
 </details>
 
 ## One Google Search Later
@@ -34,9 +34,9 @@ Germany and the Netherlands ha(d/ve) their own musical key notation that include
 
 ## Western Music's Stupid Origins
 
-Western music is based on ecclesiastic modes used in church in the early Middle Ages, which only used the diatonic notes of the C scale (*natural* notes).  The musical notation systems of the time reflected this, not accounting for notes outside of the C scale. When sharps and flats later came into more common use, the existing notation systems needed a way to distinguish them from the natural notes they sat between.
+Western music is based on ecclesiastic modes used in church in the early Middle Ages, which only used the diatonic notes of the C scale (_natural_ notes). The musical notation systems of the time reflected this, not accounting for notes outside of the C scale. When sharps and flats later came into more common use, the existing notation systems needed a way to distinguish them from the natural notes they sat between.
 
-This problem first arose with B natural and B flat, according to the [Encyclopedia Britannica](https://www.britannica.com/art/musical-expression).  The first method of distinguishing B from B flat was using two different forms of the lowercase "b" character:
+This problem first arose with B natural and B flat, according to the [Encyclopedia Britannica](https://www.britannica.com/art/musical-expression). The first method of distinguishing B from B flat was using two different forms of the lowercase "b" character:
 
 ![](The-Flat-Sharp-And-Natural-A-Historical-Sketch.png)
 
@@ -46,22 +46,23 @@ Somewhere along the line in Germany, monks transcribing these square and round "
 
 In the rest of the world, this "H" note didn't catch on.
 
-In time, notation for sharp and flat notes other than B flat was needed.   This use of square and round "b" to denote B and B flat eventually evolved into our modern notation for indicating natural and non-natural, *accidentals*.  ♭ comes from the round "b", while ♯ and ♮ come from the square "b".
+In time, notation for sharp and flat notes other than B flat was needed. This use of square and round "b" to denote B and B flat eventually evolved into our modern notation for indicating natural and non-natural, _accidentals_. ♭ comes from the round "b", while ♯ and ♮ come from the square "b".
 
-Somehow, Germany still hasn't fully corrected this mistake, continuing to use "H" to represent B natural and many places.  Including Ultimate Guitar. Ugh.
+Somehow, Germany still hasn't fully corrected this mistake, continuing to use "H" to represent B natural and many places. Including Ultimate Guitar. Ugh.
+
 ## Resolution
 
 I don't love dealing with problems caused by the whims of millenia dead monks, but this was an interesting rabbit hole to fall into. The issue has since been patched, and I look forward to my mistakes ruining someone's day in 3023.
 
 ![](commit.png)
 
-
 <details markdown="1">
 <summary> An aside on The Flat, Sharp, and Natural. A Historical Sketch </summary>
 
-When I first copied the text from the article, it copied that "square b" as a "h".  Funny that modern OCR technology makes the same mistakes at 1000 year old monks.
+When I first copied the text from the article, it copied that "square b" as a "h". Funny that modern OCR technology makes the same mistakes at 1000 year old monks.
 
 > The first known writer who distinguished between b natural and b flat was Odo of Clugny, who died in 942 ; the b natural being indicated by a square b (h), the b flat by a round b (b)
 
-It was also a pain in the ass to find a copy of that article.  It's mostly found on paywalled academic sites despite the article definitely being out of copyright.  Luckily the Internet Archive [has a copy](https://scholar.archive.org/work/3jdud373effq3e376gqtlkxqvq).
+It was also a pain in the ass to find a copy of that article. It's mostly found on paywalled academic sites despite the article definitely being out of copyright. Luckily the Internet Archive [has a copy](https://scholar.archive.org/work/3jdud373effq3e376gqtlkxqvq).
+
 </details>
