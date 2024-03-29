@@ -2,7 +2,7 @@
 title: This feed has moved and GitHub Pages won't let me redirect you automatically
 subtitle: Sorry for the inconvenience
 tagline: Sorry for the inconvenience
-date: 2023-01-26
+date: 2024-03-29
 ---
 
 I haven't written on here in a while, but I have been writing on my [public notes](https://notes.zachmanson.com). At this point I've got over 300 pages on there, far more than I ever wrote on here but in a format that looks a lot more like a wiki. This is mostly a factor of convenience, the format of the notes means I can iteratively add whatever I am thinking about, without the expectation of the writing being complete and canonical. The writing is organised into a heirarchy of folders, with tags and backlinks. I find this format much better for wiki-style writing but doesn't lend itself well to chronological feeds like this one.

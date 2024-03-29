@@ -42,7 +42,7 @@ def generate_blog():
         "title": "Memory Leaks",
         "subtitle": "Artisanally crafted text dumps",
         "blog_link": f"{baseurl}/blog/",
-        "rss_link": f"{baseurl}/blog/rss.xml",
+        "rss_link": f"{baseurl}/blog/feed.xml",
         "author": {"name": "Zach Manson", "email": "zachpmanson@gmail.com"},
         "logo": f"{baseurl}/icons/android-chrome-256x256.png",
     }
