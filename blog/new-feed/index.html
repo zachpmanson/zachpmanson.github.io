@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/styles/code.css" />
+    
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bd93f9" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#603cba" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#282A36" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+    <title>This feed has moved and GitHub Pages won't let me redirect you automatically</title>
+  </head>
+  <body>
+    
+    <nav>
+      <div class="flex justify-between">
+        <div class="flex">
+          <a href="/" class="">Zach Manson</a>
+        </div>
+        <div class="flex gap-1">
+                  <a href="/projects/" class="">Projects</a>
+        </div>
+      </div>
+    </nav>
+    <header>
+      <h1>This feed has moved and GitHub Pages won't let me redirect you automatically</h1>
+      <p>Sorry for the inconvenience</p>
+      <p>
+        <time datetime="2023-01-26">2023-01-26</time>
+      </p>
+    </header>
+    <main>
+      <article><p>I haven't written on here in a while, but I have been writing on my <a href="https://notes.zachmanson.com">public notes</a>. At this point I've got over 300 pages on there, far more than I ever wrote on here but in a format that looks a lot more like a wiki. This is mostly a factor of convenience, the format of the notes means I can iteratively add whatever I am thinking about, without the expectation of the writing being complete and canonical. The writing is organised into a heirarchy of folders, with tags and backlinks. I find this format much better for wiki-style writing but doesn't lend itself well to chronological feeds like this one.</p>
+<p>Occasionally I would write a note on there that would fit well into the blog format, or was long and more story based. Some of my posts on this blog worked much better as wiki pages than as blog posts. I have wanted to unify these two sites for a long time now. Last week I finally got around to it!</p>
+<p>The <a href="https://notes.zachmanson.com/ochrs">Ochrs</a> site generator that I wrote to build the wiki can now generate chronological feeds of posts and RSS feeds. Feeds are generated based on tags, where each tag has its own RSS feed. A note can be added to a chronological feed by adding a publish date (<code>date</code> field in the frontmatter), which will then be used as the publish date in all feeds that the note is a part of. This approach is great since it allows each note to exist anywhere in the wiki hierarchy while also being a part of many feeds. The RSS feed will be at <code>notes.zachmanson.com/&lt;tagname&gt;.xml</code>, and the list of notes in a chronological feed can be shown on a page using the <code>ochrs:chrono:&lt;tagname&gt;</code> build function (see <a href="https://notes.zachmanson.com/ochrs-syntax">Ochrs Syntax</a> for more on how this works), which will results in all the posts being displayed in blog-style HTML.</p>
+<p>To succeed <code>zachmanson.com/blog/</code> I have created the posts tag. The feeds can be seen at <a href="notes.zachmanson.com/posts">notes.zachmanson.com/posts</a> and using <a href="https://notes.zachmanson.com/posts.xml">RSS</a>. I have moved the existing posts here over to the this new feed.</p>
+<p>If you are reading this using RSS then I would like to apologize that you will have to subscribe to a new feed. I would have like to automatically redirect your feed reader, but <strong>GitHub Pages doesn't let you create 301 redirects</strong>. The <code>redirect-from</code> plugin is capable of meta tag redirects, but those are soft and not followed by feed readers. This is very frustrating.</p>
+<p>I've marked a bunch of longer notes I've made as posts, so the new feed already has 7 new posts. Hopefully more will come soon!</p></article>
+    </main>
+    
+    <footer>
+      <p>
+        <a href="/blog/feed.xml">rss</a>
+        - <a href="https://notes.zachmanson.com/ironprof/">ironprof</a>
+        - <a href="mailto:zachpmanson@gmail.com?subject=Reply: This feed has moved and GitHub Pages won't let me redirect you automatically">reply</a>
+      </p>
+    </footer>
+  </body>
+</html>

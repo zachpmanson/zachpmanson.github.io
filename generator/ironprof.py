@@ -151,5 +151,5 @@ def recursive_build():
 
 
 if __name__ == "__main__":
-    # generate_blog()
+    generate_blog()
     recursive_build()
