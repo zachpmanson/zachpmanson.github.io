@@ -73,7 +73,7 @@
       let payload = {"key": inputs.password, "update": {},};
       payload.update[inputs.deployment] = inputs.date;
 
-      fetch('https://api.zachmanson.com/days-since', {
+      fetch('https://api.zachmanson.com/api/prod-broke', {
         method: 'POST',
         mode: "cors",
         headers: {
