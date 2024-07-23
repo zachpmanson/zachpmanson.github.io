@@ -30,7 +30,11 @@
       console.log("Submitting");
       let formData = new FormData(form);
       let inputs = Object.fromEntries(formData);
-      let payload = {"key": inputs.password, "update": {},};
+      let payload = {
+        "key": inputs.password,
+        "deployment": inputs.deployment,
+        "date": inputs.date
+      };
       payload.update[inputs.deployment] = inputs.date;
 
       fetch('https://api.zachmanson.com/api/prod-broke', {
