@@ -75,7 +75,6 @@
         "deployment": inputs.deployment,
         "date": inputs.date
       };
-      payload.update[inputs.deployment] = inputs.date;
 
       fetch('https://api.zachmanson.com/api/prod-broke', {
         method: 'POST',
