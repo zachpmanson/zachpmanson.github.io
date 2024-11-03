@@ -7,11 +7,11 @@
   </head>
   <body>
     {{ comp.nav("projects") }}
-    <header>
-      <h1>Microprojects</h1>
-      <p>Boring things that are only here so I don't lose the links to them</p>
-    </header>
-    <main>
+    <main class="flex flex-col gap-4">
+      <div class="text-left w-full">
+        <span class="font-bold pr-2">Microprojects</span>
+        Boring things that are only here so I don't lose the links to them. For a better overview of things that are hosted, see <a href="https://notes.zachmanson.com/dns">the DNS</a>.
+      </div>
       <div class="project-list">
         {{ comp.project_post(
         "Broke Prod?",
@@ -39,15 +39,25 @@
         "https://github.com/pavo-etc/pavo-etc.github.io/tree/master/generator",
         "https://notes.zachmanson.com/ironprof/"
         ) }}
+        {# {{ comp.project_post(
+        "Mean Reversion Trading Algorithm",
+        "2022",
+        "",
+        "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.", 
+        "Built with Python",
+        "/images/TSLA-cropped.png",
+        "https://github.com/QFinUWA/2022-Mean-Reversion-Team4"
+        ) }} #}
         {{ comp.project_post(
         "Mean Reversion Trading Algorithm",
         "2022",
         "",
-        "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.",
+        "Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA.", 
         "Built with Python",
-        "/images/TSLA-cropped.png",
+        "",
         "https://github.com/QFinUWA/2022-Mean-Reversion-Team4"
         ) }}
+
         {{ comp.project_post(
         "Todont",
         "2022",
@@ -57,8 +67,32 @@
         "/images/todont.png",
         "https://github.com/pavo-etc/todont"
         ) }}
+        {{ comp.project_post(
+        "WA COVID-19 Tracker",
+        "2022",
+        "https://tracker.zachmanson.com/",
+        "A dashboard for COVID-19 cases in WA",
+        "Built with Python and SQLite",
+        "/images/cases_dark.png",
+        "https://github.com/pavo-etc/wa-covid-tracker",
+        "https://notes.zachmanson.com/covid-19-tracker/"
+        ) }}
+        {{ comp.project_post(
+        "snakeware OS",
+        "2020",
+        "https://github.com/joshiemoore/snakeware",
+        "Contributed to snakeware, a Linux distro with a pure Python userspace",
+        "",
+        "/images/snakeware.png",
+        "https://github.com/joshiemoore/snakeware",
+        "https://notes.zachmanson.com/snakeware/"
+        ) }}
       </div>
-      <h2 class="center">University Projects</h2>
+
+      <div class="text-left w-full">
+        <span class="font-bold">University Projects</span> 
+      </div>
+
       <div class="project-list">
         {{ comp.project_post(
         "rake",
@@ -96,6 +130,7 @@
         "/images/aquarium.png",
         "https://github.com/pavo-etc/aquarium"
         ) }}
+      
       </div>
     </main>
     <footer>

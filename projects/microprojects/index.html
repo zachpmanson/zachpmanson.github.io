@@ -3,7 +3,7 @@
   <head>
     
     <link rel="stylesheet" href="/styles/colors.css" />
-    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/global-tw.css" />
 
     <link
       rel="apple-touch-icon"
@@ -38,7 +38,7 @@
   <body>
     
     <nav>
-      <div class="flex justify-between">
+      <div class="flex gap-1 justify-end">
         <div class="flex">
           <a href="/" class="">Zach Manson</a>
         </div>
@@ -47,11 +47,11 @@
         </div>
       </div>
     </nav>
-    <header>
-      <h1>Microprojects</h1>
-      <p>Boring things that are only here so I don't lose the links to them</p>
-    </header>
-    <main>
+    <main class="flex flex-col gap-4">
+      <div class="text-left w-full">
+        <span class="font-bold pr-2">Microprojects</span>
+        Boring things that are only here so I don't lose the links to them. For a better overview of things that are hosted, see <a href="https://notes.zachmanson.com/dns">the DNS</a>.
+      </div>
       <div class="project-list">
         
       <div class="project">
@@ -75,12 +75,14 @@
         </p>
       </div>
         
+        
       <div class="project">
-        <img src="/images/TSLA-cropped.png" />
+        
         <p>
-          <span class="project-title">Mean Reversion Trading Algorithm</span> Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA. Our final algorithm outperformed all other teams' algorithms, and was presented to IMC Trading.
+          <span class="project-title">Mean Reversion Trading Algorithm</span> Led a small team to develop quantitative trading algorithms based on mean reversion techniques with QFin UWA.
         </p>
       </div>
+
         
       <div class="project">
         <img src="/images/todont.png" />
@@ -88,8 +90,26 @@
           <span class="project-title"><a href="https://todont.zachmanson.com/">Todont</a></span> A simple persistent todo list application.
         </p>
       </div>
+        
+      <div class="project">
+        <img src="/images/cases_dark.png" />
+        <p>
+          <span class="project-title"><a href="https://tracker.zachmanson.com/">WA COVID-19 Tracker</a></span> A dashboard for COVID-19 cases in WA
+        </p>
       </div>
-      <h2 class="center">University Projects</h2>
+        
+      <div class="project">
+        <img src="/images/snakeware.png" />
+        <p>
+          <span class="project-title"><a href="https://github.com/joshiemoore/snakeware">snakeware OS</a></span> Contributed to snakeware, a Linux distro with a pure Python userspace
+        </p>
+      </div>
+      </div>
+
+      <div class="text-left w-full">
+        <span class="font-bold">University Projects</span> 
+      </div>
+
       <div class="project-list">
         
       <div class="project">
@@ -119,6 +139,7 @@
           <span class="project-title">Aquarium</span> A randomly-generated puzzle game in the vein of Picross.
         </p>
       </div>
+      
       </div>
     </main>
     <footer>

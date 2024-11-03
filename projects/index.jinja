@@ -7,9 +7,9 @@
   </head>
   <body>
     {{ comp.nav("projects") }}
-    <header>
+    {# <header>
       <h1>Projects</h1>
-    </header>
+    </header> #}
     <main>
       <p>
         A list of "usable" things I have developed that are on the internet.
@@ -70,7 +70,7 @@
         "Status Messenger",
         "2023",
         "https://marketplace.visualstudio.com/items?itemName=ZachManson.status-messenger",
-        "A VS Code extension for pushing messages to the status bar",
+        "A VS Code extension for pushing remote messages to the status bar",
         "",
         "/images/status-messenger.png",
         "https://github.com/pavo-etc/status-messenger",
@@ -86,26 +86,7 @@
         "https://github.com/pavo-etc/notes",
         "https://notes.zachmanson.com/ochrs/"
         ) }}
-        {{ comp.project_post(
-        "WA COVID-19 Tracker",
-        "2022",
-        "https://tracker.zachmanson.com/",
-        "A dashboard for COVID-19 cases in WA",
-        "Built with Python and SQLite",
-        "/images/cases_dark.png",
-        "https://github.com/pavo-etc/wa-covid-tracker",
-        "https://notes.zachmanson.com/covid-19-tracker/"
-        ) }}
-        {{ comp.project_post(
-        "snakeware OS",
-        "2020",
-        "https://github.com/joshiemoore/snakeware",
-        "Contributed to snakeware, a Linux distro with a pure Python userspace",
-        "",
-        "/images/snakeware.png",
-        "https://github.com/joshiemoore/snakeware",
-        "https://notes.zachmanson.com/snakeware/"
-        ) }}
+
       </div>
     </main>
     <footer>

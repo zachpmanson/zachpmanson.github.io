@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 1rem;
   font-family: sans-serif;
@@ -149,10 +153,6 @@ time {
 
 /* For homepage */
 
-.profile img {
-  border-radius: 50%;
-}
-
 .discrete-link {
   white-space: nowrap;
   margin: 0 0.5rem;
@@ -171,15 +171,6 @@ time {
 .activated-link[href*="zachmanson.com"]:hover {
   color: var(--purple);
   text-decoration-color: var(--purple);
-}
-
-.profile {
-  text-align: center;
-}
-
-.profile img {
-  height: 15rem;
-  width: 15rem;
 }
 
 /* For projects */
