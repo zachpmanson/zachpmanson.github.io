@@ -11,10 +11,6 @@ body {
   line-height: 1.4;
 }
 
-::selection {
-  background-color: var(--grey);
-}
-
 nav {
   /* max-width: 40rem; */
   margin: 1rem auto;
@@ -65,10 +61,6 @@ summary h2 {
   margin-bottom: 0;
 }
 
-.m-0 {
-  margin: 0;
-}
-
 footer {
   font-weight: lighter;
   margin-top: 5rem;
@@ -92,64 +84,64 @@ summary {
 }
 
 a {
-  color: var(--pink);
+  color: var(--primary);
   text-decoration: underline;
-  text-decoration-color: transparent;
-  transition: all 0.1s ease-in;
 }
 
 a:hover {
-  text-decoration-color: var(--pink);
-}
-
-a:active {
-  color: var(--white);
-  text-decoration-color: var(--white);
-  transition: all 0s ease-in;
+  text-decoration-style: wavy;
 }
 
 a[href^="/"],
 a[href^="./"],
 a[href*="zachmanson.com"] {
-  color: var(--purple);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  transition: all 0.1s ease-in;
+  text-decoration-style: dotted;
 }
 
 a[href^="/"]:hover,
 a[href^="./"]:hover,
 a[href*="zachmanson.com"]:hover {
-  text-decoration-color: var(--purple);
-}
-
-a[href^="/"]:active,
-a[href^="./"]:active,
-a[href*="zachmanson.com"]:active {
-  color: var(--white);
-  text-decoration-color: var(--white);
-  transition: all 0s ease-in;
+  text-decoration-style: wavy;
 }
 
 time {
   font-weight: lighter;
 }
 
+.hovercolor {
+  img {
+    filter: saturate(0);
+  }
+  img:hover {
+    filter: saturate(1);
+  }
+}
+
 .icon {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: inline-block;
   fill: var(--white);
   margin: auto;
 }
 
 .icon:hover {
-  fill: var(--purple);
+  fill: var(--primary);
+  opacity: 0.4;
 }
 
 .center {
   text-align: center;
 }
+
+/* @media (prefers-color-scheme: dark) {
+  svg {
+    filter: invert(1);
+  }
+  img[src$=".svg"] {
+    filter: invert(1);
+  }
+} */
 
 /* For homepage */
 
@@ -158,21 +150,18 @@ time {
   margin: 0 0.5rem;
 }
 
-.activated-link,
-.activated-link[href^="/"],
-.activated-link[href^="./"],
-.activated-link[href*="zachmanson.com"] {
-  color: var(--white);
+.activated-link {
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.activated-link:hover,
-.activated-link[href^="/"]:hover,
-.activated-link[href^="./"]:hover,
-.activated-link[href*="zachmanson.com"]:hover {
-  color: var(--purple);
-  text-decoration-color: var(--purple);
+.activated-link:hover {
+  text-decoration: underline;
+  text-decoration-style: wavy;
 }
-
 /* For projects */
 
 .project-list {

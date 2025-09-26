@@ -1,15 +1,10 @@
-/*Its a simplified version of Dracula*/
 :root {
-    --background: #282A36;
-    --grey: #44475a;
-    --white: #f8f8f2;
-    --dark-white: #f8f8f2ef;
-    --dark-blue: #6272a4;
-    --cyan: #8be9fd;
-    --green: #50fa7b;
-    --orange: #ffb86c;
-    --pink: #ff79c6;
-    --purple: #bd93f9;
-    --red: #ff5555;
-    --yellow: #f1fa8c;
+  /* color-scheme: light dark; */
+  /* --primary: light-dark(black, white); */
+  --primary: black;
+  --sans: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu,
+    roboto, noto, arial, sans-serif;
+  --serif: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  --mono: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
 }
