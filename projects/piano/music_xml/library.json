@@ -1,0 +1,68 @@
+{
+  "folders": [
+    {
+      "id": "lessons",
+      "title": "Уроки / Lessons",
+      "files": [
+        {
+          "title": "Simple Lesson 01",
+          "composer": "Robert Anthony",
+          "filename": "simple_lesson_01.musicxml"
+        }
+      ]
+    },
+    {
+      "id": "classics",
+      "title": "Класика / Classics",
+      "files": [
+        {
+          "title": "Fur Elise",
+          "composer": "Ludwig van Beethoven",
+          "filename": "fur-elise-beethoven-for-beginner-piano.mxl"
+        },
+        {
+          "title": "River Flows in You",
+          "composer": "Yiruma",
+          "filename": "river-flows-in-you.mxl"
+        },
+        {
+          "title": "Moonlight Sonata",
+          "composer": "Beethoven",
+          "filename": "Moonlight_Sonata_easy.musicxml"
+        }
+      ]
+    },
+    {
+      "id": "soundtracks",
+      "title": "Саундтреки / Soundtracks",
+      "files": [
+        {
+          "title": "Interstellar Main Theme",
+          "composer": "Hans Zimmer",
+          "filename": "interestellar-main-theme-hans-zimmer.mxl"
+        },
+        {
+          "title": "Believer",
+          "composer": "Imagine Dragons",
+          "filename": "believer-imagine-dragons-easy-piano.mxl"
+        }
+      ]
+    },
+    {
+      "id": "holiday",
+      "title": "Святкові / Holiday",
+      "files": [
+        {
+          "title": "Carol of the Bells",
+          "composer": "A Fun Piano Journey in A minor",
+          "filename": "carol-of-the-bells-a-fun-piano-journey-in-a-minor.mxl"
+        },
+        {
+          "title": "Jingle Bells",
+          "composer": "A Fun Piano",
+          "filename": "jingle-bells.mxl"
+        }
+      ]
+    }
+  ]
+}

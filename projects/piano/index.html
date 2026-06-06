@@ -1,0 +1,262 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Piano Trainer</title>
+    <meta
+      name="description"
+      content="Free online piano trainer: learn to read sheet music, practice with MusicXML scores, and connect your MIDI keyboard for interactive real-time feedback. Works in any modern browser on desktop and mobile."
+    />
+    <meta
+      name="keywords"
+      content="piano trainer, learn piano online, sheet music practice, MusicXML player, MIDI keyboard trainer, sight reading, piano practice, music education, free piano app"
+    />
+    <meta name="author" content="LearnPiano.online" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://learnpiano.online/" />
+    <meta property="og:title" content="LearnPiano.online — Free Online Piano Trainer" />
+    <meta
+      property="og:description"
+      content="Practice piano sight-reading with MusicXML scores and MIDI keyboard support. Free, no install, works in your browser."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://learnpiano.online/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="LearnPiano.online — Free Online Piano Trainer" />
+    <meta
+      name="twitter:description"
+      content="Practice piano sight-reading with MusicXML scores and MIDI keyboard support. Free, no install, works in your browser."
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+    <!-- Embedded score library + file:// fetch shim (works offline without a server) -->
+    <script src="assets/offline-data.js"></script>
+    <!-- i18n -->
+    <script src="assets/i18n.js"></script>
+    <!-- Piano keyboard -->
+    <script src="assets/piano-keyboard.js"></script>
+    <!-- OSMD -->
+    <script src="assets/opensheetmusicdisplay.min.js"></script>
+    <!-- JSZip for .mxl -->
+    <script src="assets/jszip.min.js"></script>
+    <!-- WebMIDI -->
+    <script src="assets/webmidi.iife.js"></script>
+    <!-- Tone.js for audio playback -->
+    <script src="assets/Tone.min.js"></script>
+  </head>
+  <body>
+    <div class="app" id="app">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-row header-row1">
+          <h1>🎹 <span id="lbl-app-title">Piano Trainer</span></h1>
+          <span class="midi-chip no" id="midi-chip">
+            <span class="dot"></span>
+            <span id="midi-label">MIDI</span>
+          </span>
+          <div class="header-spacer"></div>
+        </div>
+        <div class="header-row header-row2">
+          <button class="lib-btn" id="btn-library">📚 <span id="lbl-library">Library</span></button>
+          <button class="ai-btn" id="btn-randomizer">🎲 <span id="lbl-rand-btn">Randomizer</span></button>
+          <label class="file-label">
+            📂 <span id="lbl-file-btn">File</span>
+            <input type="file" id="file-input" accept=".mxl,.musicxml,.xml" />
+          </label>
+          <button class="icon-btn" id="btn-help" title="Help">❓</button>
+          <button class="icon-btn" id="btn-settings" title="Settings">⚙️</button>
+          <button class="icon-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
+        </div>
+      </div>
+
+      <!-- Collapsible settings -->
+      <div class="settings-panel" id="settings-panel">
+        <div class="settings-grid">
+          <label
+            ><span id="lbl-hand">Hand</span>
+            <select id="hand-select">
+              <option value="both" id="opt-hand-both">Both</option>
+              <option value="right" id="opt-hand-right">Right</option>
+              <option value="left" id="opt-hand-left">Left</option>
+            </select>
+          </label>
+          <label
+            ><span id="lbl-mode">Mode</span>
+            <select id="mode-select">
+              <option value="free" id="opt-mode-free">Free</option>
+              <option value="timed" id="opt-mode-timed">Tempo</option>
+              <option value="reading" id="opt-mode-reading">Reading</option>
+            </select>
+          </label>
+          <label id="tempo-group"
+            >BPM
+            <input type="number" id="tempo-input" value="80" min="20" max="300" />
+          </label>
+        </div>
+        <div class="zoom-row">
+          <span id="lbl-zoom">Zoom</span>
+          <button type="button" id="btn-zoom-out" class="zoom-btn" title="−">−</button>
+          <span id="zoom-value">100%</span>
+          <button type="button" id="btn-zoom-in" class="zoom-btn" title="+">+</button>
+        </div>
+        <div class="duration-row" style="display: flex; gap: 18px; flex-wrap: wrap">
+          <label class="duration-label">
+            <input type="checkbox" id="check-duration" />
+            <span id="lbl-check-duration">Hold notes (duration + legato)</span>
+          </label>
+          <label class="duration-label">
+            <input type="checkbox" id="check-keyboard" />
+            <span id="lbl-check-keyboard">Show keyboard</span>
+          </label>
+          <label class="duration-label" id="skip-wrong-wrap">
+            <input type="checkbox" id="check-skip-wrong-free" />
+            <span id="lbl-check-skip-wrong-free">In free mode, move on after a wrong key</span>
+          </label>
+          <label class="duration-label">
+            <input type="checkbox" id="check-hide-stats" />
+            <span id="lbl-check-hide-stats">Hide counters (correct / wrong / time)</span>
+          </label>
+          <label class="duration-label">
+            <input type="checkbox" id="check-restart-gesture" />
+            <span id="lbl-check-restart-gesture">Restart by pressing 3 adjacent white keys together</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- File info -->
+      <div class="file-info" id="file-info"><!-- set by i18n --></div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat" id="stat-correct-wrap">
+          <span class="stat-value c-ok" id="stat-correct">0</span
+          ><span class="stat-label" id="lbl-stat-correct">Correct</span>
+        </div>
+        <div class="stat" id="stat-wrong-wrap">
+          <span class="stat-value c-err" id="stat-wrong">0</span
+          ><span class="stat-label" id="lbl-stat-wrong">Wrong</span>
+        </div>
+        <div class="stat" id="stat-time-wrap">
+          <span class="stat-value" id="stat-time">0:00</span><span class="stat-label" id="lbl-stat-time">Time</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-progress">0%</span
+          ><span class="stat-label" id="lbl-stat-progress">Progress</span>
+        </div>
+      </div>
+
+      <!-- Debug info -->
+      <div class="debug-strip" id="debug-strip"><!-- set by i18n --></div>
+
+      <!-- Score (scrollable) -->
+      <div class="score-area" id="score-area">
+        <button class="exit-fullscreen-btn" id="btn-exit-fullscreen" title="Exit fullscreen">✕</button>
+        <div id="score-container">
+          <div class="loading" id="score-loading"><!-- set by i18n --></div>
+        </div>
+      </div>
+
+      <!-- Duration bar -->
+      <div class="duration-bar-wrap" id="duration-bar-wrap">
+        <div class="duration-bar-fill" id="duration-bar-fill"></div>
+      </div>
+
+      <!-- Bottom action bar -->
+      <div class="action-bar">
+        <button class="action-btn btn-start" id="btn-start" disabled>
+          ▶<span class="btn-text" id="lbl-btn-start"> Start</span>
+        </button>
+        <button class="action-btn btn-stop" id="btn-stop" disabled>
+          ⏹<span class="btn-text" id="lbl-btn-stop"> Stop</span>
+        </button>
+        <button class="action-btn btn-restart" id="btn-restart" disabled>
+          ↻<span class="btn-text" id="lbl-btn-restart"> Restart</span>
+        </button>
+        <button class="action-btn btn-listen" id="btn-listen" disabled>
+          🔊<span class="btn-text" id="lbl-btn-listen"> Listen</span>
+        </button>
+        <div class="note-display" id="note-display"><!-- set by i18n --></div>
+        <div class="piano-kb" id="piano-kb-container" style="display: none"></div>
+      </div>
+    </div>
+
+    <!-- Result modal -->
+    <div class="modal-overlay" id="result-modal">
+      <div class="modal-box" id="result-content"></div>
+    </div>
+
+    <!-- Help modal -->
+    <div class="help-overlay" id="help-modal">
+      <div class="help-box">
+        <h2 id="help-title">📖 Help</h2>
+        <div id="help-body"></div>
+        <button class="help-close" id="help-close">OK</button>
+      </div>
+    </div>
+
+    <!-- Library modal -->
+    <div class="lib-overlay" id="lib-modal">
+      <div class="lib-box">
+        <h2 id="lib-title">MusicXML Library</h2>
+        <ul class="lib-list" id="lib-list"></ul>
+        <button class="lib-close" id="lib-close">✕</button>
+      </div>
+    </div>
+
+    <!-- Randomizer modal -->
+    <div class="ai-overlay" id="rand-modal">
+      <div class="ai-box">
+        <h2 id="rand-title">🎲 Note Randomizer</h2>
+
+        <div class="ai-field">
+          <label id="rand-lbl-measures">Number of measures</label>
+          <select id="rand-measures">
+            <option value="8">8</option>
+            <option value="16">16</option>
+            <option value="32" selected>32</option>
+            <option value="48">48</option>
+          </select>
+        </div>
+
+        <div class="ai-field">
+          <label id="rand-lbl-hand">Hands</label>
+          <select id="rand-hand">
+            <option value="right" id="rand-opt-right">Right (treble clef)</option>
+            <option value="left" id="rand-opt-left">Left (bass clef)</option>
+            <option value="both" id="rand-opt-both">Both</option>
+          </select>
+        </div>
+
+        <div class="ai-field">
+          <label id="rand-lbl-notes">Max simultaneous notes (chord)</label>
+          <select id="rand-max-notes">
+            <option value="1" selected id="rand-opt-notes-1">1 (melody)</option>
+            <option value="2" id="rand-opt-notes-2">2 (intervals)</option>
+            <option value="3" id="rand-opt-notes-3">3 (triad)</option>
+            <option value="4" id="rand-opt-notes-4">4 (seventh chord)</option>
+          </select>
+        </div>
+
+        <div class="ai-field">
+          <label id="rand-lbl-accidentals">Accidentals</label>
+          <select id="rand-accidentals">
+            <option value="none" id="rand-opt-acc-none">No sharps or flats</option>
+            <option value="sharps" id="rand-opt-acc-sharps">Sharps only</option>
+            <option value="flats" id="rand-opt-acc-flats">Flats only</option>
+            <option value="both" id="rand-opt-acc-both">Sharps and flats</option>
+          </select>
+        </div>
+
+        <div class="ai-actions">
+          <button class="ai-generate-btn" id="rand-do-generate">🎵 <span id="rand-lbl-generate">Generate</span></button>
+          <button class="ai-cancel-btn" id="rand-cancel">✕</button>
+        </div>
+        <div class="ai-status" id="rand-status"></div>
+      </div>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
