@@ -1,4 +1,15 @@
-﻿    // ===================== I18N INIT =====================
+﻿    import { renderLibrary, renderLibraryMessage } from './lib-render.js';
+    import { renderResults } from './results-view.js';
+    import {
+      getLibraryItemPath,
+      buildLibraryFileUrl,
+      normalizeLibraryGroups,
+      flattenLibraryFiles,
+    } from './library.js';
+    import { extractMxl, fixMusicXml } from './mxl.js';
+    import { setSongQueryParam } from './query.js';
+
+    // ===================== I18N INIT =====================
     (function () {
       const saved = localStorage.getItem('lang');
       const initialLang = saved || window.detectLanguage();
@@ -534,29 +545,6 @@
     updateModeControls();
 
     // ===================== MXL LOADING =====================
-    async function extractMxl(arrayBuffer) {
-      const zip = await JSZip.loadAsync(arrayBuffer);
-      let xmlFileName = null;
-      const containerFile = zip.file('META-INF/container.xml');
-      if (containerFile) {
-        const containerXml = await containerFile.async('string');
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(containerXml, 'application/xml');
-        const rootFile = doc.querySelector('rootfile');
-        if (rootFile) xmlFileName = rootFile.getAttribute('full-path');
-      }
-      if (!xmlFileName) {
-        for (const name of Object.keys(zip.files)) {
-          if (name.endsWith('.xml') && !name.startsWith('META-INF')) {
-            xmlFileName = name;
-            break;
-          }
-        }
-      }
-      if (!xmlFileName) throw new Error('No MusicXML found in .mxl archive');
-      return await zip.file(xmlFileName).async('string');
-    }
-
     async function loadFile(file) {
       container.innerHTML = '<div class="loading" id="score-loading"></div>';
       document.getElementById('score-loading').textContent = t('trainer.fileInfoLoading');
@@ -1540,14 +1528,12 @@ function stopExercise(options) {
 
       const modal = document.getElementById('result-modal');
       const content = document.getElementById('result-content');
-      content.innerHTML = `
-        <h2>${t('trainer.finishTitle')}</h2>
-        <div class="stat-row">${t('trainer.finishCorrect')} <b style="color:#2e7d32;">${correctCount}</b></div>
-        <div class="stat-row">${t('trainer.finishWrong')} <b style="color:#c62828;">${wrongCount}</b></div>
-        <div class="stat-row">${t('trainer.finishAccuracy')} <b>${accuracy}%</b></div>
-        <div class="stat-row">${t('trainer.finishTime')} <b>${elapsed} ${t('trainer.sec')}</b></div>
-        <button onclick="document.getElementById('result-modal').classList.remove('active')">${t('trainer.ok')}</button>
-      `;
+      renderResults(
+        content,
+        { correctCount, wrongCount, accuracy, elapsed },
+        t,
+        () => modal.classList.remove('active')
+      );
       modal.classList.add('active');
       noteDisplay.textContent = t('trainer.noteDisplayDone');
     }
@@ -1747,102 +1733,13 @@ function stopExercise(options) {
     });
 
     // ===================== LIBRARY =====================
-    function getLibraryItemPath(item) {
-      return item && (item.path || item.filename) ? (item.path || item.filename) : '';
-    }
-
-    function buildLibraryFileUrl(item) {
-      const path = getLibraryItemPath(item);
-      return 'music_xml/' + path.split('/').map(part => encodeURIComponent(part)).join('/');
-    }
-
-    function setSongQueryParam(path) {
-      const url = new URL(window.location.href);
-      if (path) {
-        url.searchParams.set('song', path);
-      } else {
-        url.searchParams.delete('song');
-      }
-      window.history.replaceState(null, '', url);
-    }
-
-    function normalizeLibraryGroups(data) {
-      const groups = [];
-
-      if (Array.isArray(data.folders)) {
-        data.folders.forEach((folder, index) => {
-          if (!folder) return;
-          const files = Array.isArray(folder.files)
-            ? folder.files.filter(item => getLibraryItemPath(item))
-            : [];
-          if (files.length === 0) return;
-          groups.push({
-            id: folder.id || `folder-${index + 1}`,
-            title: folder.title || folder.name || '',
-            files
-          });
-        });
-      }
-
-      const rootFiles = Array.isArray(data.files)
-        ? data.files.filter(item => getLibraryItemPath(item))
-        : [];
-
-      if (rootFiles.length > 0) {
-        groups.push({ id: 'root', title: '', files: rootFiles });
-      }
-
-      return groups;
-    }
-
-    function flattenLibraryFiles(groups) {
-      const files = [];
-      groups.forEach(group => {
-        group.files.forEach(item => files.push(item));
-      });
-      return files;
-    }
-
-    function createLibraryEntry(item, modal) {
-      const entry = document.createElement('div');
-      entry.className = 'lib-entry';
-
-      const title = item.title || getLibraryItemPath(item);
-      entry.textContent = item.composer ? `${title} — ${item.composer}` : title;
-
-      entry.addEventListener('click', async () => {
+    // Data helpers live in library.js; rendering in lib-render.js (both imported above).
+    function renderLibraryGroups(listEl, groups, modal) {
+      renderLibrary(listEl, groups, async (item) => {
         modal.classList.remove('active');
+        const title = item.title || getLibraryItemPath(item);
         setSongQueryParam(getLibraryItemPath(item));
         await loadFileFromUrl(buildLibraryFileUrl(item), title, item.composer);
-      });
-
-      return entry;
-    }
-
-    function renderLibraryGroups(listEl, groups, modal) {
-      listEl.innerHTML = '';
-
-      groups.forEach((group, index) => {
-        if (!group.title) {
-          group.files.forEach(item => {
-            listEl.appendChild(createLibraryEntry(item, modal));
-          });
-          return;
-        }
-
-        const details = document.createElement('details');
-        details.className = 'lib-folder';
-        if (index === 0) details.open = true;
-
-        const summary = document.createElement('summary');
-        summary.textContent = `${group.title} (${group.files.length})`;
-        details.appendChild(summary);
-
-        group.files.forEach(item => {
-          details.appendChild(createLibraryEntry(item, modal));
-        });
-
-        listEl.appendChild(details);
       });
     }
 
@@ -1851,8 +1748,8 @@ function stopExercise(options) {
       const listEl = document.getElementById('lib-list');
       const titleEl = document.getElementById('lib-title');
       titleEl.textContent = t('trainer.libraryTitle');
-      listEl.innerHTML = `<div style="color:#888;padding:10px 0;">${t('trainer.libraryLoading')}</div>`;
       modal.classList.add('active');
+      renderLibraryMessage(listEl, t('trainer.libraryLoading'));
 
       try {
         const res = await fetch('music_xml/library.json');
@@ -1861,12 +1758,12 @@ function stopExercise(options) {
         const groups = normalizeLibraryGroups(data);
         const files = flattenLibraryFiles(groups);
         if (files.length === 0) {
-          listEl.innerHTML = `<div style="color:#888;padding:10px 0;">${t('trainer.libraryEmpty')}</div>`;
+          renderLibraryMessage(listEl, t('trainer.libraryEmpty'));
           return;
         }
         renderLibraryGroups(listEl, groups, modal);
       } catch (e) {
-        listEl.innerHTML = `<div style="color:#c62828;padding:10px 0;">${t('trainer.libraryError')}</div>`;
+        renderLibraryMessage(listEl, t('trainer.libraryError'), '#c62828');
         console.error('Library load error:', e);
       }
     }
@@ -1939,98 +1836,7 @@ function stopExercise(options) {
     });
 
     // ===================== AI GENERATE =====================
-    function fixMusicXml(xml) {
-      try {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xml, 'text/xml');
-        if (doc.querySelector('parsererror')) return xml;
-
-        const root = doc.querySelector('score-partwise');
-        if (!root) return xml;
-
-        // Ensure <part-list> exists
-        if (!root.querySelector('part-list')) {
-          const pl = doc.createElement('part-list');
-          const sp = doc.createElement('score-part');
-          sp.setAttribute('id', 'P1');
-          const pn = doc.createElement('part-name');
-          pn.textContent = 'Piano';
-          sp.appendChild(pn);
-          pl.appendChild(sp);
-          root.insertBefore(pl, root.firstChild);
-        }
-
-        // Ensure every <score-part> has required children
-        doc.querySelectorAll('score-part').forEach(sp => {
-          const id = sp.getAttribute('id') || 'P1';
-
-          // <part-name> is required
-          if (!sp.querySelector('part-name')) {
-            const pn = doc.createElement('part-name');
-            pn.textContent = 'Piano';
-            sp.insertBefore(pn, sp.firstChild);
-          } else if (!sp.querySelector('part-name').textContent) {
-            sp.querySelector('part-name').textContent = 'Piano';
-          }
-
-          // <score-instrument> → <instrument-name> (OSMD calls .toLowerCase() on this)
-          let si = sp.querySelector('score-instrument');
-          if (si) {
-            if (!si.getAttribute('id')) si.setAttribute('id', id + '-I1');
-            let iname = si.querySelector('instrument-name');
-            if (!iname) {
-              iname = doc.createElement('instrument-name');
-              iname.textContent = 'Piano';
-              si.appendChild(iname);
-            } else if (!iname.textContent) {
-              iname.textContent = 'Piano';
-            }
-          }
-
-          // <midi-instrument> → <midi-channel>, <midi-program>
-          let mi = sp.querySelector('midi-instrument');
-          if (mi) {
-            if (!mi.getAttribute('id')) mi.setAttribute('id', si ? si.getAttribute('id') : id + '-I1');
-            if (!mi.querySelector('midi-channel')) {
-              const mc = doc.createElement('midi-channel');
-              mc.textContent = '1';
-              mi.appendChild(mc);
-            }
-            if (!mi.querySelector('midi-program')) {
-              const mp = doc.createElement('midi-program');
-              mp.textContent = '1';
-              mi.appendChild(mp);
-            }
-          }
-        });
-
-        // Ensure every <clef> has a <sign> element (OSMD calls .toLowerCase() on clef sign)
-        doc.querySelectorAll('clef').forEach(clef => {
-          let sign = clef.querySelector('sign');
-          if (!sign) {
-            sign = doc.createElement('sign');
-            sign.textContent = 'G';
-            clef.insertBefore(sign, clef.firstChild);
-          } else if (!sign.textContent) {
-            sign.textContent = 'G';
-          }
-        });
-
-        // Ensure every <key> has a <fifths> element
-        doc.querySelectorAll('key').forEach(key => {
-          if (!key.querySelector('fifths')) {
-            const f = doc.createElement('fifths');
-            f.textContent = '0';
-            key.insertBefore(f, key.firstChild);
-          }
-        });
-
-        return new XMLSerializer().serializeToString(doc);
-      } catch (e) {
-        return xml;
-      }
-    }
-
+    // fixMusicXml lives in mxl.js (imported above).
     async function loadMusicXmlString(xmlString, title) {
       container.innerHTML = '<div class="loading" id="score-loading"></div>';
       document.getElementById('score-loading').textContent = t('trainer.fileInfoLoading');
@@ -2614,6 +2420,16 @@ function stopExercise(options) {
       } else {
         if (!btnRestart.disabled) btnRestart.click();
       }
+    });
+
+    // Escape closes any open modal/overlay.
+    const MODAL_SELECTOR = '.help-overlay.active, .lib-overlay.active, .ai-overlay.active, .modal-overlay.active';
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const open = document.querySelectorAll(MODAL_SELECTOR);
+      if (!open.length) return;
+      e.preventDefault();
+      open.forEach(el => el.classList.remove('active'));
     });
 
     scoreArea.addEventListener('click', (e) => {
