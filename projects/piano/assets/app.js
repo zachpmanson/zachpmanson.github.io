@@ -1794,28 +1794,24 @@ function stopExercise(options) {
     }
 
     function createLibraryEntry(item, modal) {
-      const li = document.createElement('li');
-      li.className = 'lib-entry';
+      const entry = document.createElement('div');
+      entry.className = 'lib-entry';
 
       const title = item.title || getLibraryItemPath(item);
-      li.innerHTML = `<div class="lib-title"></div>`
-        + (item.composer ? `<div class="lib-composer"></div>` : '');
-      li.querySelector('.lib-title').textContent = title;
-      const composerEl = li.querySelector('.lib-composer');
-      if (composerEl) composerEl.textContent = item.composer;
+      entry.textContent = item.composer ? `${title} — ${item.composer}` : title;
 
-      li.addEventListener('click', async () => {
+      entry.addEventListener('click', async () => {
         modal.classList.remove('active');
         await loadFileFromUrl(buildLibraryFileUrl(item), title, item.composer);
       });
 
-      return li;
+      return entry;
     }
 
     function renderLibraryGroups(listEl, groups, modal) {
       listEl.innerHTML = '';
 
-      groups.forEach(group => {
+      groups.forEach((group, index) => {
         if (!group.title) {
           group.files.forEach(item => {
             listEl.appendChild(createLibraryEntry(item, modal));
@@ -1823,28 +1819,19 @@ function stopExercise(options) {
           return;
         }
 
-        const wrapper = document.createElement('li');
-        wrapper.className = 'lib-folder';
-
         const details = document.createElement('details');
-        details.className = 'lib-folder-details';
+        details.className = 'lib-folder';
+        if (index === 0) details.open = true;
 
         const summary = document.createElement('summary');
-        summary.className = 'lib-folder-summary';
-        summary.innerHTML = '<span class="lib-folder-icon">📁</span><span class="lib-folder-name"></span><span class="lib-folder-count"></span>';
-        summary.querySelector('.lib-folder-name').textContent = group.title;
-        summary.querySelector('.lib-folder-count').textContent = group.files.length;
+        summary.textContent = `${group.title} (${group.files.length})`;
+        details.appendChild(summary);
 
-        const nestedList = document.createElement('ul');
-        nestedList.className = 'lib-folder-list';
         group.files.forEach(item => {
-          nestedList.appendChild(createLibraryEntry(item, modal));
+          details.appendChild(createLibraryEntry(item, modal));
         });
 
-        details.appendChild(summary);
-        details.appendChild(nestedList);
-        wrapper.appendChild(details);
-        listEl.appendChild(wrapper);
+        listEl.appendChild(details);
       });
     }
 
@@ -1853,7 +1840,7 @@ function stopExercise(options) {
       const listEl = document.getElementById('lib-list');
       const titleEl = document.getElementById('lib-title');
       titleEl.textContent = t('trainer.libraryTitle');
-      listEl.innerHTML = `<li style="color:#888;padding:10px 0;">${t('trainer.libraryLoading')}</li>`;
+      listEl.innerHTML = `<div style="color:#888;padding:10px 0;">${t('trainer.libraryLoading')}</div>`;
       modal.classList.add('active');
 
       try {
@@ -1863,12 +1850,12 @@ function stopExercise(options) {
         const groups = normalizeLibraryGroups(data);
         const files = flattenLibraryFiles(groups);
         if (files.length === 0) {
-          listEl.innerHTML = `<li style="color:#888;padding:10px 0;">${t('trainer.libraryEmpty')}</li>`;
+          listEl.innerHTML = `<div style="color:#888;padding:10px 0;">${t('trainer.libraryEmpty')}</div>`;
           return;
         }
         renderLibraryGroups(listEl, groups, modal);
       } catch (e) {
-        listEl.innerHTML = `<li style="color:#c62828;padding:10px 0;">${t('trainer.libraryError')}</li>`;
+        listEl.innerHTML = `<div style="color:#c62828;padding:10px 0;">${t('trainer.libraryError')}</div>`;
         console.error('Library load error:', e);
       }
     }

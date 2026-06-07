@@ -544,13 +544,9 @@
       color: #7b1fa2;
     }
     .lib-list {
-      list-style: none;
       display: flex;
       flex-direction: column;
       gap: 8px;
-    }
-    .lib-list > li {
-      margin-bottom: 0;
     }
     .lib-entry {
       padding: 12px 14px;
@@ -561,47 +557,17 @@
     }
     .lib-entry:hover { background: #f3e5f5; border-color: #ce93d8; }
     .lib-entry:active { background: #e1bee7; }
-    .lib-list .lib-title { font-weight: 600; font-size: 0.95em; color: #333; }
-    .lib-list .lib-composer { font-size: 0.8em; color: #888; margin-top: 2px; }
-    .lib-folder {
-      border: 1px solid #eadcf0;
-      border-radius: 12px;
-      background: #faf5fc;
-      overflow: hidden;
-    }
-    .lib-folder-details[open] {
-      background: #fff;
-    }
-    .lib-folder-summary {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
+    .lib-title { font-weight: 600; font-size: 0.95em; color: #333; }
+    .lib-composer { font-size: 0.8em; color: #888; margin-top: 2px; }
+    .lib-folder > summary {
+      padding: 10px 4px;
       cursor: pointer;
       font-weight: 600;
       color: #6a1b9a;
       user-select: none;
-      list-style: none;
     }
-    .lib-folder-summary::-webkit-details-marker {
-      display: none;
-    }
-    .lib-folder-name {
-      flex: 1;
-    }
-    .lib-folder-count {
-      font-size: 0.78em;
-      color: #8e5aa7;
-      background: #f3e5f5;
-      border-radius: 999px;
-      padding: 2px 8px;
-    }
-    .lib-folder-list {
-      list-style: none;
-      padding: 0 10px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .lib-folder > .lib-entry {
+      margin: 8px 0 0 14px;
     }
     .lib-close {
       display: block;

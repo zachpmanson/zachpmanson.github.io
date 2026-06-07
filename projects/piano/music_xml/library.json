@@ -2,7 +2,7 @@
   "folders": [
     {
       "id": "lessons",
-      "title": "Уроки / Lessons",
+      "title": "Lessons",
       "files": [
         {
           "title": "Simple Lesson 01",
@@ -13,7 +13,7 @@
     },
     {
       "id": "classics",
-      "title": "Класика / Classics",
+      "title": "Classics",
       "files": [
         {
           "title": "Fur Elise",
@@ -29,12 +29,17 @@
           "title": "Moonlight Sonata",
           "composer": "Beethoven",
           "filename": "Moonlight_Sonata_easy.musicxml"
+        },
+        {
+          "title": "Prelude in C",
+          "composer": "Johann Sebastian Bach",
+          "filename": "BWV_0846.xml"
         }
       ]
     },
     {
       "id": "soundtracks",
-      "title": "Саундтреки / Soundtracks",
+      "title": "Soundtracks",
       "files": [
         {
           "title": "Interstellar Main Theme",
@@ -50,7 +55,7 @@
     },
     {
       "id": "holiday",
-      "title": "Святкові / Holiday",
+      "title": "Holiday",
       "files": [
         {
           "title": "Carol of the Bells",
