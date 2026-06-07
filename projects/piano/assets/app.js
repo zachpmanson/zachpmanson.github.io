@@ -1756,6 +1756,16 @@ function stopExercise(options) {
       return 'music_xml/' + path.split('/').map(part => encodeURIComponent(part)).join('/');
     }
 
+    function setSongQueryParam(path) {
+      const url = new URL(window.location.href);
+      if (path) {
+        url.searchParams.set('song', path);
+      } else {
+        url.searchParams.delete('song');
+      }
+      window.history.replaceState(null, '', url);
+    }
+
     function normalizeLibraryGroups(data) {
       const groups = [];
 
@@ -1802,6 +1812,7 @@ function stopExercise(options) {
 
       entry.addEventListener('click', async () => {
         modal.classList.remove('active');
+        setSongQueryParam(getLibraryItemPath(item));
         await loadFileFromUrl(buildLibraryFileUrl(item), title, item.composer);
       });
 
@@ -2559,7 +2570,10 @@ function stopExercise(options) {
     // ===================== EVENT HANDLERS =====================
     document.getElementById('file-input').addEventListener('change', (e) => {
       const file = e.target.files[0];
-      if (file) loadFile(file);
+      if (file) {
+        setSongQueryParam(null);
+        loadFile(file);
+      }
     });
 
     function toggleExerciseByFullscreenShortcut() {
@@ -2629,10 +2643,12 @@ function stopExercise(options) {
         const data = await res.json();
         const groups = normalizeLibraryGroups(data);
         const files = flattenLibraryFiles(groups);
-        if (files.length > 0) {
-          const first = files[0];
-          await loadFileFromUrl(buildLibraryFileUrl(first), first.title || getLibraryItemPath(first), first.composer);
-        }
+        if (files.length === 0) return;
+
+        const requested = new URL(window.location.href).searchParams.get('song');
+        const target = (requested && files.find(item => getLibraryItemPath(item) === requested)) || files[0];
+        setSongQueryParam(getLibraryItemPath(target));
+        await loadFileFromUrl(buildLibraryFileUrl(target), target.title || getLibraryItemPath(target), target.composer);
       } catch (e) {
         console.warn('Auto-load first composition failed:', e);
       }
