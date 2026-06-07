@@ -119,6 +119,7 @@
     let durationBarTotal = 0;      // total ms for current bar
     let allMatchedAt = 0;          // performance.now() when all notes first matched
     let sustainedNotes = [];       // notes carried over from previous position
+    let leftoverHeldKeys = new Set(); // keys held over from a previously-credited note; excluded from "too many keys"
 
     // Loaded file metadata (for re-rendering fileInfo on lang change)
     let loadedFileMeta = null; // { title, composer, measures }
@@ -957,6 +958,15 @@
       sustainedNotes = carryOver;
       currentExpected = [...carryOver, ...freshNotes];
 
+      // Any key still physically held that is neither a fresh-expected note nor a
+      // sustained carry-over is a benign leftover from a previous position
+      // (e.g. the player holding a tie/legato note into the next note).
+      const freshMidiSet = new Set(freshNotes.map(n => n.midi));
+      const sustainedMidi = new Set(carryOver.map(s => s.midi));
+      leftoverHeldKeys = new Set(
+        [...heldKeys].filter(k => !freshMidiSet.has(k) && !sustainedMidi.has(k))
+      );
+
       const iter = osmd.cursor.Iterator;
       const measure = iter.CurrentMeasureIndex + 1;
       console.log(`Cursor → measure ${measure}:`,
@@ -1016,6 +1026,7 @@
       updateRestartGesture(midiNumber, false);
       if (isReadingMode()) return;
       heldKeys.delete(midiNumber);
+      leftoverHeldKeys.delete(midiNumber);
       if (skipWrongPending) return;
       // If a required hold key is released early → error
       if (durationTimer && requiredHeldKeys.has(midiNumber)) {
@@ -1069,6 +1080,7 @@
       });
       chordPressTimestamps = {};
       heldKeys.clear();
+      leftoverHeldKeys.clear();
       wrongCount += unresolved;
       notesPlayed += unresolved;
       debugStrip.innerHTML = `<span class="debug-err">✗ ${reason}</span> | Expected: ${expectedStr}`;
@@ -1079,6 +1091,7 @@
         skipWrongPending = false;
         if (!isPlaying) return;
         heldKeys.clear();
+        leftoverHeldKeys.clear();
         chordPressTimestamps = {};
         advanceCursor([]);
       }, waitMs);
@@ -1183,7 +1196,8 @@
       }
 
       // Too many NON-sustained keys pressed simultaneously
-      const freshHeldCount = [...heldKeys].filter(k => !sustainedNotes.some(s => s.midi === k)).length;
+      const freshHeldCount = [...heldKeys].filter(k =>
+        !sustainedNotes.some(s => s.midi === k) && !leftoverHeldKeys.has(k)).length;
       if (freshHeldCount > freshExpected.length) {
         if (isSkipWrongFreeEnabled()) {
           skipFreeModePositionOnWrong(debugStrip, expectedStr, `Too many keys! ${pressedName}`, freshExpected);
@@ -1238,7 +1252,8 @@
           confirmTimer = setTimeout(() => {
             confirmTimer = null;
 
-            const currentFreshHeld = [...heldKeys].filter(k => !sustainedNotes.some(s => s.midi === k));
+            const currentFreshHeld = [...heldKeys].filter(k =>
+              !sustainedNotes.some(s => s.midi === k) && !leftoverHeldKeys.has(k));
             if (currentFreshHeld.length > freshExpected.length) {
               if (isSkipWrongFreeEnabled()) {
                 skipFreeModePositionOnWrong(debugStrip, expectedStr, 'Too many keys at once!', freshExpected);
@@ -1392,6 +1407,7 @@
       startTime = null;
       currentExpected = [];
       heldKeys.clear();
+      leftoverHeldKeys.clear();
       chordPressTimestamps = {};
       requiredHeldKeys.clear();
       sustainedNotes = [];
@@ -1417,6 +1433,7 @@
         totalNotes = countTotalNotes();
         if (checkKeyboard.checked) { initKeyboard(); }
         heldKeys.clear();
+        leftoverHeldKeys.clear();
         chordPressTimestamps = {};
         if (confirmTimer) { clearTimeout(confirmTimer); confirmTimer = null; }
         if (skipWrongAdvanceTimer) { clearTimeout(skipWrongAdvanceTimer); skipWrongAdvanceTimer = null; }
@@ -1499,6 +1516,7 @@ function stopExercise(options) {
       sustainedNotes = [];
       timerInterval = null;
       heldKeys.clear();
+      leftoverHeldKeys.clear();
       chordPressTimestamps = {};
       if (pianoKeyboard) pianoKeyboard.clear();
 
