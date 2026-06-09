@@ -216,7 +216,29 @@
     #score-container {
       padding: 6px 4px;
       min-height: 200px;
+      position: relative;   /* anchor for the loop band overlays */
     }
+    /* Section-loop visuals. loop-dim is toggled on note groups + their stem/beam
+       elements; opacity is independent of the inline fill/stroke play-coloring,
+       so the correct/wrong colors still show through on the looped notes. */
+    #score-container svg .loop-dim { opacity: 0.22; }
+    /* Vertical bands spanning the whole music system (like the OSMD cursor),
+       marking the loop start/end and the slice under the pointer. */
+    #score-container .loop-band {
+      position: absolute;
+      pointer-events: none;   /* never intercept note/area clicks */
+      border-radius: 4px;
+      z-index: 4;
+    }
+    /* Wider, translucent columns so the clickable slice is obvious while notes
+       stay visible through them. */
+    #score-container .loop-band-end-cap { background: rgba(21, 101, 192, 0.32); }
+    #score-container .loop-band-hover { background: rgba(21, 101, 192, 0.18); }
+    /* The score area shows a crosshair while picking loop bounds. */
+    .score-area.loop-selecting { cursor: crosshair; }
+    /* Loop button: clearer background, and distinct armed/set states. */
+    .action-btn.btn-loop.loop-armed { background: #1565c0; color: #fff; border-color: #1565c0; }
+    .action-btn.btn-loop.loop-set { background: #e3f0ff; border-color: #1565c0; color: #0d3c75; }
     .loading {
       text-align: center;
       padding: 40px 20px;
@@ -272,6 +294,7 @@
     .btn-restart { background: #1976d2; }
     .btn-listen { background: #ff8f00; }
     .btn-listen.listening { background: #e53935; }
+    .btn-loop { background: #6a6a6a; }
 
     .action-btn .btn-text { display: none; }
 

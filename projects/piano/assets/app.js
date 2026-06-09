@@ -78,6 +78,7 @@
       document.getElementById('lbl-btn-stop').textContent     = ' ' + t('trainer.btnStop');
       document.getElementById('lbl-btn-restart').textContent  = ' ' + t('trainer.btnRestart');
       document.getElementById('lbl-btn-listen').textContent   = ' ' + t('trainer.btnListen');
+      document.getElementById('lbl-btn-loop').textContent     = ' ' + t('trainer.btnLoop');
       // header title
       // Keep branding universal — no i18n for app title
       // document.getElementById('lbl-app-title').textContent    = t('trainer.appTitle');
@@ -168,6 +169,24 @@
     let readingScrollRaf = null;
     let readingLastFrameTs = 0;
 
+    // ---- Loop a section ----
+    let loopActive = false;            // a loop region is committed
+    let loopStartStep = null, loopEndStep = null; // raw cursor posIdx (inclusive)
+    let loopSelecting = false;         // Loop button armed, capturing clicks
+    let loopSelectPhase = 'start';     // 'start' | 'end'
+    let pendingLoopStartStep = null;
+    let staveNoteIdToStep = new Map(); // vf-stavenote id -> posIdx (click lookup)
+    let stepToNoteIds = new Map();     // posIdx -> [vf-stavenote id ...] (shading)
+    let currentCursorStep = 0;         // live posIdx the cursor sits on during play
+    let loopHoverStep = null;            // posIdx (slice) currently hovered while selecting
+    let loopHitCache = null;           // [{step, x, sys}] slice x-centers (client coords) for nearest-slice hit-testing
+    let loopSysYCache = null;          // music-system -> {top, bottom} client-coord vertical band (row selection)
+    let loopHoverRaf = null;
+    let stepToSystem = new Map();      // posIdx -> OSMD music-system object (for full-height band)
+    let systemToIds = new Map();       // music-system object -> [stavenote id ...]
+    let loopBandCache = null;          // music-system -> {top, bottom} container-relative px
+    let loopBandEls = null;            // { start, end, hover } overlay band divs
+
     // Keyboard display helpers
     function initKeyboard() {
       const kb = document.getElementById('piano-kb-container');
@@ -228,6 +247,13 @@
       document.getElementById('tempo-group').classList.toggle('visible', isTimed || isReading || checkDuration.checked);
       updateSkipWrongVisibility();
       updateReadingModeVisibility();
+
+      // Section looping is cursor-driven, so it's unavailable in reading mode.
+      var btnLoop = document.getElementById('btn-loop');
+      if (btnLoop) {
+        if (isReading) { clearLoop(); btnLoop.disabled = true; }
+        else { btnLoop.disabled = !loadedFileMeta; }
+      }
     }
 
     function isSkipWrongFreeEnabled() {
@@ -351,6 +377,387 @@
       }
     }
 
+    // ===================== LOOP A SECTION =====================
+    // Build the click<->step map: sweep the cursor and, at each raw position
+    // (posIdx), record the SVG vf-stavenote group id(s) for the notes there.
+    // We store IDS (stable strings), never element references — OSMD reuses the
+    // same vf-auto#### ids each render but replaces the DOM nodes, so a stored
+    // reference would go stale after any re-render. posIdx is render-independent,
+    // so loop bounds survive zoom/resize; we just rebuild this map per render.
+    function buildLoopStepMap() {
+      staveNoteIdToStep = new Map();
+      stepToNoteIds = new Map();
+      stepToSystem = new Map();
+      systemToIds = new Map();
+      loopHitCache = null;
+      loopBandCache = null;
+      // OSMD's render may discard our overlay band divs; force a fresh set.
+      if (container) container.querySelectorAll('.loop-band').forEach(function (e) { e.remove(); });
+      loopBandEls = null;
+      if (!osmd || !osmd.cursor || !osmd.graphic) return;
+      var parts = osmd.graphic.MeasureList;
+      if (!parts) return;
+
+      // The sweep below moves the cursor; remember where it was so a rebuild
+      // triggered mid-play (zoom/resize) can restore the live position.
+      var savedStep = currentCursorStep;
+
+      osmd.cursor.reset();
+      var posIdx = 0;
+      while (!osmd.cursor.Iterator.EndReached) {
+        var it = osmd.cursor.Iterator;
+        var measureIdx = it.CurrentMeasureIndex;
+        var veList = it.CurrentVoiceEntries || [];
+        var ids = [];
+        for (var v = 0; v < veList.length; v++) {
+          var sourceStaffEntry = veList[v].ParentSourceStaffEntry;
+          if (!sourceStaffEntry || !parts[measureIdx]) continue;
+          for (var p = 0; p < parts[measureIdx].length; p++) {
+            var gMeasure = parts[measureIdx][p];
+            if (!gMeasure || !gMeasure.staffEntries) continue;
+            var gSystem = gMeasure.parentMusicSystem || null;
+            for (var se = 0; se < gMeasure.staffEntries.length; se++) {
+              var gStaffEntry = gMeasure.staffEntries[se];
+              if (!gStaffEntry || gStaffEntry.sourceStaffEntry !== sourceStaffEntry || !gStaffEntry.graphicalVoiceEntries) continue;
+              for (var gv = 0; gv < gStaffEntry.graphicalVoiceEntries.length; gv++) {
+                var gve = gStaffEntry.graphicalVoiceEntries[gv];
+                if (!gve.notes) continue;
+                for (var ni = 0; ni < gve.notes.length; ni++) {
+                  var svgEl = null;
+                  try { svgEl = gve.notes[ni].getSVGGElement ? gve.notes[ni].getSVGGElement() : null; } catch (e) {}
+                  if (!svgEl) continue;
+                  var staveNote = findAncestorWithClass(svgEl, 'vf-stavenote');
+                  if (!staveNote) continue;
+                  var id = staveNote.getAttribute('id');
+                  if (id && !staveNoteIdToStep.has(id)) {
+                    staveNoteIdToStep.set(id, posIdx);
+                    ids.push(id);
+                    if (gSystem) {
+                      if (stepToSystem.get(posIdx) == null) stepToSystem.set(posIdx, gSystem);
+                      if (!systemToIds.has(gSystem)) systemToIds.set(gSystem, []);
+                      systemToIds.get(gSystem).push(id);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (ids.length) stepToNoteIds.set(posIdx, ids);
+        posIdx++;
+        osmd.cursor.next();
+      }
+
+      // Restore the live cursor position (no-op at rest, where savedStep is 0).
+      seekCursorToStep(savedStep);
+      if (isPlaying && osmd.cursor.show) osmd.cursor.show();
+
+      // Restore any visual after a re-render rebuilt the SVG elements.
+      if (loopActive) applyLoopShading();
+      else if (loopSelecting) { paintSelectionStart(); }
+    }
+
+    // Reset the cursor to the score start and step forward to `target`,
+    // keeping currentCursorStep in sync. Mirrors the reset+next idiom used
+    // by countTotalNotes / collectAllNotesForPlayback.
+    function seekCursorToStep(target) {
+      if (!osmd || !osmd.cursor) return;
+      osmd.cursor.reset();
+      var step = 0;
+      while (step < target && !osmd.cursor.Iterator.EndReached) {
+        osmd.cursor.next();
+        step++;
+      }
+      currentCursorStep = step;
+    }
+
+    // ----- Loop visuals -----
+    // Dim classes are toggled on the live elements resolved by id (group + its
+    // separate stem/beam elements), so the whole note dims and nothing ever
+    // points at a stale node. Independent of the inline fill/stroke
+    // play-coloring, so the two never collide. The start/end/hover markers are
+    // vertical bands spanning the whole music system (like the OSMD cursor).
+    function loopNoteEls(id) {
+      var els = [];
+      var g = document.getElementById(id);
+      if (g) els.push(g);
+      var stem = document.getElementById(id + '-stem');
+      if (stem) els.push(stem);
+      for (var b = 0; b < 4; b++) {
+        var bm = document.getElementById(id + '-beam' + b);
+        if (bm) els.push(bm);
+      }
+      return els;
+    }
+
+    function setLoopClass(id, cls, on) {
+      loopNoteEls(id).forEach(function (el) { el.classList.toggle(cls, on); });
+    }
+
+    // --- vertical band overlays (start / end / hover) ---
+    function ensureBandEls() {
+      if (loopBandEls && loopBandEls.start.isConnected) return;
+      if (!container) return;
+      container.querySelectorAll('.loop-band').forEach(function (e) { e.remove(); });
+      function mk(cls) {
+        var d = document.createElement('div');
+        d.className = 'loop-band ' + cls;
+        d.style.display = 'none';
+        container.appendChild(d);
+        return d;
+      }
+      loopBandEls = { start: mk('loop-band-end-cap'), end: mk('loop-band-end-cap'), hover: mk('loop-band-hover') };
+    }
+
+    // Container-relative vertical extent of a music system (cached per render).
+    function systemBand(sys) {
+      if (!loopBandCache) loopBandCache = new Map();
+      if (loopBandCache.has(sys)) return loopBandCache.get(sys);
+      var ids = systemToIds.get(sys) || [];
+      var crect = container.getBoundingClientRect();
+      var top = Infinity, bottom = -Infinity;
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el || !el.getBoundingClientRect) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < top) top = r.top;
+        if (r.bottom > bottom) bottom = r.bottom;
+      });
+      var band = (top === Infinity) ? null : { top: top - crect.top, bottom: bottom - crect.top };
+      loopBandCache.set(sys, band);
+      return band;
+    }
+
+    // Container-relative centre-x of a slice.
+    function sliceX(step) {
+      var ids = stepToNoteIds.get(step) || [];
+      var crect = container.getBoundingClientRect();
+      var sum = 0, n = 0;
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el || !el.getBoundingClientRect) return;
+        var r = el.getBoundingClientRect();
+        sum += r.left + r.width / 2; n++;
+      });
+      return n ? (sum / n - crect.left) : null;
+    }
+
+    function showBand(which, step) {
+      ensureBandEls();
+      if (!loopBandEls) return;
+      var el = loopBandEls[which];
+      if (step == null) { el.style.display = 'none'; return; }
+      var sys = stepToSystem.get(step);
+      var band = (sys != null) ? systemBand(sys) : null;
+      var x = sliceX(step);
+      if (!band || x == null) { el.style.display = 'none'; return; }
+      var pad = 8;       // reach a touch beyond the outermost notes toward the staff lines
+      var width = 22;    // wide column so the clickable slice is obvious
+      el.style.width = width + 'px';
+      el.style.left = (x - width / 2) + 'px';
+      el.style.top = (band.top - pad) + 'px';
+      el.style.height = (band.bottom - band.top + pad * 2) + 'px';
+      el.style.display = 'block';
+    }
+
+    function hideAllBands() {
+      if (!loopBandEls) return;
+      ['start', 'end', 'hover'].forEach(function (k) { loopBandEls[k].style.display = 'none'; });
+    }
+
+    function clearLoopShading() {
+      staveNoteIdToStep.forEach(function (step, id) {
+        loopNoteEls(id).forEach(function (el) { el.classList.remove('loop-dim'); });
+      });
+      hideAllBands();
+      loopHoverStep = null;
+    }
+
+    // Committed loop: dim everything OUTSIDE the section so only the looped
+    // notes stay full black; mark the two endpoints with full-height bands.
+    function applyLoopShading() {
+      clearLoopShading();
+      if (!loopActive || loopStartStep == null || loopEndStep == null) return;
+      stepToNoteIds.forEach(function (ids, step) {
+        var inRange = step >= loopStartStep && step <= loopEndStep;
+        ids.forEach(function (id) { if (!inRange) setLoopClass(id, 'loop-dim', true); });
+      });
+      showBand('start', loopStartStep);
+      showBand('end', loopEndStep);
+    }
+
+    // While picking the end note, mark the chosen start note with its band.
+    function paintSelectionStart() {
+      showBand('start', pendingLoopStartStep);
+    }
+
+    // Selection snaps to the nearest vertical slice (cursor step) — like the
+    // OSMD cursor, which spans both clefs at one time point. We first pick the
+    // music system (staff line) the pointer is over by its y, then the nearest
+    // slice by x WITHIN that system. Picking the row first is essential on
+    // multi-line scores: every system shares the same x-range, so an x-only
+    // search would jump to the wrong line. This is forgiving (no need to hit a
+    // notehead, works in the hollow centre of half/whole notes) and makes the
+    // whole height of a staff line a hoverable target. Cached in client coords;
+    // invalidated on scroll and on rebuild.
+    function buildLoopHitCache() {
+      loopHitCache = [];
+      loopSysYCache = new Map();
+      stepToNoteIds.forEach(function (ids, step) {
+        var sumX = 0, n = 0;
+        ids.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el || !el.getBoundingClientRect) return;
+          var r = el.getBoundingClientRect();
+          sumX += r.left + r.width / 2; n++;
+        });
+        if (n) loopHitCache.push({ step: step, x: sumX / n, sys: stepToSystem.get(step) || null });
+      });
+      systemToIds.forEach(function (ids, sys) {
+        var top = Infinity, bottom = -Infinity;
+        ids.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el || !el.getBoundingClientRect) return;
+          var r = el.getBoundingClientRect();
+          if (r.top < top) top = r.top;
+          if (r.bottom > bottom) bottom = r.bottom;
+        });
+        if (top !== Infinity) loopSysYCache.set(sys, { top: top, bottom: bottom });
+      });
+    }
+
+    function nearestStep(x, y) {
+      if (!loopHitCache) buildLoopHitCache();
+      // 1) which staff line (music system) is the pointer over/closest to?
+      var bestSys = null, bestYD = Infinity;
+      loopSysYCache.forEach(function (b, sys) {
+        var pad = 14;
+        var d = (y >= b.top - pad && y <= b.bottom + pad)
+          ? 0 : Math.min(Math.abs(y - b.top), Math.abs(y - b.bottom));
+        if (d < bestYD) { bestYD = d; bestSys = sys; }
+      });
+      // 2) nearest slice by x within that system (x tiles the line, so one always wins).
+      var best = null, bestD = Infinity;
+      for (var i = 0; i < loopHitCache.length; i++) {
+        var c = loopHitCache[i];
+        if (bestSys != null && c.sys !== bestSys) continue;
+        var d = Math.abs(x - c.x);
+        if (d < bestD) { bestD = d; best = c.step; }
+      }
+      return best;
+    }
+
+    // Resolve a pointer event to a cursor step: direct notehead hit first
+    // (precise), else the nearest vertical slice in the pointer's staff line.
+    function resolveStep(e) {
+      var sn = findAncestorWithClass(e.target, 'vf-stavenote');
+      if (sn) {
+        var id = sn.getAttribute('id');
+        if (id && staveNoteIdToStep.has(id)) return staveNoteIdToStep.get(id);
+      }
+      return nearestStep(e.clientX, e.clientY);
+    }
+
+    // Hover highlights the whole vertical slice with a band (like the cursor).
+    function setLoopHoverStep(step) {
+      if (loopHoverStep === step) return;
+      loopHoverStep = step;
+      showBand('hover', step);
+    }
+
+    function updateLoopButtonUI() {
+      var btn = document.getElementById('btn-loop');
+      if (!btn) return;
+      btn.classList.toggle('loop-armed', loopSelecting);
+      btn.classList.toggle('loop-set', loopActive);
+    }
+
+    function clearLoop(opts) {
+      opts = opts || {};
+      clearLoopShading();
+      loopActive = false;
+      loopStartStep = null;
+      loopEndStep = null;
+      loopSelecting = false;
+      loopSelectPhase = 'start';
+      pendingLoopStartStep = null;
+      if (scoreArea) scoreArea.classList.remove('loop-selecting');
+      if (!opts.keepButton) updateLoopButtonUI();
+    }
+
+    function refreshNoteDisplayIdle() {
+      // After leaving selection mode while not playing, restore a sensible label
+      // (the Loop button is only enabled once a file is loaded).
+      if (isPlaying) return;
+      renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
+    }
+
+    function toggleLoopMode() {
+      if (!osmd || isReadingMode()) return;
+      if (loopSelecting) {            // turning selection off (cancel)
+        loopSelecting = false;
+        loopSelectPhase = 'start';
+        pendingLoopStartStep = null;
+        scoreArea.classList.remove('loop-selecting');
+        if (loopActive) applyLoopShading(); else clearLoopShading();
+        updateLoopButtonUI();
+        refreshNoteDisplayIdle();
+        return;
+      }
+      // Arm selection — start fresh (discard any existing loop).
+      clearLoop({ keepButton: true });
+      loopSelecting = true;
+      loopSelectPhase = 'start';
+      pendingLoopStartStep = null;
+      loopHitCache = null;
+      scoreArea.classList.add('loop-selecting');
+      updateLoopButtonUI();
+      renderNoteText(noteDisplay, t('trainer.loopSelectStart'));
+    }
+
+    function commitLoop(a, b) {
+      loopActive = true;
+      loopStartStep = a;
+      loopEndStep = b;
+      loopSelecting = false;
+      loopSelectPhase = 'start';
+      pendingLoopStartStep = null;
+      setLoopHoverStep(null);
+      scoreArea.classList.remove('loop-selecting');
+      applyLoopShading();
+      updateLoopButtonUI();
+      refreshNoteDisplayIdle();
+    }
+
+    function handleLoopSelectionClick(e) {
+      var step = resolveStep(e);
+      if (step == null) return;
+
+      if (loopSelectPhase === 'start') {
+        pendingLoopStartStep = step;
+        loopSelectPhase = 'end';
+        setLoopHoverStep(null);
+        clearLoopShading();
+        paintSelectionStart();
+        renderNoteText(noteDisplay, t('trainer.loopSelectEnd'));
+      } else {
+        var a = pendingLoopStartStep, b = step;
+        if (a > b) { var tmp = a; a = b; b = tmp; }  // normalize reversed selection
+        commitLoop(a, b);
+      }
+    }
+
+    function handleLoopHover(e) {
+      if (!loopSelecting) return;
+      if (loopHoverRaf) return;
+      var x = e.clientX, y = e.clientY;
+      loopHoverRaf = requestAnimationFrame(function () {
+        loopHoverRaf = null;
+        if (!loopSelecting) { setLoopHoverStep(null); return; }
+        setLoopHoverStep(nearestStep(x, y));
+      });
+    }
+
     function highlightCurrentStaffNotes(expected) {
       if (!osmd || !osmd.cursor || !expected || expected.length === 0) return;
 
@@ -462,6 +869,7 @@
         clearRenderedStaffHighlights();
         osmd.Zoom = currentZoom;
         osmd.render();
+        buildLoopStepMap();
         replayStaffHighlights();
         if (isPlaying) highlightCurrentStaffNotes(currentExpected);
       }
@@ -607,10 +1015,13 @@
         fileInfo.textContent = `${title} — ${measures} ${t('trainer.measures')}`;
 
         totalNotes = countTotalNotes();
+        clearLoop();          // a new score invalidates any previous loop bounds
+        buildLoopStepMap();
 
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
+        document.getElementById('btn-loop').disabled = isReadingMode();
         renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
@@ -629,6 +1040,7 @@
           try {
             clearRenderedStaffHighlights();
             osmd.render();
+            buildLoopStepMap();
             replayStaffHighlights();
             highlightCurrentStaffNotes(currentExpected);
           } catch (e) { console.warn('Resize render error:', e); }
@@ -915,13 +1327,33 @@
 
     // Advance cursor, merging carryOver (sustained) notes.
     // carryOver = [ {midi, name, solfege, durationBeats, sustained:true, matched:true} ]
-    function advanceCursor(carryOver) {
+    function advanceCursor(carryOver, skipLoopWrap) {
       if (!osmd || !osmd.cursor) return;
       carryOver = carryOver || [];
+
+      // Loop wrap: when sitting on (or past) the loop end and asked to advance,
+      // jump back to the loop start instead of continuing. Carry-over/sustained
+      // state is dropped at the boundary so a held last note can't bleed across.
+      // skipLoopWrap guards the re-entrant call below from wrapping again (which
+      // would recurse forever on a degenerate single-position, no-notes loop).
+      if (loopActive && loopEndStep != null && currentCursorStep >= loopEndStep && !skipLoopWrap) {
+        seekCursorToStep(loopStartStep);
+        sustainedNotes = [];
+        leftoverHeldKeys = new Set();
+        requiredHeldKeys.clear();
+        currentExpected = getExpectedNotes();
+        if (currentExpected.length === 0) { advanceCursor([], true); return; } // start has no playable notes
+        if (osmd.cursor.show) osmd.cursor.show();
+        updateNoteDisplay(currentExpected);
+        scrollToCursor();
+        return;
+      }
+
       let maxSkips = 200;
       let freshNotes = [];
       do {
         osmd.cursor.next();
+        currentCursorStep++;
         if (osmd.cursor.Iterator.EndReached) {
           sustainedNotes = [];
           finishExercise();
@@ -1429,8 +1861,11 @@
 
         if (isReadingMode()) {
           scoreArea.scrollTop = 0;
+        } else if (loopActive && loopStartStep != null) {
+          seekCursorToStep(loopStartStep);   // begin at the loop start
         } else {
           osmd.cursor.reset();
+          currentCursorStep = 0;
         }
       }
 
@@ -1807,9 +2242,12 @@ function stopExercise(options) {
         fileInfo.textContent = `${title}${infoComposer} — ${measures} ${t('trainer.measures')}`;
 
         totalNotes = countTotalNotes();
+        clearLoop();          // a new score invalidates any previous loop bounds
+        buildLoopStepMap();
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
+        document.getElementById('btn-loop').disabled = isReadingMode();
         renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
@@ -1869,9 +2307,12 @@ function stopExercise(options) {
         fileInfo.textContent = `${displayTitle} — ${measures} ${t('trainer.measures')}`;
 
         totalNotes = countTotalNotes();
+        clearLoop();          // a new score invalidates any previous loop bounds
+        buildLoopStepMap();
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
+        document.getElementById('btn-loop').disabled = isReadingMode();
         renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
@@ -2426,8 +2867,16 @@ function stopExercise(options) {
 
     scoreArea.addEventListener('click', (e) => {
       if (e.target && e.target.closest && e.target.closest('#btn-exit-fullscreen')) return;
+      if (loopSelecting) {              // capturing loop bounds — don't toggle play/pause
+        handleLoopSelectionClick(e);
+        return;
+      }
       toggleExerciseByFullscreenShortcut();
     });
+    scoreArea.addEventListener('pointermove', handleLoopHover);
+    scoreArea.addEventListener('scroll', () => { loopHitCache = null; });
+
+    document.getElementById('btn-loop').addEventListener('click', toggleLoopMode);
 
     btnStart.addEventListener('click', startExercise);
     btnStop.addEventListener('click', stopExercise);
