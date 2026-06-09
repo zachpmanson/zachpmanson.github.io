@@ -37,6 +37,7 @@ window.I18N = {
         btnListen: "Listen",
         btnListenStop: "Stop",
         btnLoop: "Loop",
+        btnLoopCancel: "Cancel",
         loopSelectStart: "Click the first note of the loop",
         loopSelectEnd: "Click the last note of the loop",
         appTitle: "Trainer",

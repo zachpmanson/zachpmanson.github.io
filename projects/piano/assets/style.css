@@ -236,9 +236,11 @@
     #score-container .loop-band-hover { background: rgba(21, 101, 192, 0.18); }
     /* The score area shows a crosshair while picking loop bounds. */
     .score-area.loop-selecting { cursor: crosshair; }
-    /* Loop button: clearer background, and distinct armed/set states. */
-    .action-btn.btn-loop.loop-armed { background: #1565c0; color: #fff; border-color: #1565c0; }
-    .action-btn.btn-loop.loop-set { background: #e3f0ff; border-color: #1565c0; color: #0d3c75; }
+    /* Loop control: self-describing states.
+       off = grey "🔁 Loop"; picking = pulsing blue "✕ Cancel"; active = filled blue "✕ Cancel". */
+    .action-btn.btn-loop.loop-armed { background: #1565c0; animation: loopPulse 1.1s ease-in-out infinite; }
+    .action-btn.btn-loop.loop-set { background: #1565c0; }
+    @keyframes loopPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .loading {
       text-align: center;
       padding: 40px 20px;
