@@ -39,6 +39,7 @@ window.I18N = {
         appTitle: "Trainer",
         settingsDuration: "Hold notes (duration + legato)",
         showKeyboard: "Show keyboard",
+        showNoteNames: "Show note names",
         hideStats: "Hide counters (correct / wrong / time)",
         restartGesture: "Restart by pressing 3 adjacent white keys together",
         settingsSkipWrongFree: "In free mode, move on after a wrong key",

@@ -1,5 +1,7 @@
 ﻿    import { renderLibrary, renderLibraryMessage } from './lib-render.js';
     import { renderResults } from './results-view.js';
+    import { renderNoteDisplay, renderNoteText } from './note-view.js';
+    import { renderDebug } from './debug-view.js';
     import {
       getLibraryItemPath,
       buildLibraryFileUrl,
@@ -44,11 +46,11 @@
         fi.textContent = `${loadedFileMeta.title}${cm} — ${loadedFileMeta.measures} ${t('trainer.measures')}`;
       }
       const ds = document.getElementById('debug-strip');
-      if (!ds.dataset.midiInit) ds.textContent = t('trainer.debugDefault');
+      if (!ds.dataset.midiInit) renderDebug(ds, t('trainer.debugDefault'));
       const scoreLoading = document.getElementById('score-loading');
       if (scoreLoading) scoreLoading.textContent = t('trainer.scoreDefault');
       const nd = document.getElementById('note-display');
-      if (!osmd) nd.textContent = t('trainer.noteDisplayDefault');
+      if (!osmd) renderNoteText(nd, t('trainer.noteDisplayDefault'));
       // library modal title
       document.getElementById('lib-title').textContent        = t('trainer.libraryTitle');
       // AI generate modal
@@ -83,6 +85,8 @@
       document.getElementById('lbl-check-duration').textContent = t('trainer.settingsDuration');
       // keyboard checkbox
       document.getElementById('lbl-check-keyboard').textContent = t('trainer.showKeyboard');
+      // note-names checkbox
+      document.getElementById('lbl-check-note-names').textContent = t('trainer.showNoteNames');
       // hide-counters checkbox
       document.getElementById('lbl-check-hide-stats').textContent = t('trainer.hideStats');
       // restart-gesture checkbox
@@ -152,6 +156,7 @@
     const noteDisplay = document.getElementById('note-display');
     const checkDuration = document.getElementById('check-duration');
     const checkKeyboard = document.getElementById('check-keyboard');
+    const checkNoteNames = document.getElementById('check-note-names');
     const checkSkipWrongFree = document.getElementById('check-skip-wrong-free');
     const skipWrongWrap = document.getElementById('skip-wrong-wrap');
     const checkHideStats = document.getElementById('check-hide-stats');
@@ -431,6 +436,14 @@
     applyHideStats();
     checkHideStats.addEventListener('change', applyHideStats);
 
+    // Show / hide the note name in the current-note display (on by default).
+    // Solfège stays visible so the display never goes blank.
+    checkNoteNames.checked = localStorage.getItem('showNoteNames') !== '0';
+    checkNoteNames.addEventListener('change', function () {
+      localStorage.setItem('showNoteNames', checkNoteNames.checked ? '1' : '0');
+      updateNoteDisplay(currentExpected);
+    });
+
     // Restart gesture toggle (on by default)
     checkRestartGesture.checked = localStorage.getItem('restartGesture') !== '0';
     checkRestartGesture.addEventListener('change', function () {
@@ -598,7 +611,7 @@
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
-        noteDisplay.textContent = t('trainer.noteDisplayStart');
+        renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
         container.innerHTML = `<div class="loading" style="color:#c62828;">${t('trainer.fileInfoError')}: ${e.message}</div>`;
@@ -795,32 +808,11 @@
       updateKeyboardHighlight(expected);
       highlightCurrentStaffNotes(expected);
 
-      if (expected.length === 0) {
-        noteDisplay.innerHTML = `<span style="color:#999;">${t('trainer.pause')}</span>`;
-        return;
-      }
       const bpmInput = parseInt(tempoInput.value) || 0;
       const bpm = bpmInput > 0 ? bpmInput : (getScoreTempo() || 100);
-      const names = expected.map(e => {
-        let durationHint = '';
-        if (e.sustained) {
-          let rem = '';
-          if (isDurationMode() || modeSelect.value === 'timed') {
-            const ms = Math.round((e.durationBeats || 1) * 60000 / bpm);
-            rem = ` <span style="color:#bbb;font-size:0.72em;">${(+e.durationBeats.toFixed(2))}♩ ${ms}ms</span>`;
-          }
-          return `<b style="color:#1565c0;">${e.name}</b>`
-               + ` <span style="color:#888;font-size:0.85em;">${e.solfege}</span>`
-               + ` <span style="color:#42a5f5;font-size:0.75em;">⇑hold</span>${rem}`;
-        }
-        const mark = e.matched ? '<span style="color:#2e7d32;">✓</span>' : '';
-        if (isDurationMode() || modeSelect.value === 'timed') {
-          const ms = Math.round((e.durationBeats || 1) * 60000 / bpm);
-          durationHint = ` <span style="color:#bbb;font-size:0.72em;">${e.durationBeats}♩ ${ms}ms</span>`;
-        }
-        return `<b>${e.name}</b> <span style="color:#888;font-size:0.85em;">${e.solfege}</span>${durationHint}${mark}`;
-      });
-      noteDisplay.innerHTML = names.join('&nbsp;+&nbsp;');
+      const showDuration = isDurationMode() || modeSelect.value === 'timed';
+      const showNames = checkNoteNames.checked;
+      renderNoteDisplay(noteDisplay, expected, { bpm, showDuration, showNames, t });
     }
 
     /** Scroll score so the cursor line is visible */
@@ -1030,7 +1022,7 @@
           e.failed = true;
         });
         const debugStrip = document.getElementById('debug-strip');
-        debugStrip.innerHTML = `<span class="debug-err">✗ ${t('trainer.durationRelease')}</span>`;
+        renderDebug(debugStrip, { ok: false, label: t('trainer.durationRelease') });
         updateNoteDisplay(currentExpected);
         updateStats();
       }
@@ -1049,7 +1041,7 @@
         }
       });
       chordPressTimestamps = {};
-      debugStrip.innerHTML = `<span class="debug-err">✗ ${reason}</span> | Expected: ${expectedStr}`;
+      renderDebug(debugStrip, { ok: false, label: reason, expected: expectedStr });
       updateNoteDisplay(currentExpected);
       updateStats();
     }
@@ -1071,7 +1063,7 @@
       leftoverHeldKeys.clear();
       wrongCount += unresolved;
       notesPlayed += unresolved;
-      debugStrip.innerHTML = `<span class="debug-err">✗ ${reason}</span> | Expected: ${expectedStr}`;
+      renderDebug(debugStrip, { ok: false, label: reason, expected: expectedStr });
       updateNoteDisplay(currentExpected);
       updateStats();
       skipWrongAdvanceTimer = setTimeout(() => {
@@ -1230,7 +1222,7 @@
       }
 
       if (matched) {
-        debugStrip.innerHTML = `<span class="debug-ok">✓ ${pressedName}</span> | Expected: ${expectedStr}`;
+        renderDebug(debugStrip, { ok: true, label: pressedName, expected: expectedStr });
         updateNoteDisplay(currentExpected);
 
         const allFreshMatched = freshExpected.every(e => e.matched);
@@ -1306,7 +1298,7 @@
         currentExpected.forEach(e => {
           if (!e.sustained && !e.matched) e.failed = true;
         });
-        debugStrip.innerHTML = `<span class="debug-err">✗ ${pressedName}</span> | Expected: ${expectedStr}`;
+        renderDebug(debugStrip, { ok: false, label: pressedName, expected: expectedStr });
         console.warn(`WRONG: pressed ${pressedName}, expected: ${expectedStr}`);
         updateNoteDisplay(currentExpected);
         updateStats();
@@ -1447,7 +1439,7 @@
       if (isReadingMode()) {
         osmd.cursor.hide();
         currentExpected = [];
-        noteDisplay.textContent = t('trainer.modeReadingStatus');
+        renderNoteText(noteDisplay, t('trainer.modeReadingStatus'));
         startReadingScroll();
       } else {
         osmd.cursor.show();
@@ -1535,7 +1527,7 @@ function stopExercise(options) {
         () => modal.classList.remove('active')
       );
       modal.classList.add('active');
-      noteDisplay.textContent = t('trainer.noteDisplayDone');
+      renderNoteText(noteDisplay, t('trainer.noteDisplayDone'));
     }
 
     // ===================== LISTEN / PLAYBACK =====================
@@ -1818,7 +1810,7 @@ function stopExercise(options) {
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
-        noteDisplay.textContent = t('trainer.noteDisplayStart');
+        renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
         container.innerHTML = `<div class="loading" style="color:#c62828;">${t('trainer.fileInfoError')}: ${e.message}</div>`;
@@ -1880,7 +1872,7 @@ function stopExercise(options) {
         btnStart.disabled = false;
         btnRestart.disabled = false;
         btnListen.disabled = false;
-        noteDisplay.textContent = t('trainer.noteDisplayStart');
+        renderNoteText(noteDisplay, t('trainer.noteDisplayStart'));
         if (checkKeyboard.checked) initKeyboard();
       } catch (e) {
         container.innerHTML = `<div class="loading" style="color:#c62828;">${t('trainer.fileInfoError')}: ${e.message}</div>`;
@@ -2200,18 +2192,18 @@ function stopExercise(options) {
 
     function setupMidi() {
       debugStrip.dataset.midiInit = '1';
-      debugStrip.textContent = 'MIDI: init...';
+      renderDebug(debugStrip, 'MIDI: init...');
 
       // On browsers with native requestMIDIAccess but where WebMidi.js may not work
       // (e.g. WebMidiBrowser on iPad), try native first if WebMidi.js enable doesn't
       // resolve quickly.
       if (typeof WebMidi !== 'undefined') {
-        debugStrip.textContent = 'MIDI: WebMidi.js found, enabling...';
+        renderDebug(debugStrip, 'MIDI: WebMidi.js found, enabling...');
         var settled = false;
         var timer = setTimeout(function() {
           if (!settled) {
             settled = true;
-            debugStrip.textContent = 'MIDI: WebMidi.js timeout, trying native...';
+            renderDebug(debugStrip, 'MIDI: WebMidi.js timeout, trying native...');
             setupMidiNative();
           }
         }, 3000);
@@ -2221,12 +2213,12 @@ function stopExercise(options) {
             if (settled) return; // native already took over
             settled = true;
             clearTimeout(timer);
-            debugStrip.textContent = 'MIDI: enabled, inputs=' + WebMidi.inputs.length;
+            renderDebug(debugStrip, 'MIDI: enabled, inputs=' + WebMidi.inputs.length);
             function connectInput(input) {
               midiInput = input;
               midiLabel.textContent = input.name.length > 16 ? input.name.slice(0, 16) + '…' : input.name;
               midiChip.className = 'midi-chip ok';
-              debugStrip.textContent = 'MIDI: connected ' + input.name;
+              renderDebug(debugStrip, 'MIDI: connected ' + input.name);
               if (midiPollTimer) { clearInterval(midiPollTimer); midiPollTimer = null; }
               input.removeListener();
               input.addListener('noteon', e => {
@@ -2278,7 +2270,7 @@ function stopExercise(options) {
             settled = true;
             clearTimeout(timer);
             console.warn('WebMidi.js enable failed, trying native API:', err);
-            debugStrip.textContent = 'MIDI: WebMidi.js failed, trying native...';
+            renderDebug(debugStrip, 'MIDI: WebMidi.js failed, trying native...');
             setupMidiNative();
           });
         return;
@@ -2290,13 +2282,13 @@ function stopExercise(options) {
     function setupMidiNative() {
       // Fallback: native Web MIDI API (WebMidiBrowser on iPad, etc.)
       if (navigator.requestMIDIAccess) {
-        debugStrip.textContent = 'MIDI: native API fallback...';
+        renderDebug(debugStrip, 'MIDI: native API fallback...');
         navigator.requestMIDIAccess({ sysex: false }).then(function(access) {
           var nativeInputs = [];
           var it0 = access.inputs.values();
           for (var o0 = it0.next(); !o0.done; o0 = it0.next()) nativeInputs.push(o0.value);
-          debugStrip.textContent = 'MIDI native: OK, inputs=' + nativeInputs.length +
-            ' [' + nativeInputs.map(function(i) { return i.name; }).join(', ') + ']';
+          renderDebug(debugStrip, 'MIDI native: OK, inputs=' + nativeInputs.length +
+            ' [' + nativeInputs.map(function(i) { return i.name; }).join(', ') + ']');
 
           function isVirtualSession(port) {
             return /^Session\s*\d*$/i.test(port.name);
@@ -2315,7 +2307,7 @@ function stopExercise(options) {
             midiInput = port;
             midiLabel.textContent = port.name.length > 16 ? port.name.slice(0, 16) + '…' : port.name;
             midiChip.className = 'midi-chip ok';
-            debugStrip.textContent = 'MIDI native: connected ' + port.name;
+            renderDebug(debugStrip, 'MIDI native: connected ' + port.name);
             port.onmidimessage = function(event) {
               var data = event.data;
               var cmd = data[0] & 0xf0;
@@ -2335,7 +2327,7 @@ function stopExercise(options) {
             // Only Session ports or no ports — wait for real device via onstatechange
             midiLabel.textContent = t('trainer.midiNone');
             midiChip.className = 'midi-chip no';
-            debugStrip.textContent = 'MIDI native: waiting for real device...';
+            renderDebug(debugStrip, 'MIDI native: waiting for real device...');
           }
 
           access.onstatechange = function(event) {
@@ -2361,14 +2353,14 @@ function stopExercise(options) {
           };
         }).catch(function(err) {
           midiLabel.textContent = t('trainer.midiErr');
-          debugStrip.textContent = 'Native MIDI err: ' + err.message;
+          renderDebug(debugStrip, 'Native MIDI err: ' + err.message);
           console.error('Native MIDI error:', err);
         });
         return;
       }
 
       midiLabel.textContent = t('trainer.midiNo');
-      debugStrip.textContent = 'MIDI: no API available';
+      renderDebug(debugStrip, 'MIDI: no API available');
     }
 
 
