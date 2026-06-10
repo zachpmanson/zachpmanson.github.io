@@ -1,10 +1,17 @@
 ﻿import { renderDebug } from "./debug-view.js";
+import { findAncestorWithClass } from "./dom-utils.js";
+import { initFullscreen } from "./fullscreen.js";
 import { renderLibrary, renderLibraryMessage } from "./lib-render.js";
 import { buildLibraryFileUrl, flattenLibraryFiles, getLibraryItemPath, normalizeLibraryGroups } from "./library.js";
+import { setupMidi } from "./midi-input.js";
 import { extractMxl, fixMusicXml } from "./mxl.js";
 import { renderNoteDisplay, renderNoteText } from "./note-view.js";
+import { midiToName, midiToSolfege, midiToToneName, osmdPitchToMidi, pitchToName, pitchToSolfege } from "./notes.js";
 import { setSongQueryParam } from "./query.js";
+import { generateRandomMusicXml } from "./random-music.js";
 import { renderResults } from "./results-view.js";
+import { createStaffHighlighter } from "./staff-highlight.js";
+import { initWakeLock, releaseWakeLock, requestWakeLock } from "./wake-lock.js";
 
 // ===================== I18N INIT =====================
 (function () {
@@ -101,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===================== STATE =====================
 let osmd = null;
-let midiInput = null;
 let isPlaying = false;
 let startTime = null;
 let timerInterval = null;
@@ -115,7 +121,6 @@ let hasActiveSession = false;
 let isPaused = false;
 
 let currentBPM = 80;
-let wakeLock = null;
 let heldKeys = new Set(); // tracks currently pressed MIDI keys
 let confirmTimer = null; // delay to catch simultaneous extra keys
 let skipWrongAdvanceTimer = null;
@@ -160,8 +165,6 @@ const checkHideStats = document.getElementById("check-hide-stats");
 const checkRestartGesture = document.getElementById("check-restart-gesture");
 let pianoKeyboard = null;
 let scoreNoteRange = null; // { lo, hi } — MIDI range of loaded score
-let coloredNoteElements = new Map(); // svg element -> original styles
-let staffHighlightState = new Map(); // sourceNote -> color
 let readingScrollRaf = null;
 let readingLastFrameTs = 0;
 
@@ -183,6 +186,14 @@ let stepToSystem = new Map(); // posIdx -> OSMD music-system object (for full-he
 let systemToIds = new Map(); // music-system object -> [stavenote id ...]
 let loopBandCache = null; // music-system -> {top, bottom} container-relative px
 let loopBandEls = null; // { start, end, hover } overlay band divs
+
+// Staff-note coloring lives in staff-highlight.js; it owns its own state maps
+// and reads the live osmd instance / selected hand through these accessors.
+const { clearRenderedStaffHighlights, resetStaffNoteHighlights, replayStaffHighlights, highlightCurrentStaffNotes } =
+  createStaffHighlighter({
+    getOsmd: () => osmd,
+    getHand: () => handSelect.value,
+  });
 
 // Keyboard display helpers
 function initKeyboard() {
@@ -259,125 +270,6 @@ function updateModeControls() {
 
 function isSkipWrongFreeEnabled() {
   return modeSelect.value === "free" && !checkDuration.checked && checkSkipWrongFree.checked;
-}
-
-function clearRenderedStaffHighlights() {
-  coloredNoteElements.forEach(function (style, el) {
-    if (!el) return;
-    el.style.fill = style.fill;
-    el.style.stroke = style.stroke;
-  });
-  coloredNoteElements.clear();
-}
-
-function resetStaffNoteHighlights() {
-  clearRenderedStaffHighlights();
-  staffHighlightState.clear();
-}
-
-function paintSvgElement(el, color, seen) {
-  if (!el || seen.has(el)) return;
-  seen.add(el);
-  if (!coloredNoteElements.has(el)) {
-    coloredNoteElements.set(el, { fill: el.style.fill, stroke: el.style.stroke });
-  }
-  el.style.fill = color;
-  el.style.stroke = color;
-  var children = el.querySelectorAll("*");
-  for (var i = 0; i < children.length; i++) {
-    var child = children[i];
-    if (seen.has(child)) continue;
-    seen.add(child);
-    if (!coloredNoteElements.has(child)) {
-      coloredNoteElements.set(child, { fill: child.style.fill, stroke: child.style.stroke });
-    }
-    child.style.fill = color;
-    child.style.stroke = color;
-  }
-}
-
-function findAncestorWithClass(el, className) {
-  var node = el;
-  while (node && node.tagName !== "svg") {
-    var cls = node.getAttribute ? node.getAttribute("class") || "" : "";
-    if (cls.indexOf(className) >= 0) return node;
-    node = node.parentElement;
-  }
-  return null;
-}
-
-function getGraphicNoteMidi(gNote) {
-  try {
-    if (gNote && gNote.sourceNote && gNote.sourceNote.Pitch) {
-      return osmdPitchToMidi(gNote.sourceNote.Pitch);
-    }
-  } catch (e) {}
-  return -1;
-}
-
-function buildMidiColorQueue(expected) {
-  var midiMap = {};
-  for (var i = 0; i < expected.length; i++) {
-    var item = expected[i];
-    var color = item.failed ? "#c62828" : item.matched ? "#2e7d32" : "";
-    if (!color) continue;
-    if (!midiMap[item.midi]) midiMap[item.midi] = [];
-    midiMap[item.midi].push(color);
-  }
-  return midiMap;
-}
-
-function paintGraphicalNote(gNote, color, seen) {
-  if (!gNote || !color) return;
-  var noteEl = null;
-  try {
-    noteEl = gNote.getSVGGElement ? gNote.getSVGGElement() : null;
-  } catch (e) {}
-  if (!noteEl) return;
-
-  paintSvgElement(noteEl, color, seen);
-
-  var staveNoteGroup = findAncestorWithClass(noteEl, "vf-stavenote");
-  if (!staveNoteGroup) return;
-
-  paintSvgElement(staveNoteGroup, color, seen);
-
-  var noteId = staveNoteGroup.getAttribute("id") || "";
-  if (!noteId) return;
-
-  paintSvgElement(document.getElementById(noteId + "-stem"), color, seen);
-  for (var beamIdx = 0; beamIdx < 4; beamIdx++) {
-    paintSvgElement(document.getElementById(noteId + "-beam" + beamIdx), color, seen);
-  }
-}
-
-function replayStaffHighlights() {
-  if (!osmd || !osmd.graphic || staffHighlightState.size === 0) return;
-  var parts = osmd.graphic.MeasureList;
-  if (!parts) return;
-  var seen = new Set();
-
-  for (var measureIdx = 0; measureIdx < parts.length; measureIdx++) {
-    var measureParts = parts[measureIdx];
-    if (!measureParts) continue;
-    for (var p = 0; p < measureParts.length; p++) {
-      var gMeasure = measureParts[p];
-      if (!gMeasure || !gMeasure.staffEntries) continue;
-      for (var se = 0; se < gMeasure.staffEntries.length; se++) {
-        var gStaffEntry = gMeasure.staffEntries[se];
-        if (!gStaffEntry || !gStaffEntry.graphicalVoiceEntries) continue;
-        for (var gv = 0; gv < gStaffEntry.graphicalVoiceEntries.length; gv++) {
-          var gve = gStaffEntry.graphicalVoiceEntries[gv];
-          if (!gve.notes) continue;
-          for (var ni = 0; ni < gve.notes.length; ni++) {
-            var gNote = gve.notes[ni];
-            var color = staffHighlightState.get(gNote && gNote.sourceNote);
-            if (color) paintGraphicalNote(gNote, color, seen);
-          }
-        }
-      }
-    }
-  }
 }
 
 // ===================== LOOP A SECTION =====================
@@ -819,66 +711,6 @@ function handleLoopHover(e) {
   });
 }
 
-function highlightCurrentStaffNotes(expected) {
-  if (!osmd || !osmd.cursor || !expected || expected.length === 0) return;
-
-  var midiColorQueue = buildMidiColorQueue(expected);
-  if (Object.keys(midiColorQueue).length === 0) return;
-
-  var cursorIt = osmd.cursor.Iterator;
-  if (!cursorIt || cursorIt.EndReached) return;
-  var cursorEntries = cursorIt.CurrentVoiceEntries;
-  if (!cursorEntries || !cursorEntries.length) return;
-
-  var seen = new Set();
-  var hand = handSelect.value;
-  var measureIdx = cursorIt.CurrentMeasureIndex;
-  var parts = osmd.graphic && osmd.graphic.MeasureList;
-  if (!parts || !parts[measureIdx]) return;
-
-  for (var v = 0; v < cursorEntries.length; v++) {
-    var ve = cursorEntries[v];
-    var staffIdx = 0;
-    try {
-      staffIdx = ve.ParentSourceStaffEntry ? ve.ParentSourceStaffEntry.ParentStaff.idInMusicSheet : 0;
-    } catch (e1) {}
-    if (hand === "right" && staffIdx !== 0) continue;
-    if (hand === "left" && staffIdx !== 1) continue;
-
-    var sourceStaffEntry = ve.ParentSourceStaffEntry;
-    if (!sourceStaffEntry) continue;
-
-    for (var p = 0; p < parts[measureIdx].length; p++) {
-      var gMeasure = parts[measureIdx][p];
-      if (!gMeasure || !gMeasure.staffEntries) continue;
-
-      for (var se = 0; se < gMeasure.staffEntries.length; se++) {
-        var gStaffEntry = gMeasure.staffEntries[se];
-        if (!gStaffEntry || gStaffEntry.sourceStaffEntry !== sourceStaffEntry || !gStaffEntry.graphicalVoiceEntries)
-          continue;
-
-        for (var gv = 0; gv < gStaffEntry.graphicalVoiceEntries.length; gv++) {
-          var gve = gStaffEntry.graphicalVoiceEntries[gv];
-          if (!gve.notes) continue;
-
-          for (var ni = 0; ni < gve.notes.length; ni++) {
-            var gNote = gve.notes[ni];
-            var midi = getGraphicNoteMidi(gNote);
-            var queue = midiColorQueue[midi];
-            if (!queue || !queue.length) continue;
-
-            var color = queue.shift();
-            if (gNote && gNote.sourceNote) {
-              staffHighlightState.set(gNote.sourceNote, color);
-            }
-            paintGraphicalNote(gNote, color, seen);
-          }
-        }
-      }
-    }
-  }
-}
-
 // Restore keyboard checkbox state
 (function () {
   var saved = localStorage.getItem("showKeyboard") === "1";
@@ -946,67 +778,10 @@ document.getElementById("btn-zoom-out").addEventListener("click", function () {
 });
 updateZoomDisplay();
 
-// ===================== WAKE LOCK (keep screen on) =====================
-async function requestWakeLock() {
-  try {
-    if ("wakeLock" in navigator) {
-      wakeLock = await navigator.wakeLock.request("screen");
-      wakeLock.addEventListener("release", () => {
-        wakeLock = null;
-      });
-    }
-  } catch (e) {
-    /* ignore */
-  }
-}
-function releaseWakeLock() {
-  if (wakeLock) {
-    wakeLock.release();
-    wakeLock = null;
-  }
-}
-
-// Re-request on visibility change (mobile browser returns from bg)
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && isPlaying) requestWakeLock();
-});
-
-// ===================== FULLSCREEN =====================
-(function initFullscreen() {
-  const app = document.getElementById("app");
-  const btnFs = document.getElementById("btn-fullscreen");
-  const btnExit = document.getElementById("btn-exit-fullscreen");
-  const hasNativeFs = !!(app.requestFullscreen || app.webkitRequestFullscreen || app.msRequestFullscreen);
-
-  function enterFullscreen() {
-    app.classList.add("fullscreen-active");
-    if (hasNativeFs) {
-      (app.requestFullscreen || app.webkitRequestFullscreen || app.msRequestFullscreen).call(app).catch(() => {});
-    }
-  }
-  function exitFullscreen() {
-    app.classList.remove("fullscreen-active");
-    if (hasNativeFs && (document.fullscreenElement || document.webkitFullscreenElement)) {
-      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen)
-        .call(document)
-        .catch(() => {});
-    }
-  }
-
-  btnFs.addEventListener("click", () => {
-    if (app.classList.contains("fullscreen-active")) {
-      exitFullscreen();
-    } else {
-      enterFullscreen();
-    }
-  });
-  btnExit.addEventListener("click", () => exitFullscreen());
-  document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      app.classList.remove("fullscreen-active");
-    }
-  });
-})();
+// ===================== WAKE LOCK + FULLSCREEN =====================
+// Implementations live in wake-lock.js / fullscreen.js.
+initWakeLock({ isActive: () => isPlaying });
+initFullscreen();
 
 // ===================== SETTINGS TOGGLE =====================
 document.getElementById("btn-settings").addEventListener("click", () => {
@@ -1042,8 +817,24 @@ checkDuration.addEventListener("change", () => {
 });
 updateModeControls();
 
-// ===================== MXL LOADING =====================
-async function loadFile(file) {
+// ===================== SCORE LOADING =====================
+// All three entry points (file picker, library URL, AI generate) share this
+// core: reset the file-info UI, stop any running exercise, build + render the
+// OSMD instance, then refresh metadata / note count / loop map. They differ
+// only in how the XML string is produced and the metadata shown, so each is a
+// thin wrapper that hands `loadScore` a `getXmlString` thunk plus meta.
+const OSMD_OPTIONS = {
+  autoResize: true,
+  drawTitle: false,
+  drawComposer: false,
+  drawPartNames: false,
+  drawMeasureNumbers: true,
+  followCursor: true,
+  cursorsOptions: [{ type: 0, color: "#43a047", alpha: 0.5, follow: true }],
+};
+
+// meta: { title, composer, fallbackTitle, showComposerInInfo }
+async function loadScore(getXmlString, meta) {
   container.innerHTML = '<div class="loading" id="score-loading"></div>';
   document.getElementById("score-loading").textContent = t("trainer.fileInfoLoading");
   fileInfo.textContent = t("trainer.fileInfoLoading");
@@ -1056,31 +847,10 @@ async function loadFile(file) {
   }
 
   try {
-    let xmlString;
-    if (file.name.endsWith(".mxl")) {
-      const buf = await file.arrayBuffer();
-      xmlString = await extractMxl(buf);
-    } else {
-      xmlString = await file.text();
-    }
+    const xmlString = await getXmlString();
 
     container.innerHTML = "";
-    osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, {
-      autoResize: true,
-      drawTitle: false,
-      drawComposer: false,
-      drawPartNames: false,
-      drawMeasureNumbers: true,
-      followCursor: true,
-      cursorsOptions: [
-        {
-          type: 0,
-          color: "#43a047",
-          alpha: 0.5,
-          follow: true,
-        },
-      ],
-    });
+    osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, OSMD_OPTIONS);
 
     await osmd.load(xmlString);
     osmd.Zoom = currentZoom;
@@ -1089,9 +859,11 @@ async function loadFile(file) {
     replayStaffHighlights();
 
     const measures = osmd.Sheet.SourceMeasures.length;
-    const title = osmd.Sheet.TitleString || file.name;
-    loadedFileMeta = { title, composer: null, measures };
-    fileInfo.textContent = `${title} — ${measures} ${t("trainer.measures")}`;
+    const title = meta.title || osmd.Sheet.TitleString || meta.fallbackTitle;
+    const composer = meta.composer || null;
+    loadedFileMeta = { title, composer, measures };
+    const infoComposer = composer && meta.showComposerInInfo !== false ? ` (${composer})` : "";
+    fileInfo.textContent = `${title}${infoComposer} — ${measures} ${t("trainer.measures")}`;
 
     totalNotes = countTotalNotes();
     clearLoop(); // a new score invalidates any previous loop bounds
@@ -1108,6 +880,19 @@ async function loadFile(file) {
     fileInfo.textContent = t("trainer.fileInfoError");
     console.error(e);
   }
+}
+
+// File picker: read .mxl (zipped) or plain MusicXML text.
+function loadFile(file) {
+  return loadScore(
+    async () => {
+      if (file.name.endsWith(".mxl")) {
+        return extractMxl(await file.arrayBuffer());
+      }
+      return file.text();
+    },
+    { composer: null, fallbackTitle: file.name },
+  );
 }
 
 // Re-render on resize (orientation change, etc.)
@@ -1129,66 +914,7 @@ window.addEventListener("resize", () => {
   }, 300);
 });
 
-// ===================== NOTE HELPERS =====================
-// OSMD FundamentalNote enum uses SEMITONE values, NOT sequential indices!
-// C=0, D=2, E=4, F=5, G=7, A=9, B=11
-const FN_TO_NAME = { 0: "C", 2: "D", 4: "E", 5: "F", 7: "G", 9: "A", 11: "B" };
-const FN_TO_SOLFEGE = { 0: "Do", 2: "Re", 4: "Mi", 5: "Fa", 7: "Sol", 9: "La", 11: "Si" };
-const MIDI_SOLFEGE = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"];
-
-function osmdPitchToMidi(pitch) {
-  if (!pitch) return -1;
-  // Primary: use OSMD's getHalfTone() + 12
-  // getHalfTone() = (xmlOctave)*12 + semitone, MIDI needs +12 offset (MIDI C0 = 12)
-  if (typeof pitch.getHalfTone === "function") {
-    return pitch.getHalfTone() + 12;
-  }
-  // Fallback: FundamentalNote IS already the semitone within octave
-  const fn = pitch.FundamentalNote; // semitone: C=0, D=2, E=4, F=5, G=7, A=9, B=11
-  const xmlOctave = pitch.Octave + 3; // OSMD stores xmlOctave - 3
-  const acc = pitch.AccidentalHalfTones || 0;
-  return (xmlOctave + 1) * 12 + fn + acc;
-}
-
-function pitchToName(pitch) {
-  if (!pitch) return "?";
-  const fn = pitch.FundamentalNote;
-  const step = FN_TO_NAME[fn] || "?";
-  const accHalf = pitch.AccidentalHalfTones || 0;
-  let accStr = "";
-  if (accHalf === 1) accStr = "#";
-  else if (accHalf === -1) accStr = "b";
-  else if (accHalf === 2) accStr = "##";
-  else if (accHalf === -2) accStr = "bb";
-  const octave = pitch.Octave + 3;
-  return `${step}${accStr}${octave}`;
-}
-
-function pitchToSolfege(pitch) {
-  if (!pitch) return "?";
-  const fn = pitch.FundamentalNote;
-  const base = FN_TO_SOLFEGE[fn] || "?";
-  const accHalf = pitch.AccidentalHalfTones || 0;
-  let accStr = "";
-  if (accHalf === 1) accStr = "#";
-  else if (accHalf === -1) accStr = "b";
-  else if (accHalf === 2) accStr = "##";
-  else if (accHalf === -2) accStr = "bb";
-  return `${base}${accStr}`;
-}
-
-function midiToName(midi) {
-  const CHROMATIC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  const note = midi % 12;
-  const oct = Math.floor(midi / 12) - 1;
-  return `${CHROMATIC[note]}${oct}`;
-}
-
-function midiToSolfege(midi) {
-  const note = midi % 12;
-  const oct = Math.floor(midi / 12) - 1;
-  return `${MIDI_SOLFEGE[note]}${oct}`;
-}
+// Pitch/MIDI/name/solfège conversions live in notes.js (imported above).
 
 // ===================== EXPECTED NOTES =====================
 function getExpectedNotes() {
@@ -2088,12 +1814,6 @@ let pianoSampler = null;
 let isListening = false;
 let listenCancelToken = { cancelled: false };
 
-function midiToToneName(midi) {
-  const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  const octave = Math.floor(midi / 12) - 1;
-  return names[midi % 12] + octave;
-}
-
 async function ensureSampler() {
   if (pianoSampler) return pianoSampler;
 
@@ -2338,66 +2058,17 @@ async function openLibrary() {
   }
 }
 
-async function loadFileFromUrl(url, displayName, composer) {
-  container.innerHTML = '<div class="loading" id="score-loading"></div>';
-  document.getElementById("score-loading").textContent = t("trainer.fileInfoLoading");
-  fileInfo.textContent = t("trainer.fileInfoLoading");
-  btnStart.disabled = true;
-  if (isPlaying || timerInterval || durationTimer) {
-    stopExercise({ hardReset: true });
-  } else {
-    stopReadingScroll();
-    resetSessionState();
-  }
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const buf = await res.arrayBuffer();
-    let xmlString;
-    if (url.endsWith(".mxl")) {
-      xmlString = await extractMxl(buf);
-    } else {
-      xmlString = new TextDecoder().decode(buf);
-    }
-
-    container.innerHTML = "";
-    osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, {
-      autoResize: true,
-      drawTitle: false,
-      drawComposer: false,
-      drawPartNames: false,
-      drawMeasureNumbers: true,
-      followCursor: true,
-      cursorsOptions: [{ type: 0, color: "#43a047", alpha: 0.5, follow: true }],
-    });
-
-    await osmd.load(xmlString);
-    osmd.Zoom = currentZoom;
-    osmd.render();
-    clearRenderedStaffHighlights();
-    replayStaffHighlights();
-
-    const measures = osmd.Sheet.SourceMeasures.length;
-    const title = displayName || osmd.Sheet.TitleString || url.split("/").pop();
-    loadedFileMeta = { title, composer: composer || null, measures };
-    const infoComposer = composer ? ` (${composer})` : "";
-    fileInfo.textContent = `${title}${infoComposer} — ${measures} ${t("trainer.measures")}`;
-
-    totalNotes = countTotalNotes();
-    clearLoop(); // a new score invalidates any previous loop bounds
-    buildLoopStepMap();
-    btnStart.disabled = false;
-    btnRestart.disabled = false;
-    btnListen.disabled = false;
-    document.getElementById("btn-loop").disabled = isReadingMode();
-    renderNoteText(noteDisplay, t("trainer.noteDisplayStart"));
-    if (checkKeyboard.checked) initKeyboard();
-  } catch (e) {
-    container.innerHTML = `<div class="loading" style="color:#c62828;">${t("trainer.fileInfoError")}: ${e.message}</div>`;
-    fileInfo.textContent = t("trainer.fileInfoError");
-    console.error(e);
-  }
+// Library item: fetch the URL, then decode .mxl (zipped) or plain MusicXML.
+function loadFileFromUrl(url, displayName, composer) {
+  return loadScore(
+    async () => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const buf = await res.arrayBuffer();
+      return url.endsWith(".mxl") ? extractMxl(buf) : new TextDecoder().decode(buf);
+    },
+    { title: displayName, composer, fallbackTitle: url.split("/").pop() },
+  );
 }
 
 document.getElementById("btn-library").addEventListener("click", openLibrary);
@@ -2409,60 +2080,18 @@ document.getElementById("lib-modal").addEventListener("click", (e) => {
 });
 
 // ===================== AI GENERATE =====================
-// fixMusicXml lives in mxl.js (imported above).
-async function loadMusicXmlString(xmlString, title) {
-  container.innerHTML = '<div class="loading" id="score-loading"></div>';
-  document.getElementById("score-loading").textContent = t("trainer.fileInfoLoading");
-  fileInfo.textContent = t("trainer.fileInfoLoading");
-  btnStart.disabled = true;
-  if (isPlaying || timerInterval || durationTimer) {
-    stopExercise({ hardReset: true });
-  } else {
-    stopReadingScroll();
-    resetSessionState();
-  }
-
-  try {
-    // Sanitize AI-generated MusicXML: ensure required elements exist
-    xmlString = fixMusicXml(xmlString);
-    console.log("AI MusicXML (first 2000 chars):", xmlString.substring(0, 2000));
-
-    container.innerHTML = "";
-    osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, {
-      autoResize: true,
-      drawTitle: false,
-      drawComposer: false,
-      drawPartNames: false,
-      drawMeasureNumbers: true,
-      followCursor: true,
-      cursorsOptions: [{ type: 0, color: "#43a047", alpha: 0.5, follow: true }],
-    });
-
-    await osmd.load(xmlString);
-    osmd.Zoom = currentZoom;
-    osmd.render();
-    clearRenderedStaffHighlights();
-    replayStaffHighlights();
-
-    const measures = osmd.Sheet.SourceMeasures.length;
-    const displayTitle = title || osmd.Sheet.TitleString || "Random";
-    loadedFileMeta = { title: displayTitle, composer: "Random", measures };
-    fileInfo.textContent = `${displayTitle} — ${measures} ${t("trainer.measures")}`;
-
-    totalNotes = countTotalNotes();
-    clearLoop(); // a new score invalidates any previous loop bounds
-    buildLoopStepMap();
-    btnStart.disabled = false;
-    btnRestart.disabled = false;
-    btnListen.disabled = false;
-    document.getElementById("btn-loop").disabled = isReadingMode();
-    renderNoteText(noteDisplay, t("trainer.noteDisplayStart"));
-    if (checkKeyboard.checked) initKeyboard();
-  } catch (e) {
-    container.innerHTML = `<div class="loading" style="color:#c62828;">${t("trainer.fileInfoError")}: ${e.message}</div>`;
-    fileInfo.textContent = t("trainer.fileInfoError");
-    console.error(e);
-  }
+// Random MusicXML generation lives in random-music.js; sanitization in mxl.js.
+// (composer is "Random" for metadata but kept out of the file-info line.)
+function loadMusicXmlString(xmlString, title) {
+  return loadScore(
+    () => {
+      // Sanitize AI-generated MusicXML: ensure required elements exist
+      const fixed = fixMusicXml(xmlString);
+      console.log("AI MusicXML (first 2000 chars):", fixed.substring(0, 2000));
+      return fixed;
+    },
+    { title, composer: "Random", fallbackTitle: "Random", showComposerInInfo: false },
+  );
 }
 
 (function initRandomizer() {
@@ -2509,251 +2138,6 @@ async function loadMusicXmlString(xmlString, title) {
     }
   });
 
-  // ── Random MusicXML generator ──
-  function generateRandomMusicXml(opts) {
-    const divisions = 4; // 4 = quarter note
-    const beats = 4;
-    const beatType = 4;
-    const measureDuration = divisions * beats; // 16
-
-    // Note pools
-    const NATURAL = ["C", "D", "E", "F", "G", "A", "B"];
-    const SHARP_NOTES = ["C", "D", "F", "G", "A"];
-    const FLAT_NOTES = ["D", "E", "G", "A", "B"];
-
-    // Max 1 ledger line per clef
-    const trebleRange = { notes: NATURAL, octaves: [4, 5], loMidi: 60, hiMidi: 83 }; // C4–B5
-    const bassRange = { notes: NATURAL, octaves: [2, 4], loMidi: 38, hiMidi: 62 }; // D2–D4
-
-    // Simple rhythm only (half + quarter notes)
-    const durPool = [
-      [8, "half"],
-      [4, "quarter"],
-    ];
-
-    function rnd(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-    function rndInt(a, b) {
-      return a + Math.floor(Math.random() * (b - a + 1));
-    }
-
-    // Build available pitch pool for a clef (filtered to 1 ledger line max)
-    function buildPitchPool(clef) {
-      const r = clef === "G" ? trebleRange : bassRange;
-      const pool = [];
-      for (let oct = r.octaves[0]; oct <= r.octaves[1]; oct++) {
-        for (const step of r.notes) {
-          pool.push({ step, octave: oct, alter: 0 });
-          if (opts.accidentals === "sharps" || opts.accidentals === "both") {
-            if (SHARP_NOTES.includes(step)) pool.push({ step, octave: oct, alter: 1 });
-          }
-          if (opts.accidentals === "flats" || opts.accidentals === "both") {
-            if (FLAT_NOTES.includes(step)) pool.push({ step, octave: oct, alter: -1 });
-          }
-        }
-      }
-      return pool.filter((n) => {
-        const m = noteToMidi(n);
-        return m >= r.loMidi && m <= r.hiMidi;
-      });
-    }
-
-    // Pick a note close to the previous one (stepwise motion preference)
-    function pickNextNote(pool, prevNote) {
-      if (!prevNote) return rnd(pool);
-      // Sort by distance from previous note
-      const prevMidi = noteToMidi(prevNote);
-      const sorted = pool
-        .slice()
-        .sort((a, b) => Math.abs(noteToMidi(a) - prevMidi) - Math.abs(noteToMidi(b) - prevMidi));
-      // Pick from closest 30% with bias toward very close notes
-      const top = Math.max(2, Math.floor(sorted.length * 0.3));
-      // Weighted: 60% closest, 30% mid, 10% far
-      const r = Math.random();
-      if (r < 0.6) return sorted[rndInt(0, Math.min(2, top - 1))];
-      if (r < 0.9) return sorted[rndInt(0, top - 1)];
-      return rnd(sorted.slice(0, Math.floor(sorted.length * 0.5)));
-    }
-
-    function noteToMidi(n) {
-      const s = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
-      return (n.octave + 1) * 12 + (s[n.step] || 0) + (n.alter || 0);
-    }
-
-    // Generate notes for one measure on one staff
-    function genMeasureNotes(pool, prevNote) {
-      const notes = [];
-      let remaining = measureDuration;
-      let prev = prevNote;
-
-      while (remaining > 0) {
-        // Filter durations that fit
-        const fits = durPool.filter((d) => d[0] <= remaining);
-        if (fits.length === 0) break;
-        const [dur, typeName] = rnd(fits);
-
-        // How many simultaneous notes (chord)?
-        const simul = opts.maxNotes > 1 ? rndInt(1, opts.maxNotes) : 1;
-
-        const picked = [];
-        const base = pickNextNote(pool, prev);
-        picked.push(base);
-
-        // For chords: add notes at intervals of 2-4 semitones above
-        if (simul > 1) {
-          const baseMidi = noteToMidi(base);
-          const chordPool = pool.filter((p) => {
-            const m = noteToMidi(p);
-            return m > baseMidi && m <= baseMidi + 12;
-          });
-          for (let c = 1; c < simul && chordPool.length > 0; c++) {
-            const cn = chordPool.splice(rndInt(0, chordPool.length - 1), 1)[0];
-            if (cn) picked.push(cn);
-          }
-        }
-
-        picked.forEach((p, idx) => {
-          notes.push({
-            step: p.step,
-            octave: p.octave,
-            alter: p.alter,
-            duration: dur,
-            type: typeName,
-            chord: idx > 0,
-          });
-        });
-
-        prev = base;
-        remaining -= dur;
-      }
-
-      // Fill any remaining with a rest
-      if (remaining > 0) {
-        notes.push({ rest: true, duration: remaining, type: durToType(remaining) });
-      }
-
-      return { notes, lastNote: prev };
-    }
-
-    function durToType(d) {
-      if (d >= 16) return "whole";
-      if (d >= 8) return "half";
-      if (d >= 4) return "quarter";
-      if (d >= 2) return "eighth";
-      return "16th";
-    }
-
-    // Build XML
-    const hasTreble = opts.hand === "right" || opts.hand === "both";
-    const hasBass = opts.hand === "left" || opts.hand === "both";
-    const twoStaves = hasTreble && hasBass;
-
-    const treblePool = hasTreble ? buildPitchPool("G") : [];
-    const bassPool = hasBass ? buildPitchPool("F") : [];
-
-    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    xml +=
-      '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">\n';
-    xml += '<score-partwise version="3.1">\n';
-    xml += '  <part-list><score-part id="P1"><part-name>Piano</part-name></score-part></part-list>\n';
-    xml += '  <part id="P1">\n';
-
-    let prevTreble = null;
-    let prevBass = null;
-
-    for (let m = 1; m <= opts.measures; m++) {
-      xml += `    <measure number="${m}">\n`;
-
-      // Attributes in first measure
-      if (m === 1) {
-        xml += "      <attributes>\n";
-        xml += `        <divisions>${divisions}</divisions>\n`;
-        xml += "        <key><fifths>0</fifths></key>\n";
-        xml += `        <time><beats>${beats}</beats><beat-type>${beatType}</beat-type></time>\n`;
-        if (twoStaves) xml += "        <staves>2</staves>\n";
-        if (hasTreble) {
-          xml += twoStaves
-            ? '        <clef number="1"><sign>G</sign><line>2</line></clef>\n'
-            : "        <clef><sign>G</sign><line>2</line></clef>\n";
-        }
-        if (hasBass && twoStaves) {
-          xml += '        <clef number="2"><sign>F</sign><line>4</line></clef>\n';
-        } else if (hasBass && !hasTreble) {
-          xml += "        <clef><sign>F</sign><line>4</line></clef>\n";
-        }
-        xml += "      </attributes>\n";
-      }
-
-      // Treble (voice 1, staff 1)
-      if (hasTreble) {
-        const res = genMeasureNotes(treblePool, prevTreble);
-        prevTreble = res.lastNote;
-        res.notes.forEach((n) => {
-          if (n.rest) {
-            xml += `      <note><rest/><duration>${n.duration}</duration><type>${n.type}</type>`;
-            if (twoStaves) xml += "<voice>1</voice><staff>1</staff>";
-            xml += "</note>\n";
-          } else {
-            xml += "      <note>";
-            if (n.chord) xml += "<chord/>";
-            xml += `<pitch><step>${n.step}</step>`;
-            if (n.alter !== 0) xml += `<alter>${n.alter}</alter>`;
-            xml += `<octave>${n.octave}</octave></pitch>`;
-            xml += `<duration>${n.duration}</duration><type>${n.type}</type>`;
-            if (twoStaves) xml += "<voice>1</voice><staff>1</staff>";
-            xml += "</note>\n";
-          }
-        });
-      }
-
-      // Bass (voice 2, staff 2) — two staves
-      if (hasBass && twoStaves) {
-        xml += `      <backup><duration>${measureDuration}</duration></backup>\n`;
-        const res = genMeasureNotes(bassPool, prevBass);
-        prevBass = res.lastNote;
-        res.notes.forEach((n) => {
-          if (n.rest) {
-            xml += `      <note><rest/><duration>${n.duration}</duration><type>${n.type}</type><voice>2</voice><staff>2</staff></note>\n`;
-          } else {
-            xml += "      <note>";
-            if (n.chord) xml += "<chord/>";
-            xml += `<pitch><step>${n.step}</step>`;
-            if (n.alter !== 0) xml += `<alter>${n.alter}</alter>`;
-            xml += `<octave>${n.octave}</octave></pitch>`;
-            xml += `<duration>${n.duration}</duration><type>${n.type}</type>`;
-            xml += "<voice>2</voice><staff>2</staff>";
-            xml += "</note>\n";
-          }
-        });
-      }
-
-      // Bass only (single staff, no treble)
-      if (hasBass && !hasTreble) {
-        const res = genMeasureNotes(bassPool, prevBass);
-        prevBass = res.lastNote;
-        res.notes.forEach((n) => {
-          if (n.rest) {
-            xml += `      <note><rest/><duration>${n.duration}</duration><type>${n.type}</type></note>\n`;
-          } else {
-            xml += "      <note>";
-            if (n.chord) xml += "<chord/>";
-            xml += `<pitch><step>${n.step}</step>`;
-            if (n.alter !== 0) xml += `<alter>${n.alter}</alter>`;
-            xml += `<octave>${n.octave}</octave></pitch>`;
-            xml += `<duration>${n.duration}</duration><type>${n.type}</type>`;
-            xml += "</note>\n";
-          }
-        });
-      }
-
-      xml += "    </measure>\n";
-    }
-
-    xml += "  </part>\n";
-    xml += "</score-partwise>";
-    return xml;
-  }
 })();
 
 // ===================== HELP MODAL =====================
@@ -2776,199 +2160,6 @@ if (!localStorage.getItem("trainer-help-shown")) {
   localStorage.setItem("trainer-help-shown", "1");
   // Delay slightly to let the page render
   setTimeout(openHelp, 400);
-}
-
-// ===================== MIDI SETUP =====================
-let midiPollTimer = null;
-const debugStrip = document.getElementById("debug-strip");
-
-function setupMidi() {
-  debugStrip.dataset.midiInit = "1";
-  renderDebug(debugStrip, "MIDI: init...");
-
-  // On browsers with native requestMIDIAccess but where WebMidi.js may not work
-  // (e.g. WebMidiBrowser on iPad), try native first if WebMidi.js enable doesn't
-  // resolve quickly.
-  if (typeof WebMidi !== "undefined") {
-    renderDebug(debugStrip, "MIDI: WebMidi.js found, enabling...");
-    var settled = false;
-    var timer = setTimeout(function () {
-      if (!settled) {
-        settled = true;
-        renderDebug(debugStrip, "MIDI: WebMidi.js timeout, trying native...");
-        setupMidiNative();
-      }
-    }, 3000);
-
-    WebMidi.enable()
-      .then(() => {
-        if (settled) return; // native already took over
-        settled = true;
-        clearTimeout(timer);
-        renderDebug(debugStrip, "MIDI: enabled, inputs=" + WebMidi.inputs.length);
-        function connectInput(input) {
-          midiInput = input;
-          midiLabel.textContent = input.name.length > 16 ? input.name.slice(0, 16) + "…" : input.name;
-          midiChip.className = "midi-chip ok";
-          renderDebug(debugStrip, "MIDI: connected " + input.name);
-          if (midiPollTimer) {
-            clearInterval(midiPollTimer);
-            midiPollTimer = null;
-          }
-          input.removeListener();
-          input.addListener("noteon", (e) => {
-            if (e.rawAttack === 0 || e.note.attack === 0) {
-              handleMidiNoteOff(e.note.number);
-              return;
-            }
-            handleMidiNoteOn(e.note.number);
-          });
-          input.addListener("noteoff", (e) => {
-            handleMidiNoteOff(e.note.number);
-          });
-        }
-
-        if (WebMidi.inputs.length > 0) {
-          connectInput(WebMidi.inputs[0]);
-        } else {
-          midiLabel.textContent = t("trainer.midiNone");
-          midiChip.className = "midi-chip no";
-          // Poll for late-appearing devices (Android, Bluetooth MIDI)
-          midiPollTimer = setInterval(() => {
-            if (WebMidi.inputs.length > 0 && !midiInput) {
-              connectInput(WebMidi.inputs[0]);
-            }
-          }, 2000);
-        }
-
-        WebMidi.addListener("connected", () => {
-          if (WebMidi.inputs.length > 0 && !midiInput) connectInput(WebMidi.inputs[0]);
-        });
-        WebMidi.addListener("disconnected", () => {
-          if (WebMidi.inputs.length === 0) {
-            midiInput = null;
-            midiLabel.textContent = t("trainer.midiNone");
-            midiChip.className = "midi-chip no";
-            // Resume polling
-            if (!midiPollTimer) {
-              midiPollTimer = setInterval(() => {
-                if (WebMidi.inputs.length > 0 && !midiInput) {
-                  connectInput(WebMidi.inputs[0]);
-                }
-              }, 2000);
-            }
-          }
-        });
-      })
-      .catch((err) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        console.warn("WebMidi.js enable failed, trying native API:", err);
-        renderDebug(debugStrip, "MIDI: WebMidi.js failed, trying native...");
-        setupMidiNative();
-      });
-    return;
-  }
-
-  setupMidiNative();
-}
-
-function setupMidiNative() {
-  // Fallback: native Web MIDI API (WebMidiBrowser on iPad, etc.)
-  if (navigator.requestMIDIAccess) {
-    renderDebug(debugStrip, "MIDI: native API fallback...");
-    navigator
-      .requestMIDIAccess({ sysex: false })
-      .then(function (access) {
-        var nativeInputs = [];
-        var it0 = access.inputs.values();
-        for (var o0 = it0.next(); !o0.done; o0 = it0.next()) nativeInputs.push(o0.value);
-        renderDebug(
-          debugStrip,
-          "MIDI native: OK, inputs=" +
-            nativeInputs.length +
-            " [" +
-            nativeInputs
-              .map(function (i) {
-                return i.name;
-              })
-              .join(", ") +
-            "]",
-        );
-
-        function isVirtualSession(port) {
-          return /^Session\s*\d*$/i.test(port.name);
-        }
-
-        // Prefer a real hardware device over virtual iOS "Session" ports
-        var preferredInput = null;
-        for (var i = 0; i < nativeInputs.length; i++) {
-          if (!isVirtualSession(nativeInputs[i])) {
-            preferredInput = nativeInputs[i];
-            break;
-          }
-        }
-
-        function connectNativeInput(port) {
-          midiInput = port;
-          midiLabel.textContent = port.name.length > 16 ? port.name.slice(0, 16) + "…" : port.name;
-          midiChip.className = "midi-chip ok";
-          renderDebug(debugStrip, "MIDI native: connected " + port.name);
-          port.onmidimessage = function (event) {
-            var data = event.data;
-            var cmd = data[0] & 0xf0;
-            var note = data[1];
-            var velocity = data.length > 2 ? data[2] : 0;
-            if (cmd === 0x90 && velocity > 0) {
-              handleMidiNoteOn(note);
-            } else if (cmd === 0x80 || (cmd === 0x90 && velocity === 0)) {
-              handleMidiNoteOff(note);
-            }
-          };
-        }
-
-        if (preferredInput) {
-          connectNativeInput(preferredInput);
-        } else {
-          // Only Session ports or no ports — wait for real device via onstatechange
-          midiLabel.textContent = t("trainer.midiNone");
-          midiChip.className = "midi-chip no";
-          renderDebug(debugStrip, "MIDI native: waiting for real device...");
-        }
-
-        access.onstatechange = function (event) {
-          var port = event.port;
-          // Always prefer a real device; upgrade from Session if needed
-          if (port.type === "input" && port.state === "connected") {
-            if (!isVirtualSession(port)) {
-              connectNativeInput(port);
-            } else if (!midiInput) {
-              // No device at all — connect Session as last resort
-              connectNativeInput(port);
-            }
-          } else if (port.type === "input" && port.state === "disconnected") {
-            var remaining = [];
-            var it = access.inputs.values();
-            for (var o = it.next(); !o.done; o = it.next()) remaining.push(o.value);
-            if (remaining.length === 0) {
-              midiInput = null;
-              midiLabel.textContent = t("trainer.midiNone");
-              midiChip.className = "midi-chip no";
-            }
-          }
-        };
-      })
-      .catch(function (err) {
-        midiLabel.textContent = t("trainer.midiErr");
-        renderDebug(debugStrip, "Native MIDI err: " + err.message);
-        console.error("Native MIDI error:", err);
-      });
-    return;
-  }
-
-  midiLabel.textContent = t("trainer.midiNo");
-  renderDebug(debugStrip, "MIDI: no API available");
 }
 
 // ===================== EVENT HANDLERS =====================
@@ -3064,8 +2255,9 @@ document.getElementById("result-modal").addEventListener("click", (e) => {
   if (e.target === e.currentTarget) e.currentTarget.classList.remove("active");
 });
 
-// Init MIDI on load
-setupMidi();
+// Init MIDI on load — device setup lives in midi-input.js; it forwards note
+// events back into the game logic via these callbacks.
+setupMidi({ onNoteOn: handleMidiNoteOn, onNoteOff: handleMidiNoteOff });
 
 // ===================== AUTO-LOAD FIRST COMPOSITION =====================
 (async function autoLoadFirst() {
